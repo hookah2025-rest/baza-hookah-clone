@@ -88,18 +88,31 @@ export const HeroSection = ({
       </section>
 
       {/* Mobile Navigation Fullscreen */}
-      {isMenuOpen && <div className="fixed inset-0 z-50 bg-background flex flex-col">
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col">
           <div className="flex justify-end p-6">
-            <button onClick={() => setIsMenuOpen(false)}>
-              <X className="w-8 h-8" />
+            <button onClick={() => setIsMenuOpen(false)} className="p-2">
+              <X className="w-8 h-8 text-foreground" />
             </button>
           </div>
           
-          <nav className="flex-1 flex flex-col items-center justify-center gap-8">
-            {mobileNavItems.map(item => <a key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)} className="text-lg tracking-wider font-medium hover:opacity-80 transition-opacity">
+          <nav className="flex-1 flex flex-col items-center justify-center gap-6">
+            {mobileNavItems.map(item => (
+              <a 
+                key={item.href} 
+                href={item.href} 
+                onClick={() => setIsMenuOpen(false)} 
+                className="text-xl tracking-[0.2em] font-light text-foreground hover:text-accent transition-colors uppercase"
+              >
                 {item.label}
-              </a>)}
+              </a>
+            ))}
           </nav>
-        </div>}
+          
+          <div className="pb-10">
+            <SocialIcons socialLinks={siteData.socialLinks} />
+          </div>
+        </div>
+      )}
     </>;
 };
