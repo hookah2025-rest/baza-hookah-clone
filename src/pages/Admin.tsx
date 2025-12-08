@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   getSiteData, 
   saveSiteData, 
@@ -21,11 +21,16 @@ import {
   Settings, 
   FileText, 
   Image, 
-  List 
+  List,
+  LogOut
 } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 const Admin = () => {
+  const navigate = useNavigate();
+  const { user, loading, isAdmin, signOut } = useAuth();
+  
   const [siteData, setSiteData] = useState<SiteData>(getSiteData());
   const [newMenuItem, setNewMenuItem] = useState<Partial<MenuItem>>({
     name: "",
@@ -36,10 +41,23 @@ const Admin = () => {
   const [newGalleryImage, setNewGalleryImage] = useState({ url: "", alt: "" });
   const [newRule, setNewRule] = useState({ text: "" });
 
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    } else if (!loading && user && !isAdmin) {
+      toast.error("У вас нет прав администратора");
+      navigate("/auth");
+    }
+  }, [loading, user, isAdmin, navigate]);
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/auth");
+  };
+
   const handleSave = () => {
     saveSiteData(siteData);
     toast.success("Данные сохранены!");
-    // Dispatch storage event for other tabs
     window.dispatchEvent(new Event('storage'));
   };
 
@@ -136,6 +154,18 @@ const Admin = () => {
 
   const menuCategories = ["Кальяны", "Напитки", "Кухня", "Алкоголь"];
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-lg">Загрузка...</div>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -147,10 +177,16 @@ const Admin = () => {
             </Link>
             <h1 className="text-xl font-bold">Админ-панель</h1>
           </div>
-          <Button onClick={handleSave} className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
-            <Save className="w-4 h-4" />
-            Сохранить
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button onClick={handleSave} className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
+              <Save className="w-4 h-4" />
+              Сохранить
+            </Button>
+            <Button onClick={handleSignOut} variant="outline" className="gap-2">
+              <LogOut className="w-4 h-4" />
+              Выйти
+            </Button>
+          </div>
         </div>
       </header>
 
