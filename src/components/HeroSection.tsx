@@ -4,47 +4,45 @@ import { SiteData } from "@/data/siteData";
 import { SocialIcons } from "./SocialIcons";
 import heroBg from "@/assets/hero-bg.jpg";
 import bazaLogo from "@/assets/baza-logo.png";
-
 interface HeroSectionProps {
   siteData: SiteData;
 }
-
-const navItems = [
-  { label: "О НАС", href: "#about" },
-  { label: "МЕНЮ", href: "#menu" },
-  { label: "ГАЛЕРЕЯ", href: "#gallery" },
-  { label: "КАК ДОБРАТЬСЯ", href: "#location" },
-  { label: "ПРАВИЛА ЗАВЕДЕНИЯ", href: "#rules" },
-];
-
-const mobileNavItems = [
-  { label: "ГЛАВНАЯ", href: "#hero" },
-  ...navItems
-];
-
-export const HeroSection = ({ siteData }: HeroSectionProps) => {
+const navItems = [{
+  label: "О НАС",
+  href: "#about"
+}, {
+  label: "МЕНЮ",
+  href: "#menu"
+}, {
+  label: "ГАЛЕРЕЯ",
+  href: "#gallery"
+}, {
+  label: "КАК ДОБРАТЬСЯ",
+  href: "#location"
+}, {
+  label: "ПРАВИЛА ЗАВЕДЕНИЯ",
+  href: "#rules"
+}];
+const mobileNavItems = [{
+  label: "ГЛАВНАЯ",
+  href: "#hero"
+}, ...navItems];
+export const HeroSection = ({
+  siteData
+}: HeroSectionProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  return (
-    <>
-      <section 
-        id="hero" 
-        className="relative min-h-screen flex flex-col"
-        style={{
-          backgroundImage: `url(${heroBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+  return <>
+      <section id="hero" className="relative min-h-screen flex flex-col" style={{
+      backgroundImage: `url(${heroBg})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-background/60" />
 
         {/* Mobile menu button */}
         <div className="lg:hidden absolute top-6 right-6 z-20">
-          <button
-            onClick={() => setIsMenuOpen(true)}
-            className="p-2"
-          >
+          <button onClick={() => setIsMenuOpen(true)} className="p-2">
             <Menu className="w-8 h-8 text-foreground" />
           </button>
         </div>
@@ -54,16 +52,14 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
           {/* Logo */}
           <div className="text-center mb-8">
             <img src={bazaLogo} alt="BAZA" className="w-40 md:w-56 mx-auto" />
-            <p className="text-sm tracking-[0.3em] mt-2 text-muted-foreground">кальян-бар</p>
+            
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-10 mt-8">
-            {navItems.map((item) => (
-              <a key={item.href} href={item.href} className="nav-link text-sm">
+            {navItems.map(item => <a key={item.href} href={item.href} className="nav-link text-sm">
                 {item.label}
-              </a>
-            ))}
+              </a>)}
           </nav>
         </div>
 
@@ -80,10 +76,7 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
             <p>{siteData.address}</p>
           </div>
           
-          <a
-            href={`tel:${siteData.phone.replace(/\s/g, '')}`}
-            className="block text-center mt-3 text-accent text-lg font-medium"
-          >
+          <a href={`tel:${siteData.phone.replace(/\s/g, '')}`} className="block text-center mt-3 text-accent text-lg font-medium">
             {siteData.phone}
           </a>
           
@@ -95,8 +88,7 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
       </section>
 
       {/* Mobile Navigation Fullscreen */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-background flex flex-col">
+      {isMenuOpen && <div className="fixed inset-0 z-50 bg-background flex flex-col">
           <div className="flex justify-end p-6">
             <button onClick={() => setIsMenuOpen(false)}>
               <X className="w-8 h-8" />
@@ -104,19 +96,10 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
           </div>
           
           <nav className="flex-1 flex flex-col items-center justify-center gap-8">
-            {mobileNavItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsMenuOpen(false)}
-                className="text-lg tracking-wider font-medium hover:opacity-80 transition-opacity"
-              >
+            {mobileNavItems.map(item => <a key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)} className="text-lg tracking-wider font-medium hover:opacity-80 transition-opacity">
                 {item.label}
-              </a>
-            ))}
+              </a>)}
           </nav>
-        </div>
-      )}
-    </>
-  );
+        </div>}
+    </>;
 };
