@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { X } from "lucide-react";
 import { SiteData } from "@/data/siteData";
 import { SocialIcons } from "./SocialIcons";
 import heroBg from "@/assets/hero-bg.jpg";
@@ -33,10 +33,15 @@ export const HeroSection = ({
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-background/60" />
 
-        {/* Mobile menu button */}
-        <div className="lg:hidden absolute top-6 right-6 z-20">
-          <button onClick={() => setIsMenuOpen(true)} className="p-2">
-            <Menu className="w-8 h-8 text-foreground" />
+        {/* Menu button - visible on all screen sizes, top right */}
+        <div className="absolute top-6 right-6 z-20">
+          <button 
+            onClick={() => setIsMenuOpen(true)} 
+            className="p-2 flex flex-col gap-1.5 group"
+            aria-label="Открыть меню"
+          >
+            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
+            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
           </button>
         </div>
 
@@ -45,15 +50,7 @@ export const HeroSection = ({
           {/* Logo */}
           <div className="text-center mb-8">
             <img src={bazaLogo} alt="BAZA" className="w-40 md:w-56 mx-auto" />
-            
           </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-10 mt-8">
-            {navItems.map(item => <a key={item.href} href={item.href} className="nav-link text-sm">
-                {item.label}
-              </a>)}
-          </nav>
         </div>
 
         {/* Bottom section with social and contact */}
