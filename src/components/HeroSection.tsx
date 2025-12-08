@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { SiteData } from "@/data/siteData";
 import { SocialIcons } from "./SocialIcons";
 import { AgeVerificationModal } from "./AgeVerificationModal";
+import { MenuPage } from "./MenuPage";
 import heroBg from "@/assets/hero-bg.jpg";
 import bazaLogo from "@/assets/baza-logo.png";
 
@@ -30,7 +31,8 @@ export const HeroSection = ({
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [showAgeModal, setShowAgeModal] = useState(false);
   const [ageVerified, setAgeVerified] = useState(false);
-  const [pendingHref, setPendingHref] = useState<string | null>(null);
+  const [pendingAction, setPendingAction] = useState<string | null>(null);
+  const [showMenuPage, setShowMenuPage] = useState(false);
 
   useEffect(() => {
     const verified = localStorage.getItem("age_verified") === "true";
@@ -38,8 +40,19 @@ export const HeroSection = ({
   }, []);
 
   const handleNavClick = (href: string, requiresAge: boolean) => {
+    if (href === "#menu") {
+      if (!ageVerified) {
+        setPendingAction("menu");
+        setShowAgeModal(true);
+        return;
+      }
+      setIsMenuOpen(false);
+      setShowMenuPage(true);
+      return;
+    }
+    
     if (requiresAge && !ageVerified) {
-      setPendingHref(href);
+      setPendingAction(href);
       setShowAgeModal(true);
       return;
     }
@@ -50,18 +63,24 @@ export const HeroSection = ({
   const handleAgeConfirm = () => {
     setAgeVerified(true);
     setShowAgeModal(false);
-    if (pendingHref) {
+    if (pendingAction === "menu") {
       setIsMenuOpen(false);
-      window.location.href = pendingHref;
-      setPendingHref(null);
+      setShowMenuPage(true);
+    } else if (pendingAction) {
+      setIsMenuOpen(false);
+      window.location.href = pendingAction;
     }
+    setPendingAction(null);
   };
 
   const handleAgeDecline = () => {
     setShowAgeModal(false);
-    setPendingHref(null);
+    setPendingAction(null);
   };
   return <>
+      {showMenuPage && (
+        <MenuPage siteData={siteData} onClose={() => setShowMenuPage(false)} />
+      )}
       {showAgeModal && (
         <AgeVerificationModal
           onConfirm={handleAgeConfirm}
