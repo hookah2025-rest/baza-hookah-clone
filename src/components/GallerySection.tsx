@@ -24,13 +24,13 @@ export const GallerySection = ({ siteData }: GallerySectionProps) => {
   };
 
   return (
-    <section id="gallery" className="min-h-screen flex flex-col">
+    <section id="gallery" className="min-h-screen flex flex-col bg-primary">
       {/* Header */}
       <Header siteData={siteData} />
 
-      {/* Gallery Slider */}
-      <div className="flex-1 relative pt-16 bg-background">
-        <div className="relative h-[60vh] lg:h-[70vh] overflow-hidden">
+      {/* Gallery Slider - Fullscreen */}
+      <div className="flex-1 relative pt-16">
+        <div className="relative h-[calc(100vh-64px-200px)] overflow-hidden">
           {/* Current Image */}
           <img
             src={siteData.gallery[currentIndex]?.url}
@@ -38,23 +38,33 @@ export const GallerySection = ({ siteData }: GallerySectionProps) => {
             className="w-full h-full object-cover"
           />
 
-          {/* Navigation Arrow */}
+          {/* Navigation Arrows */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-4 bottom-6 text-white/80 hover:text-white transition-colors"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+
           <button
             onClick={nextSlide}
-            className="absolute right-4 bottom-8 text-foreground hover:opacity-80 transition-opacity"
+            className="absolute right-4 bottom-6 text-white/80 hover:text-white transition-colors"
+            aria-label="Next slide"
           >
-            <ChevronRight className="w-8 h-8" />
+            <ChevronRight className="w-6 h-6" />
           </button>
 
           {/* Dots */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
             {siteData.gallery.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  index === currentIndex ? "bg-foreground" : "bg-foreground/40"
+                className={`w-2.5 h-2.5 rounded-full transition-colors border border-white/50 ${
+                  index === currentIndex ? "bg-white" : "bg-transparent"
                 }`}
+                aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
