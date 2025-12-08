@@ -1,30 +1,73 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { SiteData } from "@/data/siteData";
 import { SocialIcons } from "./SocialIcons";
+import { AgeVerificationModal } from "./AgeVerificationModal";
 import heroBg from "@/assets/hero-bg.jpg";
 import bazaLogo from "@/assets/baza-logo.png";
+
 interface HeroSectionProps {
   siteData: SiteData;
 }
+
 const navItems = [
-  { label: "О НАС", subtitle: "Концепция", href: "#about" },
-  { label: "МЕНЮ", subtitle: "Что имеется?", href: "#menu" },
-  { label: "ГАЛЕРЕЯ", subtitle: "Визуальное сопровождение", href: "#gallery" },
-  { label: "КАК ДОБРАТЬСЯ", subtitle: "Локация", href: "#location" },
-  { label: "ПРАВИЛА", subtitle: "Правила заведения", href: "#rules" },
+  { label: "О НАС", subtitle: "Концепция", href: "#about", requiresAge: false },
+  { label: "МЕНЮ", subtitle: "Что имеется?", href: "#menu", requiresAge: true },
+  { label: "ГАЛЕРЕЯ", subtitle: "Визуальное сопровождение", href: "#gallery", requiresAge: false },
+  { label: "КАК ДОБРАТЬСЯ", subtitle: "Локация", href: "#location", requiresAge: false },
+  { label: "ПРАВИЛА", subtitle: "Правила заведения", href: "#rules", requiresAge: false },
 ];
 
 const mobileNavItems = [
-  { label: "ГЛАВНАЯ", subtitle: "Добро пожаловать", href: "#hero" },
+  { label: "ГЛАВНАЯ", subtitle: "Добро пожаловать", href: "#hero", requiresAge: false },
   ...navItems,
 ];
+
 export const HeroSection = ({
   siteData
 }: HeroSectionProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [showAgeModal, setShowAgeModal] = useState(false);
+  const [ageVerified, setAgeVerified] = useState(false);
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
+
+  useEffect(() => {
+    const verified = localStorage.getItem("age_verified") === "true";
+    setAgeVerified(verified);
+  }, []);
+
+  const handleNavClick = (href: string, requiresAge: boolean) => {
+    if (requiresAge && !ageVerified) {
+      setPendingHref(href);
+      setShowAgeModal(true);
+      return;
+    }
+    setIsMenuOpen(false);
+    window.location.href = href;
+  };
+
+  const handleAgeConfirm = () => {
+    setAgeVerified(true);
+    setShowAgeModal(false);
+    if (pendingHref) {
+      setIsMenuOpen(false);
+      window.location.href = pendingHref;
+      setPendingHref(null);
+    }
+  };
+
+  const handleAgeDecline = () => {
+    setShowAgeModal(false);
+    setPendingHref(null);
+  };
   return <>
+      {showAgeModal && (
+        <AgeVerificationModal
+          onConfirm={handleAgeConfirm}
+          onDecline={handleAgeDecline}
+        />
+      )}
       <section id="hero" className="relative min-h-screen flex flex-col" style={{
       backgroundImage: `url(${heroBg})`,
       backgroundSize: 'cover',
@@ -90,10 +133,9 @@ export const HeroSection = ({
             {mobileNavItems.map((item, index) => {
               const isActive = activeIndex === index;
               return (
-                <a 
-                  key={item.href} 
-                  href={item.href} 
-                  onClick={() => setIsMenuOpen(false)}
+                <button 
+                  key={item.href}
+                  onClick={() => handleNavClick(item.href, item.requiresAge)}
                   onMouseEnter={() => setActiveIndex(index)}
                   onMouseLeave={() => setActiveIndex(null)}
                   className="text-center group"
@@ -106,7 +148,7 @@ export const HeroSection = ({
                     <span className={`w-6 h-[2px] bg-accent transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
                   </div>
                   <p className="text-accent text-xs tracking-wider mt-1">{item.subtitle}</p>
-                </a>
+                </button>
               );
             })}
           </nav>
