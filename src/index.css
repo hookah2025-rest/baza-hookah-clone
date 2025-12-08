@@ -6,83 +6,83 @@
 
 @layer base {
   :root {
-    --background: 345 25% 18%;
-    --foreground: 45 20% 95%;
+    --background: 345 28% 25%;
+    --foreground: 0 0% 100%;
 
-    --card: 345 20% 22%;
-    --card-foreground: 45 20% 95%;
+    --card: 345 28% 25%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 345 20% 22%;
-    --popover-foreground: 45 20% 95%;
+    --popover: 345 28% 25%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 345 30% 35%;
-    --primary-foreground: 45 20% 95%;
+    --primary: 345 28% 25%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 345 15% 28%;
-    --secondary-foreground: 45 20% 95%;
+    --secondary: 0 0% 83%;
+    --secondary-foreground: 345 28% 25%;
 
-    --muted: 345 15% 25%;
-    --muted-foreground: 45 10% 70%;
+    --muted: 345 20% 30%;
+    --muted-foreground: 0 0% 85%;
 
-    --accent: 35 60% 55%;
-    --accent-foreground: 345 25% 15%;
+    --accent: 30 60% 55%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 50%;
-    --destructive-foreground: 45 20% 95%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 345 15% 30%;
-    --input: 345 15% 30%;
-    --ring: 35 60% 55%;
+    --border: 0 0% 100%;
+    --input: 345 20% 30%;
+    --ring: 30 60% 55%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 345 25% 15%;
-    --sidebar-foreground: 45 20% 95%;
-    --sidebar-primary: 35 60% 55%;
-    --sidebar-primary-foreground: 345 25% 15%;
-    --sidebar-accent: 345 20% 25%;
-    --sidebar-accent-foreground: 45 20% 95%;
-    --sidebar-border: 345 15% 25%;
-    --sidebar-ring: 35 60% 55%;
+    --sidebar-background: 345 28% 22%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 30 60% 55%;
+    --sidebar-primary-foreground: 345 28% 22%;
+    --sidebar-accent: 345 20% 30%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 345 20% 30%;
+    --sidebar-ring: 30 60% 55%;
   }
 
   .dark {
-    --background: 345 25% 18%;
-    --foreground: 45 20% 95%;
+    --background: 345 28% 25%;
+    --foreground: 0 0% 100%;
 
-    --card: 345 20% 22%;
-    --card-foreground: 45 20% 95%;
+    --card: 345 28% 25%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 345 20% 22%;
-    --popover-foreground: 45 20% 95%;
+    --popover: 345 28% 25%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 345 30% 35%;
-    --primary-foreground: 45 20% 95%;
+    --primary: 345 28% 25%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 345 15% 28%;
-    --secondary-foreground: 45 20% 95%;
+    --secondary: 0 0% 83%;
+    --secondary-foreground: 345 28% 25%;
 
-    --muted: 345 15% 25%;
-    --muted-foreground: 45 10% 70%;
+    --muted: 345 20% 30%;
+    --muted-foreground: 0 0% 85%;
 
-    --accent: 35 60% 55%;
-    --accent-foreground: 345 25% 15%;
+    --accent: 30 60% 55%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 50%;
-    --destructive-foreground: 45 20% 95%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 345 15% 30%;
-    --input: 345 15% 30%;
-    --ring: 35 60% 55%;
+    --border: 0 0% 100%;
+    --input: 345 20% 30%;
+    --ring: 30 60% 55%;
 
-    --sidebar-background: 345 25% 15%;
-    --sidebar-foreground: 45 20% 95%;
-    --sidebar-primary: 35 60% 55%;
-    --sidebar-primary-foreground: 345 25% 15%;
-    --sidebar-accent: 345 20% 25%;
-    --sidebar-accent-foreground: 45 20% 95%;
-    --sidebar-border: 345 15% 25%;
-    --sidebar-ring: 35 60% 55%;
+    --sidebar-background: 345 28% 22%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 30 60% 55%;
+    --sidebar-primary-foreground: 345 28% 22%;
+    --sidebar-accent: 345 20% 30%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 345 20% 30%;
+    --sidebar-ring: 30 60% 55%;
   }
 }
 
@@ -111,11 +111,11 @@
   }
 
   .nav-link {
-    @apply text-sm font-semibold tracking-wider uppercase transition-colors duration-300 hover:text-accent;
+    @apply text-sm font-medium tracking-wider uppercase transition-colors duration-300 hover:opacity-80;
   }
 
   .menu-item-row {
-    @apply flex justify-between items-baseline py-2 border-b border-border/30;
+    @apply flex justify-between items-baseline py-3;
   }
 }
 
@@ -129,7 +129,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary));
+  background: hsl(var(--muted));
   border-radius: 4px;
 }
 

@@ -4,6 +4,7 @@ export interface MenuItem {
   price: string;
   category: string;
   subcategory?: string;
+  icons?: number; // number of hookah icons to display
 }
 
 export interface GalleryImage {
@@ -18,6 +19,12 @@ export interface Rule {
   text: string;
 }
 
+export interface SocialLinks {
+  instagram: string;
+  telegram: string;
+  whatsapp: string;
+}
+
 export interface SiteData {
   name: string;
   city: string;
@@ -26,24 +33,33 @@ export interface SiteData {
   hoursWeekday: string;
   hoursWeekend: string;
   aboutText: string;
+  menuNote: string;
   menu: MenuItem[];
   gallery: GalleryImage[];
   rules: Rule[];
+  socialLinks: SocialLinks;
 }
 
 export const defaultSiteData: SiteData = {
-  name: "КАЛЬЯН-БАР BAZA",
+  name: "BAZA",
   city: "МОСКВА",
   address: "ПРОСПЕКТ ВЕРНАДСКОГО, 86Бс1, 3 ЭТАЖ",
   phone: "+7 964 526 75 55",
   hoursWeekday: "ПН — ЧТ    12:00—02:00",
   hoursWeekend: "ПТ — ВС    12:00—04:00",
   aboutText: "Данная страница находится в разработке в виду чрезмерной скромности одной части команды и колоссального самомнения другой. Пока спорим.",
+  menuNote: "Ограничение времени бронирования стола - 2 часа.\nОтсчёт времени начинается с момента подачи кальяна.\nЦена и количество не меняются в зависимости от того,\nкурит гость или нет.\n\nЕсли Вам не понравился кальян, наши мастера могут поменять\nего в первые 10 минут после его подачи.",
+  socialLinks: {
+    instagram: "https://instagram.com",
+    telegram: "https://t.me",
+    whatsapp: "https://wa.me/79645267555"
+  },
   menu: [
     // Кальяны
-    { id: "1", name: "Классика", price: "1500", category: "Кальяны", subcategory: "Основные" },
-    { id: "2", name: "Премиум", price: "2000", category: "Кальяны", subcategory: "Основные" },
-    { id: "3", name: "Авторский", price: "2500", category: "Кальяны", subcategory: "Основные" },
+    { id: "1", name: "1-3 ЧЕЛОВЕКА", price: "1800", category: "Кальяны", icons: 1 },
+    { id: "2", name: "4-6 ЧЕЛОВЕК", price: "3600", category: "Кальяны", icons: 2 },
+    { id: "3", name: "7-9 ЧЕЛОВЕК", price: "5400", category: "Кальяны", icons: 3 },
+    { id: "4", name: "ГРЕЙПФРУТ", price: "2200", category: "Кальяны" },
     
     // Напитки - Чай
     { id: "10", name: "Чёрный чай", price: "350 / 700", category: "Напитки", subcategory: "Чай" },
@@ -110,12 +126,12 @@ export const defaultSiteData: SiteData = {
     { id: "107", name: "White Phoenix", price: "350", category: "Алкоголь", subcategory: "Пиво и сидр 450мл" },
   ],
   gallery: [
-    { id: "1", url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800", alt: "Интерьер бара" },
-    { id: "2", url: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800", alt: "Зона отдыха" },
-    { id: "3", url: "https://images.unsplash.com/photo-1485686531765-ba63b07845a7?w=800", alt: "Кальяны" },
-    { id: "4", url: "https://images.unsplash.com/photo-1560624052-449f5ddf0c31?w=800", alt: "Атмосфера" },
-    { id: "5", url: "https://images.unsplash.com/photo-1525268323446-0505b6fe7778?w=800", alt: "Лаунж зона" },
-    { id: "6", url: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800", alt: "Бар" },
+    { id: "1", url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600", alt: "Интерьер бара" },
+    { id: "2", url: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1600", alt: "Зона отдыха" },
+    { id: "3", url: "https://images.unsplash.com/photo-1485686531765-ba63b07845a7?w=1600", alt: "Кальяны" },
+    { id: "4", url: "https://images.unsplash.com/photo-1560624052-449f5ddf0c31?w=1600", alt: "Атмосфера" },
+    { id: "5", url: "https://images.unsplash.com/photo-1525268323446-0505b6fe7778?w=1600", alt: "Лаунж зона" },
+    { id: "6", url: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=1600", alt: "Бар" },
   ],
   rules: [
     { id: "1", number: 1, text: "В нашем заведении не допускается пребывание лиц младше 18 лет. Мы в праве попросить вас показать оригинальный документ, удостоверяющий личность (паспорт, водительское удостоверение)." },

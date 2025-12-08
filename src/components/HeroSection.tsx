@@ -1,67 +1,121 @@
-import { Phone, MapPin, Clock } from "lucide-react";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import { SiteData } from "@/data/siteData";
+import { SocialIcons } from "./SocialIcons";
+import heroBg from "@/assets/hero-bg.png";
 
 interface HeroSectionProps {
   siteData: SiteData;
 }
 
+const navItems = [
+  { label: "О НАС", href: "#about" },
+  { label: "МЕНЮ", href: "#menu" },
+  { label: "ГАЛЕРЕЯ", href: "#gallery" },
+  { label: "КАК ДОБРАТЬСЯ", href: "#location" },
+  { label: "ПРАВИЛА ЗАВЕДЕНИЯ", href: "#rules" },
+];
+
+const mobileNavItems = [
+  { label: "ГЛАВНАЯ", href: "#hero" },
+  ...navItems
+];
+
 export const HeroSection = ({ siteData }: HeroSectionProps) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background with gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-      
-      {/* Decorative smoke effect */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-      </div>
+    <>
+      <section 
+        id="hero" 
+        className="relative min-h-screen flex flex-col"
+        style={{
+          backgroundImage: `url(${heroBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-background/60" />
 
-      <div className="relative z-10 container mx-auto px-4 text-center pt-24">
-        <div className="fade-in">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-wider mb-4 text-shadow">
-            {siteData.name}
-          </h1>
+        {/* Mobile menu button */}
+        <div className="lg:hidden absolute top-6 right-6 z-20">
+          <button
+            onClick={() => setIsMenuOpen(true)}
+            className="p-2"
+          >
+            <Menu className="w-8 h-8 text-foreground" />
+          </button>
+        </div>
+
+        {/* Main content */}
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
+          {/* Logo */}
+          <div className="text-center mb-8">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-[0.2em]">BAZA</h1>
+            <p className="text-sm tracking-[0.3em] mt-2 text-muted-foreground">кальян-бар</p>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-10 mt-8">
+            {navItems.map((item) => (
+              <a key={item.href} href={item.href} className="nav-link text-sm">
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+
+        {/* Bottom section with social and contact */}
+        <div className="relative z-10 pb-10">
+          <SocialIcons socialLinks={siteData.socialLinks} />
           
-          <div className="flex items-center justify-center gap-2 text-muted-foreground mb-8">
-            <MapPin className="w-5 h-5" />
-            <span className="text-lg tracking-wide">{siteData.city}</span>
+          <div className="text-center mt-6">
+            <p className="text-sm tracking-wider">КАЛЬЯН-БАР <span className="font-bold">BAZA</span></p>
           </div>
-
-          <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-xl mx-auto">
-            {siteData.address}
-          </p>
-
-          {/* Contact Info */}
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-            <a
-              href={`tel:${siteData.phone.replace(/\s/g, '')}`}
-              className="flex items-center gap-3 text-xl font-semibold hover:text-accent transition-colors group"
-            >
-              <div className="p-3 rounded-full bg-secondary group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
-                <Phone className="w-6 h-6" />
-              </div>
-              <span>{siteData.phone}</span>
-            </a>
-
-            <div className="flex flex-col items-center gap-1 text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5" />
-                <span>Режим работы</span>
-              </div>
-              <p className="text-sm">{siteData.hoursWeekday}</p>
-              <p className="text-sm">{siteData.hoursWeekend}</p>
-            </div>
+          
+          <div className="text-center mt-3 text-sm text-muted-foreground">
+            <p>{siteData.city}</p>
+            <p>{siteData.address}</p>
           </div>
-
-          {/* Scroll indicator */}
-          <div className="mt-20 animate-bounce">
-            <div className="w-6 h-10 border-2 border-muted-foreground rounded-full mx-auto flex items-start justify-center p-2">
-              <div className="w-1 h-2 bg-muted-foreground rounded-full" />
-            </div>
+          
+          <a
+            href={`tel:${siteData.phone.replace(/\s/g, '')}`}
+            className="block text-center mt-3 text-accent text-lg font-medium"
+          >
+            {siteData.phone}
+          </a>
+          
+          <div className="text-center mt-3 text-sm text-muted-foreground">
+            <p>{siteData.hoursWeekday}</p>
+            <p>{siteData.hoursWeekend}</p>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Mobile Navigation Fullscreen */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-background flex flex-col">
+          <div className="flex justify-end p-6">
+            <button onClick={() => setIsMenuOpen(false)}>
+              <X className="w-8 h-8" />
+            </button>
+          </div>
+          
+          <nav className="flex-1 flex flex-col items-center justify-center gap-8">
+            {mobileNavItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+                className="text-lg tracking-wider font-medium hover:opacity-80 transition-opacity"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      )}
+    </>
   );
 };

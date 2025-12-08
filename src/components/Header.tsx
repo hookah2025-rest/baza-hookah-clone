@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Phone, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { SiteData } from "@/data/siteData";
 
 interface HeaderProps {
   siteData: SiteData;
+  showNav?: boolean;
 }
 
 const navItems = [
@@ -14,80 +15,70 @@ const navItems = [
   { label: "ПРАВИЛА ЗАВЕДЕНИЯ", href: "#rules" },
 ];
 
-export const Header = ({ siteData }: HeaderProps) => {
+const mobileNavItems = [
+  { label: "ГЛАВНАЯ", href: "#hero" },
+  ...navItems
+];
+
+export const Header = ({ siteData, showNav = true }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo & Info */}
-          <div className="flex flex-col">
-            <h1 className="text-lg md:text-xl font-bold tracking-wider">{siteData.name}</h1>
-            <p className="text-xs text-muted-foreground">{siteData.city}</p>
-          </div>
+    <>
+      {showNav && (
+        <header className="fixed top-0 left-0 right-0 z-50 bg-background">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
+              {/* Logo */}
+              <a href="#hero" className="flex flex-col items-center">
+                <span className="text-2xl font-bold tracking-[0.3em]">BAZA</span>
+                <span className="text-[10px] tracking-wider text-muted-foreground">кальян-бар</span>
+              </a>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6">
-            {navItems.map((item) => (
-              <a key={item.href} href={item.href} className="nav-link">
+              {/* Desktop Navigation */}
+              <nav className="hidden lg:flex items-center gap-8">
+                {navItems.map((item) => (
+                  <a key={item.href} href={item.href} className="nav-link">
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="lg:hidden p-2"
+              >
+                {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
+              </button>
+            </div>
+          </div>
+        </header>
+      )}
+
+      {/* Mobile Navigation Fullscreen */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-background flex flex-col">
+          <div className="flex justify-end p-6">
+            <button onClick={() => setIsMenuOpen(false)}>
+              <X className="w-8 h-8" />
+            </button>
+          </div>
+          
+          <nav className="flex-1 flex flex-col items-center justify-center gap-8">
+            {mobileNavItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+                className="text-lg tracking-wider font-medium hover:opacity-80 transition-opacity"
+              >
                 {item.label}
               </a>
             ))}
           </nav>
-
-          {/* Phone & Hours */}
-          <div className="hidden md:flex flex-col items-end">
-            <a
-              href={`tel:${siteData.phone.replace(/\s/g, '')}`}
-              className="flex items-center gap-2 text-foreground hover:text-accent transition-colors"
-            >
-              <Phone className="w-4 h-4" />
-              <span className="font-semibold">{siteData.phone}</span>
-            </a>
-            <div className="text-xs text-muted-foreground mt-1">
-              <span>{siteData.hoursWeekday}</span>
-            </div>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 hover:bg-secondary rounded-md transition-colors"
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <nav className="lg:hidden mt-4 pb-4 border-t border-border pt-4">
-            <div className="flex flex-col gap-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="nav-link text-center py-2"
-                >
-                  {item.label}
-                </a>
-              ))}
-              <a
-                href={`tel:${siteData.phone.replace(/\s/g, '')}`}
-                className="flex items-center justify-center gap-2 text-accent font-semibold mt-2"
-              >
-                <Phone className="w-4 h-4" />
-                {siteData.phone}
-              </a>
-              <div className="text-center text-xs text-muted-foreground">
-                <p>{siteData.hoursWeekday}</p>
-                <p>{siteData.hoursWeekend}</p>
-              </div>
-            </div>
-          </nav>
-        )}
-      </div>
-    </header>
+      )}
+    </>
   );
 };
