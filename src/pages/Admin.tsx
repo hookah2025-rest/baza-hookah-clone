@@ -37,6 +37,7 @@ const Admin = () => {
     price: "",
     category: "Кальяны",
     subcategory: "",
+    description: "",
   });
   const [newGalleryImage, setNewGalleryImage] = useState({ url: "", alt: "" });
   const [newRule, setNewRule] = useState({ text: "" });
@@ -77,9 +78,10 @@ const Admin = () => {
       price: newMenuItem.price,
       category: newMenuItem.category || "Кальяны",
       subcategory: newMenuItem.subcategory,
+      description: newMenuItem.description,
     };
     setSiteData({ ...siteData, menu: [...siteData.menu, newItem] });
-    setNewMenuItem({ name: "", price: "", category: "Кальяны", subcategory: "" });
+    setNewMenuItem({ name: "", price: "", category: "Кальяны", subcategory: "", description: "" });
     toast.success("Позиция добавлена");
   };
 
@@ -280,7 +282,7 @@ const Admin = () => {
                 <CardTitle>Добавить позицию</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
                   <Input
                     placeholder="Название"
                     value={newMenuItem.name}
@@ -305,6 +307,11 @@ const Admin = () => {
                     value={newMenuItem.subcategory}
                     onChange={(e) => setNewMenuItem({ ...newMenuItem, subcategory: e.target.value })}
                   />
+                  <Input
+                    placeholder="Описание"
+                    value={newMenuItem.description}
+                    onChange={(e) => setNewMenuItem({ ...newMenuItem, description: e.target.value })}
+                  />
                   <Button onClick={handleAddMenuItem} className="gap-2">
                     <Plus className="w-4 h-4" />
                     Добавить
@@ -325,22 +332,30 @@ const Admin = () => {
                   <CardContent>
                     <div className="space-y-2">
                       {categoryItems.map((item) => (
-                        <div key={item.id} className="flex items-center gap-2 p-2 bg-secondary/50 rounded-md">
+                        <div key={item.id} className="flex flex-wrap items-center gap-2 p-2 bg-secondary/50 rounded-md">
                           <Input
                             value={item.name}
                             onChange={(e) => handleMenuItemChange(item.id, "name", e.target.value)}
-                            className="flex-1"
+                            className="flex-1 min-w-[150px]"
+                            placeholder="Название"
                           />
                           <Input
                             value={item.price}
                             onChange={(e) => handleMenuItemChange(item.id, "price", e.target.value)}
-                            className="w-32"
+                            className="w-24"
+                            placeholder="Цена"
                           />
                           <Input
                             value={item.subcategory || ""}
                             onChange={(e) => handleMenuItemChange(item.id, "subcategory", e.target.value)}
                             placeholder="Подкатегория"
-                            className="w-40"
+                            className="w-32"
+                          />
+                          <Input
+                            value={item.description || ""}
+                            onChange={(e) => handleMenuItemChange(item.id, "description", e.target.value)}
+                            placeholder="Описание"
+                            className="flex-1 min-w-[150px]"
                           />
                           <Button
                             variant="destructive"
