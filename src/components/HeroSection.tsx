@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { SiteData } from "@/data/siteData";
 import { SocialIcons } from "./SocialIcons";
-import heroBg from "@/assets/hero-bg.png";
+import heroBg from "@/assets/hero-bg.jpg";
+import bazaLogo from "@/assets/baza-logo.png";
 
 interface HeroSectionProps {
   siteData: SiteData;
@@ -52,7 +53,7 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
           {/* Logo */}
           <div className="text-center mb-8">
-            <h1 className="text-5xl md:text-7xl font-bold tracking-[0.2em]">BAZA</h1>
+            <img src={bazaLogo} alt="BAZA" className="w-40 md:w-56 mx-auto" />
             <p className="text-sm tracking-[0.3em] mt-2 text-muted-foreground">кальян-бар</p>
           </div>
 
