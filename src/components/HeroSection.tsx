@@ -7,30 +7,23 @@ import bazaLogo from "@/assets/baza-logo.png";
 interface HeroSectionProps {
   siteData: SiteData;
 }
-const navItems = [{
-  label: "О НАС",
-  href: "#about"
-}, {
-  label: "МЕНЮ",
-  href: "#menu"
-}, {
-  label: "ГАЛЕРЕЯ",
-  href: "#gallery"
-}, {
-  label: "КАК ДОБРАТЬСЯ",
-  href: "#location"
-}, {
-  label: "ПРАВИЛА ЗАВЕДЕНИЯ",
-  href: "#rules"
-}];
-const mobileNavItems = [{
-  label: "ГЛАВНАЯ",
-  href: "#hero"
-}, ...navItems];
+const navItems = [
+  { label: "О НАС", subtitle: "Концепция", href: "#about" },
+  { label: "МЕНЮ", subtitle: "Что имеется?", href: "#menu" },
+  { label: "ГАЛЕРЕЯ", subtitle: "Визуальное сопровождение", href: "#gallery" },
+  { label: "КАК ДОБРАТЬСЯ", subtitle: "Локация", href: "#location" },
+  { label: "ПРАВИЛА", subtitle: "Правила заведения", href: "#rules" },
+];
+
+const mobileNavItems = [
+  { label: "ГЛАВНАЯ", subtitle: "Добро пожаловать", href: "#hero" },
+  ...navItems,
+];
 export const HeroSection = ({
   siteData
 }: HeroSectionProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   return <>
       <section id="hero" className="relative min-h-screen flex flex-col" style={{
       backgroundImage: `url(${heroBg})`,
@@ -89,24 +82,36 @@ export const HeroSection = ({
 
       {/* Mobile Navigation Fullscreen */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col">
+        <div className="fixed inset-0 z-50 bg-background flex flex-col">
           <div className="flex justify-end p-6">
             <button onClick={() => setIsMenuOpen(false)} className="p-2">
               <X className="w-8 h-8 text-foreground" />
             </button>
           </div>
           
-          <nav className="flex-1 flex flex-col items-center justify-center gap-6">
-            {mobileNavItems.map(item => (
-              <a 
-                key={item.href} 
-                href={item.href} 
-                onClick={() => setIsMenuOpen(false)} 
-                className="text-xl tracking-[0.2em] font-light text-foreground hover:text-accent transition-colors uppercase"
-              >
-                {item.label}
-              </a>
-            ))}
+          <nav className="flex-1 flex flex-col items-center justify-center gap-5">
+            {mobileNavItems.map((item, index) => {
+              const isActive = activeIndex === index;
+              return (
+                <a 
+                  key={item.href} 
+                  href={item.href} 
+                  onClick={() => setIsMenuOpen(false)}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  onMouseLeave={() => setActiveIndex(null)}
+                  className="text-center group"
+                >
+                  <div className="flex items-center justify-center gap-3">
+                    <span className={`w-6 h-[2px] bg-accent transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
+                    <span className={`text-xl tracking-[0.15em] font-bold uppercase transition-colors duration-300 ${isActive ? 'text-accent' : 'text-foreground'}`}>
+                      {item.label}
+                    </span>
+                    <span className={`w-6 h-[2px] bg-accent transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
+                  </div>
+                  <p className="text-accent text-xs tracking-wider mt-1">{item.subtitle}</p>
+                </a>
+              );
+            })}
           </nav>
           
           <div className="pb-10">

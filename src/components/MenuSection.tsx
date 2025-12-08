@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SiteData, MenuItem } from "@/data/siteData";
 import { cn } from "@/lib/utils";
 import { Header } from "./Header";
 import { ContactInfo } from "./ContactInfo";
+import { AgeVerificationModal } from "./AgeVerificationModal";
 
 interface MenuSectionProps {
   siteData: SiteData;
@@ -18,6 +19,31 @@ const HookahIcon = () => (
 
 export const MenuSection = ({ siteData }: MenuSectionProps) => {
   const [activeCategory, setActiveCategory] = useState("КАЛЬЯНЫ");
+  const [ageVerified, setAgeVerified] = useState<boolean | null>(null);
+  const [showAgeModal, setShowAgeModal] = useState(false);
+
+  useEffect(() => {
+    const verified = localStorage.getItem("age_verified") === "true";
+    setAgeVerified(verified);
+  }, []);
+
+  const handleCategoryChange = (category: string) => {
+    if (category === "АЛКОГОЛЬ" && !ageVerified) {
+      setShowAgeModal(true);
+      return;
+    }
+    setActiveCategory(category);
+  };
+
+  const handleAgeConfirm = () => {
+    setAgeVerified(true);
+    setShowAgeModal(false);
+    setActiveCategory("АЛКОГОЛЬ");
+  };
+
+  const handleAgeDecline = () => {
+    setShowAgeModal(false);
+  };
 
   const filteredMenu = siteData.menu.filter(
     (item) => item.category.toUpperCase() === activeCategory
@@ -34,8 +60,16 @@ export const MenuSection = ({ siteData }: MenuSectionProps) => {
   }, {} as Record<string, MenuItem[]>);
 
   return (
-    <section id="menu" className="min-h-screen flex flex-col">
-      {/* Header */}
+    <>
+      {showAgeModal && (
+        <AgeVerificationModal
+          onConfirm={handleAgeConfirm}
+          onDecline={handleAgeDecline}
+        />
+      )}
+      <section id="menu" className="min-h-screen flex flex-col">
+        {/* Header */}
+        <Header siteData={siteData} />
       <Header siteData={siteData} />
       
       {/* Menu Content */}
@@ -51,7 +85,7 @@ export const MenuSection = ({ siteData }: MenuSectionProps) => {
             {menuCategories.map((category) => (
               <button
                 key={category}
-                onClick={() => setActiveCategory(category)}
+                onClick={() => handleCategoryChange(category)}
                 className={cn(
                   "text-sm tracking-wider font-medium transition-all pb-1",
                   activeCategory === category
@@ -128,7 +162,7 @@ export const MenuSection = ({ siteData }: MenuSectionProps) => {
             {menuCategories.filter(c => c !== activeCategory).map((category) => (
               <button
                 key={category}
-                onClick={() => setActiveCategory(category)}
+                onClick={() => handleCategoryChange(category)}
                 className="block w-full text-xl tracking-wider font-medium text-primary py-2"
               >
                 {category === "КУХНЯ" ? (
@@ -142,8 +176,9 @@ export const MenuSection = ({ siteData }: MenuSectionProps) => {
         </div>
       </div>
 
-      {/* Footer */}
-      <ContactInfo siteData={siteData} />
-    </section>
+        {/* Footer */}
+        <ContactInfo siteData={siteData} />
+      </section>
+    </>
   );
 };
