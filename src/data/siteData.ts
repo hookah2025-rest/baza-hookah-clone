@@ -4,6 +4,7 @@ export interface MenuItem {
   price: string;
   category: string;
   subcategory?: string;
+  description?: string;
   icons?: number; // number of hookah icons to display
 }
 
