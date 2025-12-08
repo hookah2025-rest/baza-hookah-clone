@@ -1,12 +1,39 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState, useEffect } from "react";
+import { Header } from "@/components/Header";
+import { HeroSection } from "@/components/HeroSection";
+import { AboutSection } from "@/components/AboutSection";
+import { MenuSection } from "@/components/MenuSection";
+import { GallerySection } from "@/components/GallerySection";
+import { LocationSection } from "@/components/LocationSection";
+import { RulesSection } from "@/components/RulesSection";
+import { Footer } from "@/components/Footer";
+import { getSiteData, SiteData } from "@/data/siteData";
 
 const Index = () => {
+  const [siteData, setSiteData] = useState<SiteData>(getSiteData());
+
+  useEffect(() => {
+    // Listen for storage changes to update data in real-time
+    const handleStorageChange = () => {
+      setSiteData(getSiteData());
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Header siteData={siteData} />
+      <main>
+        <HeroSection siteData={siteData} />
+        <AboutSection siteData={siteData} />
+        <MenuSection siteData={siteData} />
+        <GallerySection siteData={siteData} />
+        <LocationSection siteData={siteData} />
+        <RulesSection siteData={siteData} />
+      </main>
+      <Footer siteData={siteData} />
     </div>
   );
 };
