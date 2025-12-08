@@ -1,36 +1,40 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { SiteData } from "@/data/siteData";
-import { Header } from "./Header";
-import { ContactInfo } from "./ContactInfo";
 
-interface GallerySectionProps {
+interface GalleryModalProps {
   siteData: SiteData;
+  onClose: () => void;
 }
 
-export const GallerySection = ({ siteData }: GallerySectionProps) => {
+export const GalleryModal = ({ siteData, onClose }: GalleryModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => 
+    setCurrentIndex((prev) =>
       prev === siteData.gallery.length - 1 ? 0 : prev + 1
     );
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => 
+    setCurrentIndex((prev) =>
       prev === 0 ? siteData.gallery.length - 1 : prev - 1
     );
   };
 
   return (
-    <section id="gallery" className="min-h-screen flex flex-col bg-primary">
-      {/* Header */}
-      <Header siteData={siteData} />
+    <div className="fixed inset-0 z-50 bg-[#4a2c2c]">
+      {/* Close button */}
+      <button
+        onClick={onClose}
+        className="absolute top-6 right-6 z-10 text-white/80 hover:text-white transition-colors"
+      >
+        <X size={32} strokeWidth={1.5} />
+      </button>
 
       {/* Gallery Slider - Fullscreen */}
-      <div className="flex-1 relative pt-16">
-        <div className="relative h-[calc(100vh-64px-200px)] overflow-hidden">
+      <div className="w-full h-full flex flex-col">
+        <div className="flex-1 relative overflow-hidden">
           {/* Current Image */}
           <img
             src={siteData.gallery[currentIndex]?.url}
@@ -70,9 +74,6 @@ export const GallerySection = ({ siteData }: GallerySectionProps) => {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <ContactInfo siteData={siteData} />
-    </section>
+    </div>
   );
 };
