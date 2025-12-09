@@ -13,7 +13,7 @@ const LocationPage = () => {
   if (!siteData) return null;
 
   return (
-    <PageLayout siteData={siteData} title="КОНТАКТЫ">
+    <PageLayout siteData={siteData}>
       <div className="flex-1 flex flex-col items-center justify-center py-12 px-6 min-h-[50vh]">
         <div className="text-center">
           <p className="text-lg tracking-wider font-body">

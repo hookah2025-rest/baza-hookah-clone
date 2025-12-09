@@ -13,7 +13,7 @@ const AboutPage = () => {
   if (!siteData) return null;
 
   return (
-    <PageLayout siteData={siteData} title="О НАС">
+    <PageLayout siteData={siteData}>
       <div className="flex flex-col lg:flex-row min-h-[50vh]">
         {/* Left content */}
         <div className="flex-1 flex items-center justify-center p-8 lg:p-16 bg-background">
