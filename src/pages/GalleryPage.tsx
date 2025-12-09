@@ -27,9 +27,9 @@ const GalleryPage = () => {
 
   return (
     <PageLayout siteData={siteData} title="ГАЛЕРЕЯ">
-      <div className="relative">
-        {/* Current Image */}
-        <div className="aspect-video max-h-[60vh] overflow-hidden">
+      <div className="relative w-full">
+        {/* Current Image - Full width */}
+        <div className="w-full aspect-[16/9] md:aspect-[21/9]">
           <img
             src={siteData.gallery[currentIndex]?.url}
             alt={siteData.gallery[currentIndex]?.alt}
