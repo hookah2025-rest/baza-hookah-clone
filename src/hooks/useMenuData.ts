@@ -141,6 +141,31 @@ export const useMenuData = () => {
     return true;
   };
 
+  const reorderMenuItems = async (categoryId: string, reorderedItems: MenuItem[]) => {
+    // Update local state immediately for smooth UX
+    const otherItems = menuItems.filter(item => item.category_id !== categoryId);
+    setMenuItems([...otherItems, ...reorderedItems]);
+
+    // Update sort_order in database
+    const updates = reorderedItems.map((item, index) =>
+      supabase
+        .from("menu_items")
+        .update({ sort_order: index })
+        .eq("id", item.id)
+    );
+
+    const results = await Promise.all(updates);
+    const hasError = results.some(r => r.error);
+    
+    if (hasError) {
+      toast.error("Ошибка сохранения порядка");
+      fetchData(); // Refetch to restore correct state
+      return false;
+    }
+
+    return true;
+  };
+
   return {
     categories,
     menuItems,
@@ -152,5 +177,6 @@ export const useMenuData = () => {
     addMenuItem,
     updateMenuItem,
     deleteMenuItem,
+    reorderMenuItems,
   };
 };

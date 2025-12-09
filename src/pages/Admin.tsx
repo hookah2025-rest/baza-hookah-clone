@@ -17,7 +17,6 @@ import {
   LogOut,
   Edit2,
   FolderPlus,
-  Upload
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
@@ -25,6 +24,22 @@ import { useMenuData, MenuCategory, MenuItem } from "@/hooks/useMenuData";
 import { useSiteSettings, SiteSettings } from "@/hooks/useSiteSettings";
 import { useGalleryData, GalleryImage } from "@/hooks/useGalleryData";
 import { useRulesData, Rule } from "@/hooks/useRulesData";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { SortableMenuItem } from "@/components/admin/SortableMenuItem";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -41,7 +56,15 @@ const Admin = () => {
     addMenuItem,
     updateMenuItem,
     deleteMenuItem,
+    reorderMenuItems,
   } = useMenuData();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const {
     settings,
@@ -188,6 +211,26 @@ const Admin = () => {
 
   const handleMenuItemChange = async (id: string, field: keyof MenuItem, value: string) => {
     await updateMenuItem(id, { [field]: value });
+  };
+
+  const handleDragEnd = (categoryId: string) => (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const categoryItems = menuItems
+        .filter((item) => item.category_id === categoryId)
+        .sort((a, b) => a.sort_order - b.sort_order);
+      
+      const oldIndex = categoryItems.findIndex((item) => item.id === active.id);
+      const newIndex = categoryItems.findIndex((item) => item.id === over.id);
+
+      const reordered = arrayMove(categoryItems, oldIndex, newIndex).map((item, index) => ({
+        ...item,
+        sort_order: index,
+      }));
+
+      reorderMenuItems(categoryId, reordered);
+    }
   };
 
   // Gallery handlers
@@ -543,7 +586,9 @@ const Admin = () => {
 
             {/* Menu Items by Category */}
             {categories.map((category) => {
-              const categoryItems = menuItems.filter((item) => item.category_id === category.id);
+              const categoryItems = menuItems
+                .filter((item) => item.category_id === category.id)
+                .sort((a, b) => a.sort_order - b.sort_order);
               if (categoryItems.length === 0) return null;
 
               return (
@@ -552,43 +597,27 @@ const Admin = () => {
                     <CardTitle>{category.name}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-2">
-                      {categoryItems.map((item) => (
-                        <div key={item.id} className="flex flex-wrap items-center gap-2 p-2 bg-secondary/50 rounded-md">
-                          <Input
-                            value={item.name}
-                            onChange={(e) => handleMenuItemChange(item.id, "name", e.target.value)}
-                            className="flex-1 min-w-[150px]"
-                            placeholder="Название"
-                          />
-                          <Input
-                            value={item.price}
-                            onChange={(e) => handleMenuItemChange(item.id, "price", e.target.value)}
-                            className="w-24"
-                            placeholder="Цена"
-                          />
-                          <Input
-                            value={item.subcategory || ""}
-                            onChange={(e) => handleMenuItemChange(item.id, "subcategory", e.target.value)}
-                            placeholder="Подкатегория"
-                            className="w-32"
-                          />
-                          <Input
-                            value={item.description || ""}
-                            onChange={(e) => handleMenuItemChange(item.id, "description", e.target.value)}
-                            placeholder="Описание"
-                            className="flex-1 min-w-[150px]"
-                          />
-                          <Button
-                            variant="destructive"
-                            size="icon"
-                            onClick={() => handleDeleteMenuItem(item.id)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={handleDragEnd(category.id)}
+                    >
+                      <SortableContext
+                        items={categoryItems.map((item) => item.id)}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        <div className="space-y-2">
+                          {categoryItems.map((item) => (
+                            <SortableMenuItem
+                              key={item.id}
+                              item={item}
+                              onUpdate={handleMenuItemChange}
+                              onDelete={handleDeleteMenuItem}
+                            />
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </SortableContext>
+                    </DndContext>
                   </CardContent>
                 </Card>
               );
