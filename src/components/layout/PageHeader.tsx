@@ -35,10 +35,10 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
   return (
     <>
       <header className="h-[100px] flex-shrink-0 bg-background border-b border-foreground/10">
-        <div className="h-full container mx-auto px-6 flex items-center">
-          {/* Logo */}
+        <div className="h-full container mx-auto px-6 flex items-center justify-between">
+          {/* Logo - visible on all screens */}
           <Link to="/" className="flex items-center flex-shrink-0">
-            <img src={bazaLogo} alt="BAZA" className="h-16" />
+            <img src={bazaLogo} alt="BAZA" className="h-14 lg:h-16" />
           </Link>
 
           {/* Desktop Navigation - Centered */}
@@ -61,9 +61,10 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="lg:hidden p-2 flex flex-col gap-1.5 group ml-auto"
+            className="lg:hidden p-2 flex flex-col gap-1.5 group"
             aria-label="Открыть меню"
           >
+            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
             <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
             <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
           </button>
