@@ -82,29 +82,52 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
             </button>
           </div>
 
-          <nav className="flex-1 flex flex-col items-center justify-center gap-6">
+          <nav className="flex-1 flex flex-col items-center justify-center gap-5">
             <button
               onClick={() => {
                 navigate("/");
                 setIsMenuOpen(false);
               }}
-              className="text-xl tracking-[0.15em] font-bold uppercase text-foreground hover:text-accent transition-colors"
+              className="text-center group"
             >
-              ГЛАВНАЯ
+              <div className="flex items-center justify-center gap-3">
+                <span className="w-6 h-[2px] bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="text-xl tracking-[0.15em] font-heading uppercase text-foreground group-hover:text-accent transition-colors duration-300">
+                  ГЛАВНАЯ
+                </span>
+                <span className="w-6 h-[2px] bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
             </button>
-            {navItems.map((item) => (
-              <button
-                key={item.path}
-                onClick={() => handleNavClick(item.path)}
-                className={`text-xl tracking-[0.15em] font-bold uppercase transition-colors ${
-                  location.pathname === item.path
-                    ? "text-accent"
-                    : "text-foreground hover:text-accent"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <button
+                  key={item.path}
+                  onClick={() => handleNavClick(item.path)}
+                  className="text-center group"
+                >
+                  <div className="flex items-center justify-center gap-3">
+                    <span
+                      className={`w-6 h-[2px] bg-accent transition-opacity duration-300 ${
+                        isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                      }`}
+                    />
+                    <span
+                      className={`text-xl tracking-[0.15em] font-heading uppercase transition-colors duration-300 ${
+                        isActive ? "text-accent" : "text-foreground group-hover:text-accent"
+                      }`}
+                    >
+                      {item.label}
+                    </span>
+                    <span
+                      className={`w-6 h-[2px] bg-accent transition-opacity duration-300 ${
+                        isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                      }`}
+                    />
+                  </div>
+                </button>
+              );
+            })}
           </nav>
 
           <div className="pb-10">
