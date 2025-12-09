@@ -55,15 +55,15 @@ const MenuPage = () => {
     <PageLayout siteData={siteData}>
       <div className="container mx-auto px-6 py-8 max-w-4xl">
         {/* Category tabs */}
-        <div className="flex flex-wrap justify-center gap-6 mb-10">
+        <div className="flex flex-wrap justify-center gap-8 mb-10">
           {menuCategories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`text-sm tracking-wider uppercase font-medium transition-colors flex items-center gap-2 ${
+              className={`text-sm tracking-wider uppercase font-medium transition-colors flex items-center gap-2 pb-1 ${
                 activeCategory === cat.id
-                  ? "text-foreground border-b border-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "text-background border-b-2 border-background"
+                  : "text-background/60 hover:text-background"
               }`}
             >
               {cat.label}
@@ -120,27 +120,25 @@ const MenuPage = () => {
             {Object.entries(groupedMenu).map(([subcategory, items]) => (
               <div key={subcategory}>
                 {subcategory && (
-                  <h2 className="text-lg font-bold tracking-wider text-foreground mb-4 uppercase border-b border-foreground/20 pb-2">
+                  <h2 className="text-lg font-bold tracking-wider text-background mb-4 uppercase">
                     {subcategory}
                   </h2>
                 )}
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {items.map((item) => (
                     <div
                       key={item.id}
-                      className="flex justify-between items-start"
+                      className="flex justify-between items-baseline"
                     >
-                      <div className="flex-1">
-                        <h3 className="text-foreground font-medium">
-                          {item.name}
-                        </h3>
-                        {item.description && (
-                          <p className="text-muted-foreground text-sm mt-0.5">
-                            {item.description}
-                          </p>
-                        )}
-                      </div>
-                      <span className="text-foreground font-medium ml-4 whitespace-nowrap">
+                      <span className="text-gray-800 font-medium">
+                        {item.name}
+                      </span>
+                      {item.description && (
+                        <span className="text-gray-500 text-sm mx-4 flex-shrink-0">
+                          {item.description}
+                        </span>
+                      )}
+                      <span className="text-background font-bold ml-auto whitespace-nowrap">
                         {item.price}
                       </span>
                     </div>
