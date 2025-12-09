@@ -64,11 +64,11 @@ const MenuPage = () => {
               <AccordionItem
                 key={cat.id}
                 value={cat.id}
-                className="border-b border-foreground/20"
+                className="border-b border-background/30"
               >
                 <AccordionTrigger 
                   hideChevron 
-                  className="py-4 text-foreground hover:no-underline justify-center gap-2 [&[data-state=open]]:text-accent"
+                  className="py-4 text-background hover:no-underline justify-center gap-2 [&[data-state=open]]:text-background"
                 >
                   <span className="text-lg tracking-wider font-heading uppercase">
                     {cat.label}
@@ -86,19 +86,19 @@ const MenuPage = () => {
                       ].map((row) => (
                         <div
                           key={row.people}
-                          className="flex justify-between items-center text-foreground"
+                          className="flex justify-between items-center"
                         >
-                          <span className="text-sm">{row.people}</span>
-                          <span className="text-sm font-medium">{row.price}</span>
+                          <span className="text-sm text-gray-800">{row.people}</span>
+                          <span className="text-sm font-bold text-background">{row.price}</span>
                         </div>
                       ))}
-                      <div className="flex justify-between items-center text-foreground pt-2">
-                        <span className="text-sm">ГРЕЙПФРУТ</span>
-                        <span className="text-sm font-medium">2200</span>
+                      <div className="flex justify-between items-center pt-2">
+                        <span className="text-sm text-gray-800">ГРЕЙПФРУТ</span>
+                        <span className="text-sm font-bold text-background">2200</span>
                       </div>
                       {siteData.menuNote && (
-                        <div className="mt-4 border border-foreground/30 p-4">
-                          <p className="text-xs text-foreground/80 text-center leading-relaxed whitespace-pre-line">
+                        <div className="mt-4 border border-background/30 p-4">
+                          <p className="text-xs text-gray-700 text-center leading-relaxed whitespace-pre-line">
                             {siteData.menuNote}
                           </p>
                         </div>
@@ -111,17 +111,22 @@ const MenuPage = () => {
                     <div className="space-y-6">
                       {Object.entries(grouped).map(([subcategory, subItems]) => (
                         <div key={subcategory}>
-                          <h3 className="text-accent text-sm font-bold tracking-wider uppercase mb-3 border-b border-accent/30 pb-1">
+                          <h3 className="text-background text-sm font-bold tracking-wider uppercase mb-3">
                             {subcategory}
                           </h3>
                           <div className="space-y-2">
                             {subItems.map((item) => (
                               <div
                                 key={item.id}
-                                className="flex justify-between items-baseline text-foreground"
+                                className="flex justify-between items-baseline"
                               >
-                                <span className="text-sm">{item.name}</span>
-                                <span className="text-sm font-medium ml-4">
+                                <span className="text-sm text-gray-800">{item.name}</span>
+                                {item.description && (
+                                  <span className="text-xs text-gray-500 mx-2 flex-shrink-0">
+                                    {item.description}
+                                  </span>
+                                )}
+                                <span className="text-sm font-bold text-background ml-auto">
                                   {item.price}
                                 </span>
                               </div>
