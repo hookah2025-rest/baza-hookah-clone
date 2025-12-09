@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { SocialIcons } from "../SocialIcons";
 import { SiteData } from "@/data/siteData";
 
@@ -33,15 +32,6 @@ export const PageFooter = ({ siteData }: PageFooterProps) => {
         <div className="text-center mt-4 text-sm text-muted-foreground">
           <p>{siteData.hoursWeekday}</p>
           <p>{siteData.hoursWeekend}</p>
-        </div>
-
-        <div className="text-center mt-8 pt-6 border-t border-muted/20">
-          <Link
-            to="/admin"
-            className="text-xs text-muted-foreground hover:text-accent transition-colors"
-          >
-            Админ-панель
-          </Link>
         </div>
       </div>
     </footer>
