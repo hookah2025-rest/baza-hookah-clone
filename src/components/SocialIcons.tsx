@@ -7,30 +7,30 @@ interface SocialIconsProps {
 
 export const SocialIcons = ({ socialLinks }: SocialIconsProps) => {
   return (
-    <div className="flex items-center justify-center gap-4">
+    <div className="flex items-center justify-center gap-3">
       <a
         href={socialLinks.instagram}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-12 h-12 rounded-full border-2 border-foreground flex items-center justify-center hover:bg-foreground/10 transition-colors"
+        className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center hover:opacity-80 transition-opacity"
       >
-        <Instagram className="w-6 h-6" />
+        <Instagram className="w-5 h-5 text-background" />
       </a>
       <a
         href={socialLinks.telegram}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-12 h-12 rounded-full border-2 border-foreground flex items-center justify-center hover:bg-foreground/10 transition-colors"
+        className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center hover:opacity-80 transition-opacity"
       >
-        <Send className="w-6 h-6" />
+        <Send className="w-5 h-5 text-background" />
       </a>
       <a
         href={socialLinks.whatsapp}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-12 h-12 rounded-full border-2 border-foreground flex items-center justify-center hover:bg-foreground/10 transition-colors"
+        className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center hover:opacity-80 transition-opacity"
       >
-        <MessageCircle className="w-6 h-6" />
+        <MessageCircle className="w-5 h-5 text-background" />
       </a>
     </div>
   );
