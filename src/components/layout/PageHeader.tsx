@@ -34,47 +34,43 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
 
   return (
     <>
-      <header className="h-[100px] flex-shrink-0 bg-background border-b border-foreground/10">
-        <div className="h-full container mx-auto px-6 flex items-center justify-between">
-          {/* Mobile: Logo left, burger right. Desktop: everything centered */}
-          
-          {/* Logo - on mobile left, on desktop part of centered group */}
-          <Link to="/" className="flex items-center flex-shrink-0 lg:hidden">
+      <header className="h-[100px] flex-shrink-0 bg-background border-b border-foreground/10 relative">
+        {/* Mobile: Logo left, burger right */}
+        <div className="h-full container mx-auto px-6 flex lg:hidden items-center justify-between">
+          <Link to="/" className="flex items-center">
             <img src={bazaLogo} alt="BAZA" className="h-14" />
           </Link>
-
-          {/* Desktop: Logo + Navigation centered together */}
-          <div className="hidden lg:flex items-center justify-center flex-1 gap-10">
-            <Link to="/" className="flex items-center flex-shrink-0">
-              <img src={bazaLogo} alt="BAZA" className="h-16" />
-            </Link>
-            <nav className="flex items-center gap-10">
-              {navItems.map((item) => (
-                <button
-                  key={item.path}
-                  onClick={() => handleNavClick(item.path)}
-                  className={`text-sm tracking-wider uppercase transition-all duration-300 hover:text-foreground hover:font-bold ${
-                    location.pathname === item.path
-                      ? "text-foreground font-bold"
-                      : "text-foreground/70 font-medium"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </nav>
-          </div>
-
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="lg:hidden p-2 flex flex-col gap-1.5 group"
+            className="p-2 flex flex-col gap-1.5 group"
             aria-label="Открыть меню"
           >
             <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
             <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
             <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
           </button>
+        </div>
+
+        {/* Desktop: Logo + Navigation centered */}
+        <div className="hidden lg:flex h-full items-center justify-center gap-10">
+          <Link to="/" className="flex items-center">
+            <img src={bazaLogo} alt="BAZA" className="h-16" />
+          </Link>
+          <nav className="flex items-center gap-10">
+            {navItems.map((item) => (
+              <button
+                key={item.path}
+                onClick={() => handleNavClick(item.path)}
+                className={`text-sm tracking-wider uppercase transition-all duration-300 hover:text-foreground hover:font-bold ${
+                  location.pathname === item.path
+                    ? "text-foreground font-bold"
+                    : "text-foreground/70 font-medium"
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
         </div>
       </header>
 
