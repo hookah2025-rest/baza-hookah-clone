@@ -7,29 +7,29 @@ interface PageFooterProps {
 
 export const PageFooter = ({ siteData }: PageFooterProps) => {
   return (
-    <footer className="h-[200px] flex-shrink-0 bg-background border-t border-foreground/10">
-      <div className="h-full container mx-auto px-6 flex flex-col items-center justify-center">
+    <footer className="h-[200px] flex-shrink-0 bg-background">
+      <div className="h-full container mx-auto px-6 flex flex-col items-center justify-center gap-1">
         <SocialIcons socialLinks={siteData.socialLinks} />
 
-        <div className="text-center mt-4">
-          <p className="text-sm tracking-wider font-body">
-            КАЛЬЯН-БАР <span className="font-bold">BAZA</span>
-          </p>
-        </div>
+        <p className="text-sm tracking-wider mt-2">
+          КАЛЬЯН-БАР <span className="font-bold">BAZA</span>
+        </p>
 
-        <div className="text-center mt-2 text-sm text-muted-foreground">
-          <p>{siteData.city}</p>
-          <p>{siteData.address}</p>
-        </div>
+        <p className="text-xs text-foreground/80 uppercase tracking-wide">
+          {siteData.city}
+        </p>
+        <p className="text-xs text-foreground/80 uppercase tracking-wide">
+          {siteData.address}
+        </p>
 
         <a
           href={`tel:${siteData.phone.replace(/\s/g, "")}`}
-          className="block text-center mt-2 text-accent text-lg font-medium hover:opacity-80 transition-opacity"
+          className="text-accent text-base font-medium hover:opacity-80 transition-opacity mt-1"
         >
           {siteData.phone}
         </a>
 
-        <div className="text-center mt-2 text-sm text-muted-foreground">
+        <div className="flex gap-6 text-xs text-foreground/80 uppercase tracking-wide">
           <p>{siteData.hoursWeekday}</p>
           <p>{siteData.hoursWeekend}</p>
         </div>
