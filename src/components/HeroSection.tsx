@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 import { SiteData } from "@/data/siteData";
 import { SocialIcons } from "./SocialIcons";
 import { AgeVerificationModal } from "./AgeVerificationModal";
-import { MenuPage } from "./MenuPage";
-import { AboutModal } from "./AboutModal";
-import { GalleryModal } from "./GalleryModal";
-import { LocationModal } from "./LocationModal";
-import { RulesModal } from "./RulesModal";
 import heroBg from "@/assets/hero-bg.jpg";
 import bazaLogo from "@/assets/baza-logo.png";
 
@@ -15,85 +11,66 @@ interface HeroSectionProps {
   siteData: SiteData;
 }
 
-type ModalType = "menu" | "about" | "gallery" | "location" | "rules" | null;
-
 const navItems = [
-  { label: "О НАС", subtitle: "Концепция", modal: "about" as ModalType, requiresAge: false },
-  { label: "МЕНЮ", subtitle: "Что имеется?", modal: "menu" as ModalType, requiresAge: true },
-  { label: "ГАЛЕРЕЯ", subtitle: "Визуальное сопровождение", modal: "gallery" as ModalType, requiresAge: false },
-  { label: "КАК ДОБРАТЬСЯ", subtitle: "Локация", modal: "location" as ModalType, requiresAge: false },
-  { label: "ПРАВИЛА", subtitle: "Правила заведения", modal: "rules" as ModalType, requiresAge: false },
+  { label: "О НАС", subtitle: "Концепция", path: "/about", requiresAge: false },
+  { label: "МЕНЮ", subtitle: "Что имеется?", path: "/menu", requiresAge: true },
+  { label: "ГАЛЕРЕЯ", subtitle: "Визуальное сопровождение", path: "/gallery", requiresAge: false },
+  { label: "КАК ДОБРАТЬСЯ", subtitle: "Локация", path: "/location", requiresAge: false },
+  { label: "ПРАВИЛА", subtitle: "Правила заведения", path: "/rules", requiresAge: false },
 ];
 
 const mobileNavItems = [
-  { label: "ГЛАВНАЯ", subtitle: "Добро пожаловать", modal: null as ModalType, requiresAge: false },
+  { label: "ГЛАВНАЯ", subtitle: "Добро пожаловать", path: "/", requiresAge: false },
   ...navItems,
 ];
 
 export const HeroSection = ({ siteData }: HeroSectionProps) => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [showAgeModal, setShowAgeModal] = useState(false);
   const [ageVerified, setAgeVerified] = useState(false);
-  const [pendingModal, setPendingModal] = useState<ModalType>(null);
-  const [activeModal, setActiveModal] = useState<ModalType>(null);
+  const [pendingPath, setPendingPath] = useState<string | null>(null);
 
   useEffect(() => {
     const verified = localStorage.getItem("age_verified") === "true";
     setAgeVerified(verified);
   }, []);
 
-  const handleNavClick = (modal: ModalType, requiresAge: boolean) => {
-    if (modal === null) {
-      // Go to home
+  const handleNavClick = (path: string, requiresAge: boolean) => {
+    if (path === "/") {
       setIsMenuOpen(false);
       return;
     }
 
     if (requiresAge && !ageVerified) {
-      setPendingModal(modal);
+      setPendingPath(path);
       setShowAgeModal(true);
       return;
     }
 
     setIsMenuOpen(false);
-    setActiveModal(modal);
+    navigate(path);
   };
 
   const handleAgeConfirm = () => {
+    localStorage.setItem("age_verified", "true");
     setAgeVerified(true);
     setShowAgeModal(false);
-    if (pendingModal) {
+    if (pendingPath) {
       setIsMenuOpen(false);
-      setActiveModal(pendingModal);
+      navigate(pendingPath);
     }
-    setPendingModal(null);
+    setPendingPath(null);
   };
 
   const handleAgeDecline = () => {
     setShowAgeModal(false);
-    setPendingModal(null);
-  };
-
-  const closeModal = () => {
-    setActiveModal(null);
+    setPendingPath(null);
   };
 
   return (
     <>
-      {/* Modals */}
-      {activeModal === "menu" && (
-        <MenuPage siteData={siteData} onClose={closeModal} />
-      )}
-      {activeModal === "about" && <AboutModal onClose={closeModal} />}
-      {activeModal === "gallery" && (
-        <GalleryModal siteData={siteData} onClose={closeModal} />
-      )}
-      {activeModal === "location" && <LocationModal onClose={closeModal} />}
-      {activeModal === "rules" && (
-        <RulesModal siteData={siteData} onClose={closeModal} />
-      )}
-
       {/* Age verification modal */}
       {showAgeModal && (
         <AgeVerificationModal
@@ -139,7 +116,7 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
           <SocialIcons socialLinks={siteData.socialLinks} />
 
           <div className="text-center mt-6">
-            <p className="text-sm tracking-wider">
+            <p className="text-sm tracking-wider font-body">
               КАЛЬЯН-БАР <span className="font-bold">BAZA</span>
             </p>
           </div>
@@ -178,7 +155,7 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
               return (
                 <button
                   key={item.label}
-                  onClick={() => handleNavClick(item.modal, item.requiresAge)}
+                  onClick={() => handleNavClick(item.path, item.requiresAge)}
                   onMouseEnter={() => setActiveIndex(index)}
                   onMouseLeave={() => setActiveIndex(null)}
                   className="text-center group"
@@ -190,7 +167,7 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
                       }`}
                     />
                     <span
-                      className={`text-xl tracking-[0.15em] font-bold uppercase transition-colors duration-300 ${
+                      className={`text-xl tracking-[0.15em] font-heading uppercase transition-colors duration-300 ${
                         isActive ? "text-accent" : "text-foreground"
                       }`}
                     >
@@ -202,7 +179,7 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
                       }`}
                     />
                   </div>
-                  <p className="text-accent text-xs tracking-wider mt-1">
+                  <p className="text-accent text-xs tracking-wider mt-1 font-body">
                     {item.subtitle}
                   </p>
                 </button>
