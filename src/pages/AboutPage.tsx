@@ -1,55 +1,51 @@
 import { useEffect, useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { getSiteData, SiteData } from "@/data/siteData";
+import { useGalleryData } from "@/hooks/useGalleryData";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const AboutPage = () => {
-  const [siteData, setSiteData] = useState<SiteData | null>(null);
+  const { images, loading: galleryLoading } = useGalleryData();
+  const { settings, loading: settingsLoading } = useSiteSettings();
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    setSiteData(getSiteData());
-  }, []);
 
   // Auto-advance slideshow
   useEffect(() => {
-    if (!siteData) return;
+    if (images.length === 0) return;
     
     const interval = setInterval(() => {
       setCurrentIndex((prev) =>
-        prev === siteData.gallery.length - 1 ? 0 : prev + 1
+        prev === images.length - 1 ? 0 : prev + 1
       );
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [siteData]);
+  }, [images]);
 
-  if (!siteData) return null;
+  if (galleryLoading || settingsLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-content-bg">
+        <div className="text-lg">Загрузка...</div>
+      </div>
+    );
+  }
 
   return (
-    <PageLayout siteData={siteData}>
+    <PageLayout settings={settings}>
       <div className="flex flex-col lg:flex-row h-full">
         {/* Left content - gray background */}
         <div className="flex-1 flex items-center justify-center p-8 lg:p-16 bg-content-bg">
           <div className="border border-background p-8 lg:p-12 max-w-lg">
-            <p className="text-background text-center leading-relaxed font-body text-sm lg:text-base">
-              Данная страница находится в разработке
-              <br />
-              в виду чрезмерной скромности
-              <br />
-              одной части команды
-              <br />
-              и колоссального самомнения другой.
-              <br />
-              Пока спорим.
+            <p className="text-background text-center leading-relaxed font-body text-sm lg:text-base whitespace-pre-line">
+              {settings.aboutText || "Данная страница находится в разработке\nв виду чрезмерной скромности\nодной части команды\nи колоссального самомнения другой.\nПока спорим."}
             </p>
           </div>
         </div>
 
         {/* Right slideshow */}
         <div className="flex-1 relative overflow-hidden">
-          {siteData.gallery.map((image, index) => (
+          {images.map((image, index) => (
             <div
-              key={index}
+              key={image.id}
               className={`absolute inset-0 transition-opacity duration-1000 ${
                 index === currentIndex ? "opacity-100" : "opacity-0"
               }`}

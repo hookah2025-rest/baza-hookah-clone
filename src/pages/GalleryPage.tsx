@@ -1,38 +1,52 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { getSiteData, SiteData } from "@/data/siteData";
+import { useGalleryData } from "@/hooks/useGalleryData";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const GalleryPage = () => {
-  const [siteData, setSiteData] = useState<SiteData | null>(null);
+  const { images, loading: galleryLoading } = useGalleryData();
+  const { settings, loading: settingsLoading } = useSiteSettings();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    setSiteData(getSiteData());
-  }, []);
-
-  if (!siteData) return null;
+  if (galleryLoading || settingsLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-content-bg">
+        <div className="text-lg">Загрузка...</div>
+      </div>
+    );
+  }
 
   const nextSlide = () => {
     setCurrentIndex((prev) =>
-      prev === siteData.gallery.length - 1 ? 0 : prev + 1
+      prev === images.length - 1 ? 0 : prev + 1
     );
   };
 
   const prevSlide = () => {
     setCurrentIndex((prev) =>
-      prev === 0 ? siteData.gallery.length - 1 : prev - 1
+      prev === 0 ? images.length - 1 : prev - 1
     );
   };
 
+  if (images.length === 0) {
+    return (
+      <PageLayout settings={settings}>
+        <div className="flex items-center justify-center h-full">
+          <p className="text-muted-foreground">Галерея пуста</p>
+        </div>
+      </PageLayout>
+    );
+  }
+
   return (
-    <PageLayout siteData={siteData}>
+    <PageLayout settings={settings}>
       <div className="relative w-full h-full">
         {/* Current Image - Full width */}
         <div className="w-full h-full">
           <img
-            src={siteData.gallery[currentIndex]?.url}
-            alt={siteData.gallery[currentIndex]?.alt}
+            src={images[currentIndex]?.url}
+            alt={images[currentIndex]?.alt}
             className="w-full h-full object-cover"
           />
         </div>
@@ -57,7 +71,7 @@ const GalleryPage = () => {
 
         {/* Dots */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-          {siteData.gallery.map((_, index) => (
+          {images.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}

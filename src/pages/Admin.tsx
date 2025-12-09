@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { 
-  getSiteData, 
-  saveSiteData, 
-  SiteData, 
-  GalleryImage, 
-  Rule 
-} from "@/data/siteData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -28,10 +21,15 @@ import {
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { useMenuData, MenuCategory, MenuItem } from "@/hooks/useMenuData";
+import { useSiteSettings, SiteSettings } from "@/hooks/useSiteSettings";
+import { useGalleryData, GalleryImage } from "@/hooks/useGalleryData";
+import { useRulesData, Rule } from "@/hooks/useRulesData";
 
 const Admin = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading, isAdmin, signOut } = useAuth();
+  
+  // Database hooks
   const {
     categories,
     menuItems,
@@ -43,8 +41,30 @@ const Admin = () => {
     updateMenuItem,
     deleteMenuItem,
   } = useMenuData();
-  
-  const [siteData, setSiteData] = useState<SiteData>(getSiteData());
+
+  const {
+    settings,
+    loading: settingsLoading,
+    saveAllSettings,
+  } = useSiteSettings();
+
+  const {
+    images: galleryImages,
+    loading: galleryLoading,
+    addImage,
+    deleteImage,
+  } = useGalleryData();
+
+  const {
+    rules,
+    loading: rulesLoading,
+    addRule,
+    updateRule,
+    deleteRule,
+  } = useRulesData();
+
+  // Local state for editing
+  const [localSettings, setLocalSettings] = useState<SiteSettings>(settings);
   const [newMenuItem, setNewMenuItem] = useState<{
     name: string;
     price: string;
@@ -62,7 +82,14 @@ const Admin = () => {
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
   const [editCategoryName, setEditCategoryName] = useState("");
   const [newGalleryImage, setNewGalleryImage] = useState({ url: "", alt: "" });
-  const [newRule, setNewRule] = useState({ text: "" });
+  const [newRuleText, setNewRuleText] = useState("");
+
+  // Sync local settings when loaded
+  useEffect(() => {
+    if (!settingsLoading) {
+      setLocalSettings(settings);
+    }
+  }, [settings, settingsLoading]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -85,14 +112,12 @@ const Admin = () => {
     navigate("/auth");
   };
 
-  const handleSave = () => {
-    saveSiteData(siteData);
-    toast.success("Данные сохранены!");
-    window.dispatchEvent(new Event('storage'));
+  const handleSaveSettings = async () => {
+    await saveAllSettings(localSettings);
   };
 
-  const handleGeneralChange = (field: keyof SiteData, value: string) => {
-    setSiteData({ ...siteData, [field]: value });
+  const handleSettingsChange = (field: keyof SiteSettings, value: string) => {
+    setLocalSettings({ ...localSettings, [field]: value });
   };
 
   // Category handlers
@@ -160,61 +185,40 @@ const Admin = () => {
   };
 
   // Gallery handlers
-  const handleAddGalleryImage = () => {
+  const handleAddGalleryImage = async () => {
     if (!newGalleryImage.url) {
       toast.error("Укажите URL изображения");
       return;
     }
-    const newImage: GalleryImage = {
-      id: Date.now().toString(),
-      url: newGalleryImage.url,
-      alt: newGalleryImage.alt || "Изображение галереи",
-    };
-    setSiteData({ ...siteData, gallery: [...siteData.gallery, newImage] });
+    await addImage(newGalleryImage.url, newGalleryImage.alt || "Изображение галереи");
     setNewGalleryImage({ url: "", alt: "" });
-    toast.success("Изображение добавлено");
   };
 
-  const handleDeleteGalleryImage = (id: string) => {
-    setSiteData({ ...siteData, gallery: siteData.gallery.filter((img) => img.id !== id) });
-    toast.success("Изображение удалено");
+  const handleDeleteGalleryImage = async (id: string) => {
+    await deleteImage(id);
   };
 
   // Rules handlers
-  const handleAddRule = () => {
-    if (!newRule.text) {
+  const handleAddRule = async () => {
+    if (!newRuleText.trim()) {
       toast.error("Введите текст правила");
       return;
     }
-    const maxNumber = siteData.rules.reduce((max, rule) => Math.max(max, rule.number), 0);
-    const newRuleItem: Rule = {
-      id: Date.now().toString(),
-      number: maxNumber + 1,
-      text: newRule.text,
-    };
-    setSiteData({ ...siteData, rules: [...siteData.rules, newRuleItem] });
-    setNewRule({ text: "" });
-    toast.success("Правило добавлено");
+    await addRule(newRuleText.trim());
+    setNewRuleText("");
   };
 
-  const handleDeleteRule = (id: string) => {
-    const updatedRules = siteData.rules
-      .filter((rule) => rule.id !== id)
-      .map((rule, index) => ({ ...rule, number: index + 1 }));
-    setSiteData({ ...siteData, rules: updatedRules });
-    toast.success("Правило удалено");
+  const handleRuleChange = async (id: string, text: string) => {
+    await updateRule(id, text);
   };
 
-  const handleRuleChange = (id: string, text: string) => {
-    setSiteData({
-      ...siteData,
-      rules: siteData.rules.map((rule) =>
-        rule.id === id ? { ...rule, text } : rule
-      ),
-    });
+  const handleDeleteRule = async (id: string) => {
+    await deleteRule(id);
   };
 
-  if (authLoading || menuLoading) {
+  const isLoading = authLoading || menuLoading || settingsLoading || galleryLoading || rulesLoading;
+
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-lg">Загрузка...</div>
@@ -238,9 +242,9 @@ const Admin = () => {
             <h1 className="text-xl font-bold">Админ-панель</h1>
           </div>
           <div className="flex items-center gap-2">
-            <Button onClick={handleSave} className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button onClick={handleSaveSettings} className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
               <Save className="w-4 h-4" />
-              Сохранить
+              Сохранить настройки
             </Button>
             <Button onClick={handleSignOut} variant="outline" className="gap-2">
               <LogOut className="w-4 h-4" />
@@ -282,60 +286,89 @@ const Admin = () => {
                 <div>
                   <label className="text-sm font-medium mb-2 block">Название заведения</label>
                   <Input
-                    value={siteData.name}
-                    onChange={(e) => handleGeneralChange("name", e.target.value)}
+                    value={localSettings.name}
+                    onChange={(e) => handleSettingsChange("name", e.target.value)}
                   />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">Город</label>
                   <Input
-                    value={siteData.city}
-                    onChange={(e) => handleGeneralChange("city", e.target.value)}
+                    value={localSettings.city}
+                    onChange={(e) => handleSettingsChange("city", e.target.value)}
                   />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">Адрес</label>
                   <Input
-                    value={siteData.address}
-                    onChange={(e) => handleGeneralChange("address", e.target.value)}
+                    value={localSettings.address}
+                    onChange={(e) => handleSettingsChange("address", e.target.value)}
                   />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">Телефон</label>
                   <Input
-                    value={siteData.phone}
-                    onChange={(e) => handleGeneralChange("phone", e.target.value)}
+                    value={localSettings.phone}
+                    onChange={(e) => handleSettingsChange("phone", e.target.value)}
                   />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">Часы работы (будни)</label>
                   <Input
-                    value={siteData.hoursWeekday}
-                    onChange={(e) => handleGeneralChange("hoursWeekday", e.target.value)}
+                    value={localSettings.hoursWeekday}
+                    onChange={(e) => handleSettingsChange("hoursWeekday", e.target.value)}
                   />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">Часы работы (выходные)</label>
                   <Input
-                    value={siteData.hoursWeekend}
-                    onChange={(e) => handleGeneralChange("hoursWeekend", e.target.value)}
+                    value={localSettings.hoursWeekend}
+                    onChange={(e) => handleSettingsChange("hoursWeekend", e.target.value)}
                   />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">Текст «О нас»</label>
                   <Textarea
-                    value={siteData.aboutText}
-                    onChange={(e) => handleGeneralChange("aboutText", e.target.value)}
+                    value={localSettings.aboutText}
+                    onChange={(e) => handleSettingsChange("aboutText", e.target.value)}
                     rows={4}
                   />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">Примечание к меню</label>
                   <Textarea
-                    value={siteData.menuNote}
-                    onChange={(e) => handleGeneralChange("menuNote", e.target.value)}
+                    value={localSettings.menuNote}
+                    onChange={(e) => handleSettingsChange("menuNote", e.target.value)}
                     rows={4}
                   />
+                </div>
+                <div className="border-t pt-4">
+                  <h3 className="text-lg font-semibold mb-4">Социальные сети</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Instagram</label>
+                      <Input
+                        value={localSettings.instagram}
+                        onChange={(e) => handleSettingsChange("instagram", e.target.value)}
+                        placeholder="https://instagram.com/..."
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Telegram</label>
+                      <Input
+                        value={localSettings.telegram}
+                        onChange={(e) => handleSettingsChange("telegram", e.target.value)}
+                        placeholder="https://t.me/..."
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">WhatsApp</label>
+                      <Input
+                        value={localSettings.whatsapp}
+                        onChange={(e) => handleSettingsChange("whatsapp", e.target.value)}
+                        placeholder="https://wa.me/..."
+                      />
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -532,7 +565,7 @@ const Admin = () => {
             </Card>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {siteData.gallery.map((image) => (
+              {galleryImages.map((image) => (
                 <Card key={image.id} className="overflow-hidden">
                   <div className="aspect-video bg-secondary">
                     <img
@@ -571,8 +604,8 @@ const Admin = () => {
                 <div className="flex gap-4">
                   <Textarea
                     placeholder="Текст правила"
-                    value={newRule.text}
-                    onChange={(e) => setNewRule({ text: e.target.value })}
+                    value={newRuleText}
+                    onChange={(e) => setNewRuleText(e.target.value)}
                     className="flex-1"
                     rows={2}
                   />
@@ -589,7 +622,7 @@ const Admin = () => {
                 <CardTitle>Список правил</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {siteData.rules.map((rule) => (
+                {rules.map((rule) => (
                   <div key={rule.id} className="flex gap-4 items-start p-4 bg-secondary/50 rounded-md">
                     <span className="text-accent font-bold text-lg flex-shrink-0 w-8">
                       {rule.number}.

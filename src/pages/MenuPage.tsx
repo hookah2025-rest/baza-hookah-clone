@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Flame } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { getSiteData, SiteData } from "@/data/siteData";
-import { supabase } from "@/integrations/supabase/client";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { useMenuData } from "@/hooks/useMenuData";
 import {
   Accordion,
   AccordionContent,
@@ -10,61 +10,30 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-interface MenuCategory {
-  id: string;
-  name: string;
-  sort_order: number;
-}
-
-interface MenuItem {
-  id: string;
-  category_id: string;
-  name: string;
-  price: string;
-  subcategory?: string;
-  description?: string;
-  sort_order: number;
-}
-
 const MenuPage = () => {
-  const [siteData, setSiteData] = useState<SiteData | null>(null);
-  const [categories, setCategories] = useState<MenuCategory[]>([]);
-  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { settings, loading: settingsLoading } = useSiteSettings();
+  const { categories, menuItems, loading: menuLoading } = useMenuData();
 
   useEffect(() => {
-    setSiteData(getSiteData());
     const verified = localStorage.getItem("age_verified") === "true";
     if (!verified) {
       window.location.href = "/";
     }
-
-    const fetchMenuData = async () => {
-      try {
-        const [categoriesRes, itemsRes] = await Promise.all([
-          supabase.from("menu_categories").select("*").order("sort_order"),
-          supabase.from("menu_items").select("*").order("sort_order"),
-        ]);
-
-        if (categoriesRes.data) setCategories(categoriesRes.data);
-        if (itemsRes.data) setMenuItems(itemsRes.data);
-      } catch (error) {
-        console.error("Error fetching menu:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMenuData();
   }, []);
 
-  if (!siteData || loading) return null;
+  if (settingsLoading || menuLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-content-bg">
+        <div className="text-lg">Загрузка...</div>
+      </div>
+    );
+  }
 
   const getMenuByCategory = (categoryId: string) => {
     return menuItems.filter((item) => item.category_id === categoryId);
   };
 
-  const groupBySubcategory = (items: MenuItem[]) => {
+  const groupBySubcategory = (items: typeof menuItems) => {
     return items.reduce((acc, item) => {
       const subcategory = item.subcategory || "Прочее";
       if (!acc[subcategory]) {
@@ -72,7 +41,7 @@ const MenuPage = () => {
       }
       acc[subcategory].push(item);
       return acc;
-    }, {} as Record<string, MenuItem[]>);
+    }, {} as Record<string, typeof menuItems>);
   };
 
   const isHookahCategory = (name: string) => {
@@ -84,7 +53,7 @@ const MenuPage = () => {
   };
 
   return (
-    <PageLayout siteData={siteData}>
+    <PageLayout settings={settings}>
       <div className="container mx-auto px-6 py-8 max-w-3xl">
         {/* Title */}
         <h1 className="text-2xl font-heading tracking-wider text-center text-foreground mb-8 uppercase">
@@ -127,10 +96,10 @@ const MenuPage = () => {
                           <span className="text-sm font-bold text-background">{item.price}</span>
                         </div>
                       ))}
-                      {siteData.menuNote && (
+                      {settings.menuNote && (
                         <div className="mt-4 border border-background/30 p-4">
                           <p className="text-xs text-gray-700 text-center leading-relaxed whitespace-pre-line">
-                            {siteData.menuNote}
+                            {settings.menuNote}
                           </p>
                         </div>
                       )}
