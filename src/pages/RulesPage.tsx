@@ -14,9 +14,9 @@ const RulesPage = () => {
   return (
     <PageLayout siteData={siteData}>
       <div className="container mx-auto px-6 py-8 max-w-3xl">
-        <div className="space-y-6 text-foreground font-body">
+        <div className="space-y-6 font-body">
           {siteData.rules.map((rule) => (
-            <p key={rule.id} className="text-sm leading-relaxed">
+            <p key={rule.id} className="text-sm leading-relaxed text-gray-800">
               {rule.number}. {rule.text}
             </p>
           ))}
