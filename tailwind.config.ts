@@ -14,7 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
+        sans: ['Forum', 'serif'],
+        heading: ['Bebas Neue', 'sans-serif'],
+        body: ['Forum', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
