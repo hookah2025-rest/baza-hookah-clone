@@ -11,11 +11,11 @@ interface PageHeaderProps {
 }
 
 const navItems = [
-  { label: "О НАС", path: "/about" },
-  { label: "МЕНЮ", path: "/menu" },
-  { label: "ГАЛЕРЕЯ", path: "/gallery" },
-  { label: "КАК ДОБРАТЬСЯ", path: "/location" },
-  { label: "ПРАВИЛА ЗАВЕДЕНИЯ", path: "/rules" },
+  { label: "О НАС", subtitle: "Концепция", path: "/about" },
+  { label: "МЕНЮ", subtitle: "Что имеется?", path: "/menu" },
+  { label: "ГАЛЕРЕЯ", subtitle: "Визуальное сопровождение", path: "/gallery" },
+  { label: "КАК ДОБРАТЬСЯ", subtitle: "Локация", path: "/location" },
+  { label: "ПРАВИЛА", subtitle: "Правила заведения", path: "/rules" },
 ];
 
 export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
@@ -97,6 +97,9 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
                 </span>
                 <span className="w-6 h-[2px] bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
+              <p className="text-accent text-xs tracking-wider mt-1 font-body">
+                Добро пожаловать
+              </p>
             </button>
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
@@ -125,6 +128,9 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
                       }`}
                     />
                   </div>
+                  <p className="text-accent text-xs tracking-wider mt-1 font-body">
+                    {item.subtitle}
+                  </p>
                 </button>
               );
             })}
