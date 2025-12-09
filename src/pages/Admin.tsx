@@ -16,7 +16,8 @@ import {
   List,
   LogOut,
   Edit2,
-  FolderPlus
+  FolderPlus,
+  Upload
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
@@ -46,6 +47,7 @@ const Admin = () => {
     settings,
     loading: settingsLoading,
     saveAllSettings,
+    uploadLogo,
   } = useSiteSettings();
 
   const {
@@ -336,6 +338,53 @@ const Admin = () => {
                     onChange={(e) => handleSettingsChange("aboutText", e.target.value)}
                     rows={4}
                   />
+                </div>
+                <div className="border-t pt-4">
+                  <h3 className="text-lg font-semibold mb-4">Логотипы</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Логотип для ПК</label>
+                      {localSettings.logo_desktop && (
+                        <div className="mb-2 p-4 bg-background rounded border">
+                          <img src={localSettings.logo_desktop} alt="Desktop logo" className="h-16 mx-auto" />
+                        </div>
+                      )}
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const url = await uploadLogo(file, 'desktop');
+                            if (url) {
+                              setLocalSettings(prev => ({ ...prev, logo_desktop: url }));
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Логотип для мобильных</label>
+                      {localSettings.logo_mobile && (
+                        <div className="mb-2 p-4 bg-background rounded border">
+                          <img src={localSettings.logo_mobile} alt="Mobile logo" className="h-16 mx-auto" />
+                        </div>
+                      )}
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const url = await uploadLogo(file, 'mobile');
+                            if (url) {
+                              setLocalSettings(prev => ({ ...prev, logo_mobile: url }));
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="border-t pt-4">
                   <h3 className="text-lg font-semibold mb-4">Социальные сети</h3>

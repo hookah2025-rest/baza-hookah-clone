@@ -14,6 +14,8 @@ export interface SiteSettings {
   instagram: string;
   telegram: string;
   whatsapp: string;
+  logo_desktop: string;
+  logo_mobile: string;
 }
 
 const defaultSettings: SiteSettings = {
@@ -28,6 +30,8 @@ const defaultSettings: SiteSettings = {
   instagram: "",
   telegram: "",
   whatsapp: "",
+  logo_desktop: "",
+  logo_mobile: "",
 };
 
 export const useSiteSettings = () => {
@@ -61,6 +65,8 @@ export const useSiteSettings = () => {
           instagram: settingsMap.instagram || defaultSettings.instagram,
           telegram: settingsMap.telegram || defaultSettings.telegram,
           whatsapp: settingsMap.whatsapp || defaultSettings.whatsapp,
+          logo_desktop: settingsMap.logo_desktop || defaultSettings.logo_desktop,
+          logo_mobile: settingsMap.logo_mobile || defaultSettings.logo_mobile,
         });
       }
     } catch (error) {
@@ -90,6 +96,31 @@ export const useSiteSettings = () => {
     return true;
   };
 
+  const uploadLogo = async (file: File, type: 'desktop' | 'mobile'): Promise<string | null> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `logo_${type}_${Date.now()}.${fileExt}`;
+    
+    const { error: uploadError } = await supabase.storage
+      .from('logos')
+      .upload(fileName, file, { upsert: true });
+
+    if (uploadError) {
+      console.error('Upload error:', uploadError);
+      toast.error('Ошибка загрузки логотипа');
+      return null;
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('logos')
+      .getPublicUrl(fileName);
+
+    // Save URL to settings
+    const settingKey = type === 'desktop' ? 'logo_desktop' : 'logo_mobile';
+    await updateSetting(settingKey, publicUrl);
+    
+    return publicUrl;
+  };
+
   const saveAllSettings = async (newSettings: SiteSettings) => {
     try {
       const updates = Object.entries(newSettings).map(([key, value]) =>
@@ -110,6 +141,7 @@ export const useSiteSettings = () => {
     settings,
     loading,
     updateSetting,
+    uploadLogo,
     saveAllSettings,
     refetch: fetchSettings,
   };
