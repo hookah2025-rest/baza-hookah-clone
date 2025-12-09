@@ -26,7 +26,7 @@ const GalleryPage = () => {
   };
 
   return (
-    <PageLayout siteData={siteData} title="ГАЛЕРЕЯ">
+    <PageLayout siteData={siteData}>
       <div className="relative w-full">
         {/* Current Image - Full width */}
         <div className="w-full aspect-[16/9] md:aspect-[21/9]">
