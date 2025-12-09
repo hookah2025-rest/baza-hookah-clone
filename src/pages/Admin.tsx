@@ -140,9 +140,13 @@ const Admin = () => {
       toast.error("Введите название категории");
       return;
     }
-    await updateCategory(id, editCategoryName.trim());
+    await updateCategory(id, { name: editCategoryName.trim() });
     setEditingCategory(null);
     setEditCategoryName("");
+  };
+
+  const handleCategoryNoteChange = async (id: string, note: string) => {
+    await updateCategory(id, { note });
   };
 
   const handleDeleteCategory = async (id: string) => {
@@ -333,14 +337,6 @@ const Admin = () => {
                     rows={4}
                   />
                 </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Примечание к меню</label>
-                  <Textarea
-                    value={localSettings.menuNote}
-                    onChange={(e) => handleSettingsChange("menuNote", e.target.value)}
-                    rows={4}
-                  />
-                </div>
                 <div className="border-t pt-4">
                   <h3 className="text-lg font-semibold mb-4">Социальные сети</h3>
                   <div className="space-y-4">
@@ -397,42 +393,56 @@ const Admin = () => {
                     Добавить
                   </Button>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-4">
                   {categories.map((cat) => (
-                    <div key={cat.id} className="flex items-center gap-2 p-2 bg-secondary/50 rounded-md">
-                      {editingCategory === cat.id ? (
-                        <>
-                          <Input
-                            value={editCategoryName}
-                            onChange={(e) => setEditCategoryName(e.target.value)}
-                            className="flex-1"
-                          />
-                          <Button size="sm" onClick={() => handleSaveCategory(cat.id)}>
-                            Сохранить
-                          </Button>
-                          <Button size="sm" variant="outline" onClick={() => setEditingCategory(null)}>
-                            Отмена
-                          </Button>
-                        </>
-                      ) : (
-                        <>
-                          <span className="flex-1 font-medium">{cat.name}</span>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            onClick={() => handleStartEditCategory(cat)}
-                          >
-                            <Edit2 className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            size="icon"
-                            variant="destructive"
-                            onClick={() => handleDeleteCategory(cat.id)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </>
-                      )}
+                    <div key={cat.id} className="p-4 bg-secondary/50 rounded-md space-y-3">
+                      <div className="flex items-center gap-2">
+                        {editingCategory === cat.id ? (
+                          <>
+                            <Input
+                              value={editCategoryName}
+                              onChange={(e) => setEditCategoryName(e.target.value)}
+                              className="flex-1"
+                            />
+                            <Button size="sm" onClick={() => handleSaveCategory(cat.id)}>
+                              Сохранить
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={() => setEditingCategory(null)}>
+                              Отмена
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <span className="flex-1 font-medium">{cat.name}</span>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              onClick={() => handleStartEditCategory(cat)}
+                            >
+                              <Edit2 className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              size="icon"
+                              variant="destructive"
+                              onClick={() => handleDeleteCategory(cat.id)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                      <div>
+                        <label className="text-xs text-muted-foreground mb-1 block">
+                          Примечание к категории
+                        </label>
+                        <Textarea
+                          value={cat.note || ""}
+                          onChange={(e) => handleCategoryNoteChange(cat.id, e.target.value)}
+                          placeholder="Примечание отображается под позициями этой категории"
+                          rows={3}
+                          className="text-sm"
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>

@@ -6,6 +6,7 @@ export interface MenuCategory {
   id: string;
   name: string;
   sort_order: number;
+  note?: string;
 }
 
 export interface MenuItem {
@@ -67,10 +68,10 @@ export const useMenuData = () => {
     return data;
   };
 
-  const updateCategory = async (id: string, name: string) => {
+  const updateCategory = async (id: string, updates: Partial<Pick<MenuCategory, 'name' | 'note'>>) => {
     const { error } = await supabase
       .from("menu_categories")
-      .update({ name })
+      .update(updates)
       .eq("id", id);
 
     if (error) {
@@ -78,7 +79,7 @@ export const useMenuData = () => {
       return false;
     }
 
-    setCategories(categories.map((cat) => (cat.id === id ? { ...cat, name } : cat)));
+    setCategories(categories.map((cat) => (cat.id === id ? { ...cat, ...updates } : cat)));
     return true;
   };
 

@@ -96,10 +96,10 @@ const MenuPage = () => {
                           <span className="text-sm font-bold text-background">{item.price}</span>
                         </div>
                       ))}
-                      {settings.menuNote && (
+                      {cat.note && (
                         <div className="mt-4 border border-background/30 p-4">
                           <p className="text-xs text-gray-700 text-center leading-relaxed whitespace-pre-line">
-                            {settings.menuNote}
+                            {cat.note}
                           </p>
                         </div>
                       )}
@@ -134,6 +134,13 @@ const MenuPage = () => {
                           </div>
                         </div>
                       ))}
+                      {cat.note && (
+                        <div className="mt-4 border border-background/30 p-4">
+                          <p className="text-xs text-gray-700 text-center leading-relaxed whitespace-pre-line">
+                            {cat.note}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   )}
                 </AccordionContent>
