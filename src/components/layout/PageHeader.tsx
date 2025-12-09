@@ -35,14 +35,14 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
   return (
     <>
       <header className="h-[100px] flex-shrink-0 bg-background border-b border-foreground/10">
-        <div className="h-full container mx-auto px-6 flex items-center justify-between">
-          {/* Logo - visible on all screens */}
-          <Link to="/" className="flex items-center flex-shrink-0">
+        <div className="h-full container mx-auto px-6 flex items-center justify-between lg:justify-center">
+          {/* Logo - visible on mobile left, on desktop centered with nav */}
+          <Link to="/" className="flex items-center flex-shrink-0 lg:mr-12">
             <img src={bazaLogo} alt="BAZA" className="h-14 lg:h-16" />
           </Link>
 
-          {/* Desktop Navigation - Centered */}
-          <nav className="hidden lg:flex items-center justify-center gap-10 flex-1">
+          {/* Desktop Navigation - next to logo */}
+          <nav className="hidden lg:flex items-center gap-10">
             {navItems.map((item) => (
               <button
                 key={item.path}
