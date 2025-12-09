@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { SiteData } from "@/data/siteData";
+import { SocialIcons } from "./SocialIcons";
 
 interface HeaderProps {
   siteData: SiteData;
@@ -8,20 +9,21 @@ interface HeaderProps {
 }
 
 const navItems = [
-  { label: "О НАС", href: "#about" },
-  { label: "МЕНЮ", href: "#menu" },
-  { label: "ГАЛЕРЕЯ", href: "#gallery" },
-  { label: "КАК ДОБРАТЬСЯ", href: "#location" },
-  { label: "ПРАВИЛА ЗАВЕДЕНИЯ", href: "#rules" },
-];
-
-const mobileNavItems = [
-  { label: "ГЛАВНАЯ", href: "#hero" },
-  ...navItems
+  { label: "О НАС", subtitle: "Концепция", href: "#about" },
+  { label: "МЕНЮ", subtitle: "Что имеется?", href: "#menu" },
+  { label: "ГАЛЕРЕЯ", subtitle: "Визуальное сопровождение", href: "#gallery" },
+  { label: "КАК ДОБРАТЬСЯ", subtitle: "Локация", href: "#location" },
+  { label: "ПРАВИЛА", subtitle: "Правила заведения", href: "#rules" },
 ];
 
 export const Header = ({ siteData, showNav = true }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
+
+  const handleNavClick = (href: string) => {
+    setActiveItem(href);
+    setIsMenuOpen(false);
+  };
 
   return (
     <>
@@ -47,9 +49,11 @@ export const Header = ({ siteData, showNav = true }: HeaderProps) => {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="lg:hidden p-2"
+                className="lg:hidden p-2 flex flex-col gap-1.5 group"
+                aria-label="Открыть меню"
               >
-                {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
+                <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
+                <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
               </button>
             </div>
           </div>
@@ -58,25 +62,73 @@ export const Header = ({ siteData, showNav = true }: HeaderProps) => {
 
       {/* Mobile Navigation Fullscreen */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-background flex flex-col">
-          <div className="flex justify-end p-6">
-            <button onClick={() => setIsMenuOpen(false)}>
-              <X className="w-8 h-8" />
+        <div className="fixed inset-0 z-50 bg-background menu-slide-in flex flex-col">
+          <div className="h-20 flex-shrink-0 flex justify-end items-center px-6">
+            <button onClick={() => setIsMenuOpen(false)} className="p-2">
+              <X className="w-8 h-8 text-foreground" />
             </button>
           </div>
           
-          <nav className="flex-1 flex flex-col items-center justify-center gap-8">
-            {mobileNavItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsMenuOpen(false)}
-                className="text-lg tracking-wider font-medium hover:opacity-80 transition-opacity"
-              >
-                {item.label}
-              </a>
-            ))}
+          <nav className="flex-1 flex flex-col items-center justify-center gap-6">
+            <a
+              href="#hero"
+              onClick={() => handleNavClick("#hero")}
+              className="text-center group"
+            >
+              <div className="flex items-center gap-3">
+                <span className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-right ${
+                  activeItem === "#hero" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                }`} />
+                <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground group-hover:text-foreground transition-colors duration-300">
+                  ГЛАВНАЯ
+                </span>
+                <span className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-left ${
+                  activeItem === "#hero" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                }`} />
+              </div>
+              <p className="text-foreground/50 text-xs tracking-wider mt-1 font-body">
+                Добро пожаловать
+              </p>
+            </a>
+            {navItems.map((item) => {
+              const isActive = activeItem === item.href;
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => handleNavClick(item.href)}
+                  className="text-center group"
+                >
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-right ${
+                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      }`}
+                    />
+                    <span
+                      className={`text-2xl tracking-[0.15em] font-heading uppercase transition-colors duration-300 ${
+                        isActive ? "text-foreground" : "text-foreground group-hover:text-foreground"
+                      }`}
+                    >
+                      {item.label}
+                    </span>
+                    <span
+                      className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-left ${
+                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      }`}
+                    />
+                  </div>
+                  <p className="text-foreground/50 text-xs tracking-wider mt-1 font-body">
+                    {item.subtitle}
+                  </p>
+                </a>
+              );
+            })}
           </nav>
+
+          <div className="pb-10">
+            <SocialIcons socialLinks={siteData.socialLinks} />
+          </div>
         </div>
       )}
     </>

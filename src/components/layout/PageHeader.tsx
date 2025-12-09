@@ -88,10 +88,15 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
               className="text-center group"
             >
               <div className="flex items-center gap-3">
-                <span className="w-6 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-right" />
+                <span className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-right ${
+                  location.pathname === "/" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                }`} />
                 <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground group-hover:text-foreground transition-colors duration-300">
                   ГЛАВНАЯ
                 </span>
+                <span className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-left ${
+                  location.pathname === "/" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                }`} />
               </div>
               <p className="text-foreground/50 text-xs tracking-wider mt-1 font-body">
                 Добро пожаловать
@@ -118,6 +123,11 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
                     >
                       {item.label}
                     </span>
+                    <span
+                      className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-left ${
+                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      }`}
+                    />
                   </div>
                   <p className="text-foreground/50 text-xs tracking-wider mt-1 font-body">
                     {item.subtitle}
