@@ -50,7 +50,7 @@ export const PageLayout = ({ children, siteData }: PageLayoutProps) => {
     <div className="min-h-screen flex flex-col bg-background">
       <PageHeader socialLinks={siteData.socialLinks} onMenuClick={handleMenuClick} />
 
-      <main key={location.pathname} className="flex-1 bg-content-bg page-enter">
+      <main key={location.pathname} className="flex-1 page-enter">
         {children}
       </main>
 
