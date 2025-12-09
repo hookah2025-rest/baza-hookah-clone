@@ -8,6 +8,8 @@ import { SocialLinks } from "@/data/siteData";
 interface PageHeaderProps {
   socialLinks: SocialLinks;
   onMenuClick?: (path: string) => void;
+  logoDesktop?: string;
+  logoMobile?: string;
 }
 
 const navItems = [
@@ -18,7 +20,7 @@ const navItems = [
   { label: "ПРАВИЛА", subtitle: "Правила заведения", path: "/rules" },
 ];
 
-export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
+export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoMobile }: PageHeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -32,13 +34,17 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
     setIsMenuOpen(false);
   };
 
+  // Use custom logos if provided, otherwise fall back to default
+  const desktopLogoSrc = logoDesktop || bazaLogo;
+  const mobileLogoSrc = logoMobile || bazaLogo;
+
   return (
     <>
       <header className="h-[100px] flex-shrink-0 bg-background border-b border-foreground/10 relative">
         {/* Mobile: Logo left, burger right */}
         <div className="h-full container mx-auto px-6 flex lg:hidden items-center justify-between">
           <Link to="/" className="flex items-center">
-            <img src={bazaLogo} alt="BAZA" className="h-14" />
+            <img src={mobileLogoSrc} alt="BAZA" className="h-14" />
           </Link>
           <button
             onClick={() => setIsMenuOpen(true)}
@@ -54,7 +60,7 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
         {/* Desktop: Logo + Navigation centered */}
         <div className="hidden lg:flex h-full items-center justify-center gap-10">
           <Link to="/" className="flex items-center">
-            <img src={bazaLogo} alt="BAZA" className="h-16" />
+            <img src={desktopLogoSrc} alt="BAZA" className="h-16" />
           </Link>
           <nav className="flex items-center gap-10">
             {navItems.map((item) => (

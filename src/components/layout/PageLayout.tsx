@@ -54,7 +54,12 @@ export const PageLayout = ({ children, settings }: PageLayoutProps) => {
 
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
-      <PageHeader socialLinks={socialLinks} onMenuClick={handleMenuClick} />
+      <PageHeader 
+        socialLinks={socialLinks} 
+        onMenuClick={handleMenuClick}
+        logoDesktop={settings.logo_desktop}
+        logoMobile={settings.logo_mobile}
+      />
 
       <main key={location.pathname} className="h-[calc(100vh-300px)] bg-content-bg page-enter overflow-auto">
         {children}
