@@ -36,8 +36,8 @@
 
     --radius: 0.5rem;
 
-    /* Content area background - grayish tone */
-    --content-bg: 345 15% 35%;
+    /* Content area background - rgb(204, 204, 204) */
+    --content-bg: 0 0% 80%;
 
     --sidebar-background: 345 28% 22%;
     --sidebar-foreground: 0 0% 100%;
