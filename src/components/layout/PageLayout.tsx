@@ -3,14 +3,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { PageHeader } from "./PageHeader";
 import { PageFooter } from "./PageFooter";
 import { AgeVerificationModal } from "../AgeVerificationModal";
-import { SiteData } from "@/data/siteData";
+import { SiteSettings } from "@/hooks/useSiteSettings";
 
 interface PageLayoutProps {
   children: ReactNode;
-  siteData: SiteData;
+  settings: SiteSettings;
 }
 
-export const PageLayout = ({ children, siteData }: PageLayoutProps) => {
+export const PageLayout = ({ children, settings }: PageLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showAgeModal, setShowAgeModal] = useState(false);
@@ -46,15 +46,21 @@ export const PageLayout = ({ children, siteData }: PageLayoutProps) => {
     setPendingPath(null);
   };
 
-    return (
+  const socialLinks = {
+    instagram: settings.instagram,
+    telegram: settings.telegram,
+    whatsapp: settings.whatsapp,
+  };
+
+  return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
-      <PageHeader socialLinks={siteData.socialLinks} onMenuClick={handleMenuClick} />
+      <PageHeader socialLinks={socialLinks} onMenuClick={handleMenuClick} />
 
       <main key={location.pathname} className="h-[calc(100vh-300px)] bg-content-bg page-enter overflow-auto">
         {children}
       </main>
 
-      <PageFooter siteData={siteData} />
+      <PageFooter settings={settings} />
 
       {showAgeModal && (
         <AgeVerificationModal onConfirm={handleAgeConfirm} onDecline={handleAgeDecline} />

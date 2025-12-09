@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { getSiteData, SiteData } from "@/data/siteData";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const LocationPage = () => {
-  const [siteData, setSiteData] = useState<SiteData | null>(null);
+  const { settings, loading } = useSiteSettings();
 
-  useEffect(() => {
-    setSiteData(getSiteData());
-  }, []);
-
-  if (!siteData) return null;
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-content-bg">
+        <div className="text-lg">Загрузка...</div>
+      </div>
+    );
+  }
 
   return (
-    <PageLayout siteData={siteData}>
+    <PageLayout settings={settings}>
       <div className="h-full w-full">
         <iframe
           src="https://yandex.ru/map-widget/v1/?um=constructor%3Aec19c4ac8461360bfa98ec1ea5a217f73dff2ea4cd378c4b1dc5049efc060b90&amp;source=constructor"
