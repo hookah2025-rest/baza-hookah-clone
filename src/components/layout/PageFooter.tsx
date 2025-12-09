@@ -24,7 +24,7 @@ export const PageFooter = ({ siteData }: PageFooterProps) => {
 
         <a
           href={`tel:${siteData.phone.replace(/\s/g, "")}`}
-          className="text-accent text-[15px] tracking-wider hover:opacity-80 transition-opacity mt-1"
+          className="text-foreground text-[15px] tracking-wider hover:opacity-80 transition-opacity mt-1 font-bold"
         >
           {siteData.phone}
         </a>
