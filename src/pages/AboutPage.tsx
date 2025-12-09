@@ -1,24 +1,37 @@
 import { useEffect, useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { getSiteData, SiteData } from "@/data/siteData";
-import aboutBg from "@/assets/hero-bg.jpg";
 
 const AboutPage = () => {
   const [siteData, setSiteData] = useState<SiteData | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     setSiteData(getSiteData());
   }, []);
 
+  // Auto-advance slideshow
+  useEffect(() => {
+    if (!siteData) return;
+    
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) =>
+        prev === siteData.gallery.length - 1 ? 0 : prev + 1
+      );
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [siteData]);
+
   if (!siteData) return null;
 
   return (
     <PageLayout siteData={siteData}>
-      <div className="flex flex-col lg:flex-row min-h-[50vh]">
-        {/* Left content */}
-        <div className="flex-1 flex items-center justify-center p-8 lg:p-16 bg-background">
-          <div className="border border-foreground/30 p-8 lg:p-12 max-w-lg">
-            <p className="text-foreground text-center leading-relaxed font-body">
+      <div className="flex flex-col lg:flex-row h-full">
+        {/* Left content - gray background */}
+        <div className="flex-1 flex items-center justify-center p-8 lg:p-16 bg-content-bg">
+          <div className="border border-background p-8 lg:p-12 max-w-lg">
+            <p className="text-background text-center leading-relaxed font-body text-sm lg:text-base">
               Данная страница находится в разработке
               <br />
               в виду чрезмерной скромности
@@ -32,11 +45,23 @@ const AboutPage = () => {
           </div>
         </div>
 
-        {/* Right image - hidden on mobile */}
-        <div
-          className="hidden lg:block flex-1 bg-cover bg-center"
-          style={{ backgroundImage: `url(${aboutBg})` }}
-        />
+        {/* Right slideshow */}
+        <div className="flex-1 relative overflow-hidden">
+          {siteData.gallery.map((image, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                index === currentIndex ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <img
+                src={image.url}
+                alt={image.alt}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </PageLayout>
   );
