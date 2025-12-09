@@ -4,7 +4,6 @@ import {
   getSiteData, 
   saveSiteData, 
   SiteData, 
-  MenuItem, 
   GalleryImage, 
   Rule 
 } from "@/data/siteData";
@@ -22,34 +21,64 @@ import {
   FileText, 
   Image, 
   List,
-  LogOut
+  LogOut,
+  Edit2,
+  FolderPlus
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { useMenuData, MenuCategory, MenuItem } from "@/hooks/useMenuData";
 
 const Admin = () => {
   const navigate = useNavigate();
-  const { user, loading, isAdmin, signOut } = useAuth();
+  const { user, loading: authLoading, isAdmin, signOut } = useAuth();
+  const {
+    categories,
+    menuItems,
+    loading: menuLoading,
+    addCategory,
+    updateCategory,
+    deleteCategory,
+    addMenuItem,
+    updateMenuItem,
+    deleteMenuItem,
+  } = useMenuData();
   
   const [siteData, setSiteData] = useState<SiteData>(getSiteData());
-  const [newMenuItem, setNewMenuItem] = useState<Partial<MenuItem>>({
+  const [newMenuItem, setNewMenuItem] = useState<{
+    name: string;
+    price: string;
+    category_id: string;
+    subcategory: string;
+    description: string;
+  }>({
     name: "",
     price: "",
-    category: "Кальяны",
+    category_id: "",
     subcategory: "",
     description: "",
   });
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [editingCategory, setEditingCategory] = useState<string | null>(null);
+  const [editCategoryName, setEditCategoryName] = useState("");
   const [newGalleryImage, setNewGalleryImage] = useState({ url: "", alt: "" });
   const [newRule, setNewRule] = useState({ text: "" });
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!authLoading && !user) {
       navigate("/auth");
-    } else if (!loading && user && !isAdmin) {
+    } else if (!authLoading && user && !isAdmin) {
       toast.error("У вас нет прав администратора");
       navigate("/auth");
     }
-  }, [loading, user, isAdmin, navigate]);
+  }, [authLoading, user, isAdmin, navigate]);
+
+  // Set default category when categories load
+  useEffect(() => {
+    if (categories.length > 0 && !newMenuItem.category_id) {
+      setNewMenuItem((prev) => ({ ...prev, category_id: categories[0].id }));
+    }
+  }, [categories]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -66,37 +95,68 @@ const Admin = () => {
     setSiteData({ ...siteData, [field]: value });
   };
 
-  // Menu handlers
-  const handleAddMenuItem = () => {
-    if (!newMenuItem.name || !newMenuItem.price) {
-      toast.error("Заполните название и цену");
+  // Category handlers
+  const handleAddCategory = async () => {
+    if (!newCategoryName.trim()) {
+      toast.error("Введите название категории");
       return;
     }
-    const newItem: MenuItem = {
-      id: Date.now().toString(),
+    await addCategory(newCategoryName.trim());
+    setNewCategoryName("");
+  };
+
+  const handleStartEditCategory = (cat: MenuCategory) => {
+    setEditingCategory(cat.id);
+    setEditCategoryName(cat.name);
+  };
+
+  const handleSaveCategory = async (id: string) => {
+    if (!editCategoryName.trim()) {
+      toast.error("Введите название категории");
+      return;
+    }
+    await updateCategory(id, editCategoryName.trim());
+    setEditingCategory(null);
+    setEditCategoryName("");
+  };
+
+  const handleDeleteCategory = async (id: string) => {
+    const categoryItems = menuItems.filter((item) => item.category_id === id);
+    if (categoryItems.length > 0) {
+      toast.error("Нельзя удалить категорию с позициями меню");
+      return;
+    }
+    await deleteCategory(id);
+  };
+
+  // Menu handlers
+  const handleAddMenuItem = async () => {
+    if (!newMenuItem.name || !newMenuItem.price || !newMenuItem.category_id) {
+      toast.error("Заполните название, цену и выберите категорию");
+      return;
+    }
+    await addMenuItem({
       name: newMenuItem.name,
       price: newMenuItem.price,
-      category: newMenuItem.category || "Кальяны",
-      subcategory: newMenuItem.subcategory,
-      description: newMenuItem.description,
-    };
-    setSiteData({ ...siteData, menu: [...siteData.menu, newItem] });
-    setNewMenuItem({ name: "", price: "", category: "Кальяны", subcategory: "", description: "" });
-    toast.success("Позиция добавлена");
-  };
-
-  const handleDeleteMenuItem = (id: string) => {
-    setSiteData({ ...siteData, menu: siteData.menu.filter((item) => item.id !== id) });
-    toast.success("Позиция удалена");
-  };
-
-  const handleMenuItemChange = (id: string, field: keyof MenuItem, value: string) => {
-    setSiteData({
-      ...siteData,
-      menu: siteData.menu.map((item) =>
-        item.id === id ? { ...item, [field]: value } : item
-      ),
+      category_id: newMenuItem.category_id,
+      subcategory: newMenuItem.subcategory || undefined,
+      description: newMenuItem.description || undefined,
     });
+    setNewMenuItem({
+      name: "",
+      price: "",
+      category_id: categories[0]?.id || "",
+      subcategory: "",
+      description: "",
+    });
+  };
+
+  const handleDeleteMenuItem = async (id: string) => {
+    await deleteMenuItem(id);
+  };
+
+  const handleMenuItemChange = async (id: string, field: keyof MenuItem, value: string) => {
+    await updateMenuItem(id, { [field]: value });
   };
 
   // Gallery handlers
@@ -154,9 +214,7 @@ const Admin = () => {
     });
   };
 
-  const menuCategories = ["Кальяны", "Напитки", "Кухня", "Алкоголь"];
-
-  if (loading) {
+  if (authLoading || menuLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-lg">Загрузка...</div>
@@ -271,12 +329,84 @@ const Admin = () => {
                     rows={4}
                   />
                 </div>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Примечание к меню</label>
+                  <Textarea
+                    value={siteData.menuNote}
+                    onChange={(e) => handleGeneralChange("menuNote", e.target.value)}
+                    rows={4}
+                  />
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           {/* Menu Management */}
           <TabsContent value="menu">
+            {/* Categories Management */}
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FolderPlus className="w-5 h-5" />
+                  Управление категориями
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-4 mb-4">
+                  <Input
+                    placeholder="Название новой категории"
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button onClick={handleAddCategory} className="gap-2">
+                    <Plus className="w-4 h-4" />
+                    Добавить
+                  </Button>
+                </div>
+                <div className="space-y-2">
+                  {categories.map((cat) => (
+                    <div key={cat.id} className="flex items-center gap-2 p-2 bg-secondary/50 rounded-md">
+                      {editingCategory === cat.id ? (
+                        <>
+                          <Input
+                            value={editCategoryName}
+                            onChange={(e) => setEditCategoryName(e.target.value)}
+                            className="flex-1"
+                          />
+                          <Button size="sm" onClick={() => handleSaveCategory(cat.id)}>
+                            Сохранить
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => setEditingCategory(null)}>
+                            Отмена
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <span className="flex-1 font-medium">{cat.name}</span>
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => handleStartEditCategory(cat)}
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            size="icon"
+                            variant="destructive"
+                            onClick={() => handleDeleteCategory(cat.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Add Menu Item */}
             <Card className="mb-6">
               <CardHeader>
                 <CardTitle>Добавить позицию</CardTitle>
@@ -294,12 +424,12 @@ const Admin = () => {
                     onChange={(e) => setNewMenuItem({ ...newMenuItem, price: e.target.value })}
                   />
                   <select
-                    value={newMenuItem.category}
-                    onChange={(e) => setNewMenuItem({ ...newMenuItem, category: e.target.value })}
+                    value={newMenuItem.category_id}
+                    onChange={(e) => setNewMenuItem({ ...newMenuItem, category_id: e.target.value })}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   >
-                    {menuCategories.map((cat) => (
-                      <option key={cat} value={cat}>{cat}</option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
                     ))}
                   </select>
                   <Input
@@ -320,14 +450,15 @@ const Admin = () => {
               </CardContent>
             </Card>
 
-            {menuCategories.map((category) => {
-              const categoryItems = siteData.menu.filter((item) => item.category === category);
+            {/* Menu Items by Category */}
+            {categories.map((category) => {
+              const categoryItems = menuItems.filter((item) => item.category_id === category.id);
               if (categoryItems.length === 0) return null;
 
               return (
-                <Card key={category} className="mb-4">
+                <Card key={category.id} className="mb-4">
                   <CardHeader>
-                    <CardTitle>{category}</CardTitle>
+                    <CardTitle>{category.name}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
