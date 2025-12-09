@@ -248,9 +248,8 @@ const Admin = () => {
             <h1 className="text-xl font-bold">Админ-панель</h1>
           </div>
           <div className="flex items-center gap-2">
-            <Button onClick={handleSaveSettings} className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button onClick={handleSaveSettings} size="icon" className="bg-accent text-accent-foreground hover:bg-accent/90">
               <Save className="w-4 h-4" />
-              Сохранить настройки
             </Button>
             <Button onClick={handleSignOut} variant="outline" className="gap-2">
               <LogOut className="w-4 h-4" />
