@@ -34,22 +34,23 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
 
   return (
     <>
-      <header className="h-20 flex-shrink-0 bg-background border-b border-foreground/10">
-        <div className="h-full container mx-auto px-6 flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img src={bazaLogo} alt="BAZA" className="h-12" />
+      <header className="bg-background py-4 px-6 lg:px-12">
+        <div className="flex items-center justify-between">
+          {/* Logo with text */}
+          <Link to="/" className="flex flex-col items-center">
+            <img src={bazaLogo} alt="BAZA" className="h-10 lg:h-12" />
+            <span className="text-[10px] tracking-[0.2em] text-foreground/80 mt-0.5">КАЛЬЯН-БАР</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
+          {/* Desktop Navigation - right aligned */}
+          <nav className="hidden lg:flex items-center gap-10">
             {navItems.map((item) => (
               <button
                 key={item.path}
                 onClick={() => handleNavClick(item.path)}
-                className={`text-sm font-medium tracking-wider uppercase transition-colors duration-300 hover:text-accent ${
+                className={`text-sm tracking-wider uppercase transition-colors duration-300 hover:text-accent ${
                   location.pathname === item.path
-                    ? "text-foreground border-b border-foreground"
+                    ? "text-foreground border-b border-foreground pb-0.5"
                     : "text-foreground"
                 }`}
               >
@@ -73,9 +74,10 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
       {/* Mobile Navigation Fullscreen */}
       {isMenuOpen && (
         <div className="fixed inset-0 z-50 bg-background menu-slide-in flex flex-col">
-          <div className="h-20 flex-shrink-0 flex justify-between items-center px-6 border-b border-foreground/10">
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
-              <img src={bazaLogo} alt="BAZA" className="h-12" />
+          <div className="py-4 px-6 flex justify-between items-center">
+            <Link to="/" onClick={() => setIsMenuOpen(false)} className="flex flex-col items-center">
+              <img src={bazaLogo} alt="BAZA" className="h-10" />
+              <span className="text-[10px] tracking-[0.2em] text-foreground/80 mt-0.5">КАЛЬЯН-БАР</span>
             </Link>
             <button onClick={() => setIsMenuOpen(false)} className="p-2">
               <X className="w-8 h-8 text-foreground" />
