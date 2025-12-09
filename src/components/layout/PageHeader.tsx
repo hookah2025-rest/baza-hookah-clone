@@ -47,10 +47,10 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
               <button
                 key={item.path}
                 onClick={() => handleNavClick(item.path)}
-                className={`text-sm font-medium tracking-wider uppercase transition-colors duration-300 hover:text-accent pb-1 ${
+                className={`text-sm tracking-wider uppercase transition-all duration-300 hover:text-foreground hover:font-bold ${
                   location.pathname === item.path
-                    ? "text-foreground border-b border-foreground"
-                    : "text-foreground"
+                    ? "text-foreground font-bold"
+                    : "text-foreground/70 font-medium"
                 }`}
               >
                 {item.label}
