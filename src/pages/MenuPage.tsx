@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Flame } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { getSiteData, SiteData, MenuItem } from "@/data/siteData";
+import { getSiteData, SiteData } from "@/data/siteData";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Accordion,
   AccordionContent,
@@ -9,15 +10,27 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const menuCategories = [
-  { id: "КАЛЬЯНЫ", label: "КАЛЬЯН" },
-  { id: "КУХНЯ", label: "КУХНЯ", hasIcon: true },
-  { id: "НАПИТКИ", label: "НАПИТКИ" },
-  { id: "АЛКОГОЛЬ", label: "АЛКОГОЛЬ" },
-];
+interface MenuCategory {
+  id: string;
+  name: string;
+  sort_order: number;
+}
+
+interface MenuItem {
+  id: string;
+  category_id: string;
+  name: string;
+  price: string;
+  subcategory?: string;
+  description?: string;
+  sort_order: number;
+}
 
 const MenuPage = () => {
   const [siteData, setSiteData] = useState<SiteData | null>(null);
+  const [categories, setCategories] = useState<MenuCategory[]>([]);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setSiteData(getSiteData());
@@ -25,14 +38,30 @@ const MenuPage = () => {
     if (!verified) {
       window.location.href = "/";
     }
+
+    const fetchMenuData = async () => {
+      try {
+        const [categoriesRes, itemsRes] = await Promise.all([
+          supabase.from("menu_categories").select("*").order("sort_order"),
+          supabase.from("menu_items").select("*").order("sort_order"),
+        ]);
+
+        if (categoriesRes.data) setCategories(categoriesRes.data);
+        if (itemsRes.data) setMenuItems(itemsRes.data);
+      } catch (error) {
+        console.error("Error fetching menu:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMenuData();
   }, []);
 
-  if (!siteData) return null;
+  if (!siteData || loading) return null;
 
-  const getMenuByCategory = (category: string) => {
-    return siteData.menu.filter(
-      (item) => item.category.toUpperCase() === category
-    );
+  const getMenuByCategory = (categoryId: string) => {
+    return menuItems.filter((item) => item.category_id === categoryId);
   };
 
   const groupBySubcategory = (items: MenuItem[]) => {
@@ -46,6 +75,14 @@ const MenuPage = () => {
     }, {} as Record<string, MenuItem[]>);
   };
 
+  const isHookahCategory = (name: string) => {
+    return name.toLowerCase().includes("кальян");
+  };
+
+  const isKitchenCategory = (name: string) => {
+    return name.toLowerCase().includes("кухня");
+  };
+
   return (
     <PageLayout siteData={siteData}>
       <div className="container mx-auto px-6 py-8 max-w-3xl">
@@ -56,9 +93,11 @@ const MenuPage = () => {
 
         {/* Accordion Categories */}
         <Accordion type="single" collapsible className="space-y-2">
-          {menuCategories.map((cat) => {
+          {categories.map((cat) => {
             const items = getMenuByCategory(cat.id);
             const grouped = groupBySubcategory(items);
+            const isHookah = isHookahCategory(cat.name);
+            const isKitchen = isKitchenCategory(cat.name);
 
             return (
               <AccordionItem
@@ -71,31 +110,23 @@ const MenuPage = () => {
                   className="py-4 text-background hover:no-underline justify-center gap-2 [&[data-state=open]]:text-background"
                 >
                   <span className="text-lg tracking-wider font-heading uppercase">
-                    {cat.label}
+                    {cat.name}
                   </span>
-                  {cat.hasIcon && <Flame className="w-4 h-4" />}
+                  {isKitchen && <Flame className="w-4 h-4" />}
                 </AccordionTrigger>
                 <AccordionContent className="pb-6">
                   {/* Hookah special section */}
-                  {cat.id === "КАЛЬЯНЫ" && (
+                  {isHookah && items.length > 0 && (
                     <div className="space-y-3 mb-6">
-                      {[
-                        { people: "1-3 ЧЕЛОВЕКА", price: "1800" },
-                        { people: "4-6 ЧЕЛОВЕК", price: "3600" },
-                        { people: "7-9 ЧЕЛОВЕК", price: "5400" },
-                      ].map((row) => (
+                      {items.map((item) => (
                         <div
-                          key={row.people}
+                          key={item.id}
                           className="flex justify-between items-center"
                         >
-                          <span className="text-sm text-gray-800">{row.people}</span>
-                          <span className="text-sm font-bold text-background">{row.price}</span>
+                          <span className="text-sm text-gray-800">{item.name}</span>
+                          <span className="text-sm font-bold text-background">{item.price}</span>
                         </div>
                       ))}
-                      <div className="flex justify-between items-center pt-2">
-                        <span className="text-sm text-gray-800">ГРЕЙПФРУТ</span>
-                        <span className="text-sm font-bold text-background">2200</span>
-                      </div>
                       {siteData.menuNote && (
                         <div className="mt-4 border border-background/30 p-4">
                           <p className="text-xs text-gray-700 text-center leading-relaxed whitespace-pre-line">
@@ -107,7 +138,7 @@ const MenuPage = () => {
                   )}
 
                   {/* Other categories with subcategories */}
-                  {cat.id !== "КАЛЬЯНЫ" && (
+                  {!isHookah && (
                     <div className="space-y-6">
                       {Object.entries(grouped).map(([subcategory, subItems]) => (
                         <div key={subcategory}>
