@@ -82,7 +82,7 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
             </button>
           </div>
 
-          <nav className="flex-1 flex flex-col items-center justify-center gap-5">
+          <nav className="flex-1 flex flex-col items-center justify-center gap-6">
             <button
               onClick={() => {
                 navigate("/");
@@ -90,14 +90,13 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
               }}
               className="text-center group"
             >
-              <div className="flex items-center justify-center gap-3">
-                <span className="w-6 h-[2px] bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="text-xl tracking-[0.15em] font-heading uppercase text-foreground group-hover:text-accent transition-colors duration-300">
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-right" />
+                <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground group-hover:text-foreground transition-colors duration-300">
                   ГЛАВНАЯ
                 </span>
-                <span className="w-6 h-[2px] bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-              <p className="text-accent text-xs tracking-wider mt-1 font-body">
+              <p className="text-foreground/50 text-xs tracking-wider mt-1 font-body">
                 Добро пожаловать
               </p>
             </button>
@@ -109,26 +108,21 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
                   onClick={() => handleNavClick(item.path)}
                   className="text-center group"
                 >
-                  <div className="flex items-center justify-center gap-3">
+                  <div className="flex items-center gap-3">
                     <span
-                      className={`w-6 h-[2px] bg-accent transition-opacity duration-300 ${
-                        isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                      className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-right ${
+                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                       }`}
                     />
                     <span
-                      className={`text-xl tracking-[0.15em] font-heading uppercase transition-colors duration-300 ${
-                        isActive ? "text-accent" : "text-foreground group-hover:text-accent"
+                      className={`text-2xl tracking-[0.15em] font-heading uppercase transition-colors duration-300 ${
+                        isActive ? "text-foreground" : "text-foreground group-hover:text-foreground"
                       }`}
                     >
                       {item.label}
                     </span>
-                    <span
-                      className={`w-6 h-[2px] bg-accent transition-opacity duration-300 ${
-                        isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                      }`}
-                    />
                   </div>
-                  <p className="text-accent text-xs tracking-wider mt-1 font-body">
+                  <p className="text-foreground/50 text-xs tracking-wider mt-1 font-body">
                     {item.subtitle}
                   </p>
                 </button>
