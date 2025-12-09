@@ -7,7 +7,7 @@ interface PageFooterProps {
 
 export const PageFooter = ({ siteData }: PageFooterProps) => {
   return (
-    <footer className="h-64 flex-shrink-0 bg-background border-t border-foreground/10">
+    <footer className="h-[200px] flex-shrink-0 bg-background border-t border-foreground/10">
       <div className="h-full container mx-auto px-6 flex flex-col items-center justify-center">
         <SocialIcons socialLinks={siteData.socialLinks} />
 

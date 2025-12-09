@@ -34,7 +34,7 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
 
   return (
     <>
-      <header className="h-20 flex-shrink-0 bg-background border-b border-foreground/10">
+      <header className="h-[100px] flex-shrink-0 bg-background border-b border-foreground/10">
         <div className="h-full container mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">

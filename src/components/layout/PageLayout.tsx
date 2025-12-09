@@ -46,11 +46,11 @@ export const PageLayout = ({ children, siteData }: PageLayoutProps) => {
     setPendingPath(null);
   };
 
-  return (
-    <div className="min-h-screen flex flex-col bg-background">
+    return (
+    <div className="h-screen flex flex-col bg-background overflow-hidden">
       <PageHeader socialLinks={siteData.socialLinks} onMenuClick={handleMenuClick} />
 
-      <main key={location.pathname} className="flex-1 bg-content-bg page-enter">
+      <main key={location.pathname} className="h-[calc(100vh-300px)] bg-content-bg page-enter overflow-auto">
         {children}
       </main>
 
