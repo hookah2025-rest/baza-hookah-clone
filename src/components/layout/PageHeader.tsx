@@ -73,10 +73,7 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
       {/* Mobile Navigation Fullscreen */}
       {isMenuOpen && (
         <div className="fixed inset-0 z-50 bg-background menu-slide-in flex flex-col">
-          <div className="h-20 flex-shrink-0 flex justify-between items-center px-6 border-b border-foreground/10">
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
-              <img src={bazaLogo} alt="BAZA" className="h-12" />
-            </Link>
+          <div className="h-20 flex-shrink-0 flex justify-end items-center px-6">
             <button onClick={() => setIsMenuOpen(false)} className="p-2">
               <X className="w-8 h-8 text-foreground" />
             </button>
