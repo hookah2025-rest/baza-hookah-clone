@@ -61,11 +61,11 @@ export const PageHeader = ({ socialLinks, onMenuClick }: PageHeaderProps) => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="lg:hidden p-2 flex flex-col gap-1.5"
+            className="lg:hidden p-2 flex flex-col gap-1.5 group"
             aria-label="Открыть меню"
           >
-            <span className="w-7 h-0.5 bg-foreground" />
-            <span className="w-7 h-0.5 bg-foreground" />
+            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
+            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
           </button>
         </div>
       </header>
