@@ -137,6 +137,26 @@ export const useSiteSettings = () => {
     return publicUrl;
   };
 
+  const deleteLogo = async (type: LogoType): Promise<boolean> => {
+    const settingKey = `logo_${type}` as keyof SiteSettings;
+    const currentUrl = settings[settingKey];
+    
+    if (currentUrl) {
+      // Extract filename from URL and delete from storage
+      const urlParts = currentUrl.split('/');
+      const fileName = urlParts[urlParts.length - 1];
+      
+      await supabase.storage.from('logos').remove([fileName]);
+    }
+    
+    // Clear the setting
+    const success = await updateSetting(settingKey, '');
+    if (success) {
+      toast.success('Логотип удалён');
+    }
+    return success;
+  };
+
   const saveAllSettings = async (newSettings: SiteSettings) => {
     try {
       const updates = Object.entries(newSettings).map(([key, value]) =>
@@ -158,6 +178,7 @@ export const useSiteSettings = () => {
     loading,
     updateSetting,
     uploadLogo,
+    deleteLogo,
     saveAllSettings,
     refetch: fetchSettings,
   };

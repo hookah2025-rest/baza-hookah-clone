@@ -71,6 +71,7 @@ const Admin = () => {
     loading: settingsLoading,
     saveAllSettings,
     uploadLogo,
+    deleteLogo,
   } = useSiteSettings();
 
   const {
@@ -387,8 +388,17 @@ const Admin = () => {
                     <div>
                       <label className="text-sm font-medium mb-2 block">ПК</label>
                       {localSettings.logo_home_desktop && (
-                        <div className="mb-2 p-4 bg-background rounded border">
+                        <div className="mb-2 p-4 bg-background rounded border relative">
                           <img src={localSettings.logo_home_desktop} alt="Home Desktop logo" className="h-16 mx-auto" />
+                          <button
+                            onClick={async () => {
+                              await deleteLogo('home_desktop');
+                              setLocalSettings(prev => ({ ...prev, logo_home_desktop: '' }));
+                            }}
+                            className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded hover:bg-destructive/80"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       )}
                       <Input
@@ -408,8 +418,17 @@ const Admin = () => {
                     <div>
                       <label className="text-sm font-medium mb-2 block">Планшет</label>
                       {localSettings.logo_home_tablet && (
-                        <div className="mb-2 p-4 bg-background rounded border">
+                        <div className="mb-2 p-4 bg-background rounded border relative">
                           <img src={localSettings.logo_home_tablet} alt="Home Tablet logo" className="h-16 mx-auto" />
+                          <button
+                            onClick={async () => {
+                              await deleteLogo('home_tablet');
+                              setLocalSettings(prev => ({ ...prev, logo_home_tablet: '' }));
+                            }}
+                            className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded hover:bg-destructive/80"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       )}
                       <Input
@@ -429,8 +448,17 @@ const Admin = () => {
                     <div>
                       <label className="text-sm font-medium mb-2 block">Мобильный</label>
                       {localSettings.logo_home_mobile && (
-                        <div className="mb-2 p-4 bg-background rounded border">
+                        <div className="mb-2 p-4 bg-background rounded border relative">
                           <img src={localSettings.logo_home_mobile} alt="Home Mobile logo" className="h-16 mx-auto" />
+                          <button
+                            onClick={async () => {
+                              await deleteLogo('home_mobile');
+                              setLocalSettings(prev => ({ ...prev, logo_home_mobile: '' }));
+                            }}
+                            className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded hover:bg-destructive/80"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       )}
                       <Input
@@ -455,8 +483,17 @@ const Admin = () => {
                     <div>
                       <label className="text-sm font-medium mb-2 block">ПК</label>
                       {localSettings.logo_header_desktop && (
-                        <div className="mb-2 p-4 bg-background rounded border">
+                        <div className="mb-2 p-4 bg-background rounded border relative">
                           <img src={localSettings.logo_header_desktop} alt="Header Desktop logo" className="h-16 mx-auto" />
+                          <button
+                            onClick={async () => {
+                              await deleteLogo('header_desktop');
+                              setLocalSettings(prev => ({ ...prev, logo_header_desktop: '' }));
+                            }}
+                            className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded hover:bg-destructive/80"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       )}
                       <Input
@@ -476,8 +513,17 @@ const Admin = () => {
                     <div>
                       <label className="text-sm font-medium mb-2 block">Планшет</label>
                       {localSettings.logo_header_tablet && (
-                        <div className="mb-2 p-4 bg-background rounded border">
+                        <div className="mb-2 p-4 bg-background rounded border relative">
                           <img src={localSettings.logo_header_tablet} alt="Header Tablet logo" className="h-16 mx-auto" />
+                          <button
+                            onClick={async () => {
+                              await deleteLogo('header_tablet');
+                              setLocalSettings(prev => ({ ...prev, logo_header_tablet: '' }));
+                            }}
+                            className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded hover:bg-destructive/80"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       )}
                       <Input
@@ -497,8 +543,17 @@ const Admin = () => {
                     <div>
                       <label className="text-sm font-medium mb-2 block">Мобильный</label>
                       {localSettings.logo_header_mobile && (
-                        <div className="mb-2 p-4 bg-background rounded border">
+                        <div className="mb-2 p-4 bg-background rounded border relative">
                           <img src={localSettings.logo_header_mobile} alt="Header Mobile logo" className="h-16 mx-auto" />
+                          <button
+                            onClick={async () => {
+                              await deleteLogo('header_mobile');
+                              setLocalSettings(prev => ({ ...prev, logo_header_mobile: '' }));
+                            }}
+                            className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded hover:bg-destructive/80"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       )}
                       <Input
