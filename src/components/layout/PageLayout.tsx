@@ -57,8 +57,9 @@ export const PageLayout = ({ children, settings }: PageLayoutProps) => {
       <PageHeader 
         socialLinks={socialLinks} 
         onMenuClick={handleMenuClick}
-        logoDesktop={settings.logo_desktop}
-        logoMobile={settings.logo_mobile}
+        logoDesktop={settings.logo_header_desktop}
+        logoTablet={settings.logo_header_tablet}
+        logoMobile={settings.logo_header_mobile}
       />
 
       <main key={location.pathname} className="flex-1 bg-content-bg page-enter overflow-auto">

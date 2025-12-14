@@ -9,6 +9,9 @@ import bazaLogo from "@/assets/baza-logo.png";
 
 interface HeroSectionProps {
   siteData: SiteData;
+  logoDesktop?: string;
+  logoTablet?: string;
+  logoMobile?: string;
 }
 
 const navItems = [
@@ -24,7 +27,7 @@ const mobileNavItems = [
   ...navItems,
 ];
 
-export const HeroSection = ({ siteData }: HeroSectionProps) => {
+export const HeroSection = ({ siteData, logoDesktop, logoTablet, logoMobile }: HeroSectionProps) => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -103,11 +106,15 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
           </button>
         </div>
 
-        {/* Main content */}
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
           {/* Logo */}
           <div className="text-center mb-8">
-            <img src={bazaLogo} alt="BAZA" className="w-40 md:w-56 mx-auto" />
+            {/* Desktop logo */}
+            <img src={logoDesktop || bazaLogo} alt="BAZA" className="w-40 md:w-56 mx-auto hidden lg:block" />
+            {/* Tablet logo */}
+            <img src={logoTablet || logoDesktop || bazaLogo} alt="BAZA" className="w-48 mx-auto hidden md:block lg:hidden" />
+            {/* Mobile logo */}
+            <img src={logoMobile || bazaLogo} alt="BAZA" className="w-40 mx-auto block md:hidden" />
           </div>
         </div>
 

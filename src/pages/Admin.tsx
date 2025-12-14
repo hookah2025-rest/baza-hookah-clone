@@ -382,13 +382,13 @@ const Admin = () => {
                   />
                 </div>
                 <div className="border-t pt-4">
-                  <h3 className="text-lg font-semibold mb-4">Логотипы</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <h3 className="text-lg font-semibold mb-4">Логотипы для главной страницы</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                      <label className="text-sm font-medium mb-2 block">Логотип для ПК</label>
-                      {localSettings.logo_desktop && (
+                      <label className="text-sm font-medium mb-2 block">ПК</label>
+                      {localSettings.logo_home_desktop && (
                         <div className="mb-2 p-4 bg-background rounded border">
-                          <img src={localSettings.logo_desktop} alt="Desktop logo" className="h-16 mx-auto" />
+                          <img src={localSettings.logo_home_desktop} alt="Home Desktop logo" className="h-16 mx-auto" />
                         </div>
                       )}
                       <Input
@@ -397,19 +397,19 @@ const Admin = () => {
                         onChange={async (e) => {
                           const file = e.target.files?.[0];
                           if (file) {
-                            const url = await uploadLogo(file, 'desktop');
+                            const url = await uploadLogo(file, 'home_desktop');
                             if (url) {
-                              setLocalSettings(prev => ({ ...prev, logo_desktop: url }));
+                              setLocalSettings(prev => ({ ...prev, logo_home_desktop: url }));
                             }
                           }
                         }}
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium mb-2 block">Логотип для мобильных</label>
-                      {localSettings.logo_mobile && (
+                      <label className="text-sm font-medium mb-2 block">Планшет</label>
+                      {localSettings.logo_home_tablet && (
                         <div className="mb-2 p-4 bg-background rounded border">
-                          <img src={localSettings.logo_mobile} alt="Mobile logo" className="h-16 mx-auto" />
+                          <img src={localSettings.logo_home_tablet} alt="Home Tablet logo" className="h-16 mx-auto" />
                         </div>
                       )}
                       <Input
@@ -418,9 +418,98 @@ const Admin = () => {
                         onChange={async (e) => {
                           const file = e.target.files?.[0];
                           if (file) {
-                            const url = await uploadLogo(file, 'mobile');
+                            const url = await uploadLogo(file, 'home_tablet');
                             if (url) {
-                              setLocalSettings(prev => ({ ...prev, logo_mobile: url }));
+                              setLocalSettings(prev => ({ ...prev, logo_home_tablet: url }));
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Мобильный</label>
+                      {localSettings.logo_home_mobile && (
+                        <div className="mb-2 p-4 bg-background rounded border">
+                          <img src={localSettings.logo_home_mobile} alt="Home Mobile logo" className="h-16 mx-auto" />
+                        </div>
+                      )}
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const url = await uploadLogo(file, 'home_mobile');
+                            if (url) {
+                              setLocalSettings(prev => ({ ...prev, logo_home_mobile: url }));
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="border-t pt-4">
+                  <h3 className="text-lg font-semibold mb-4">Логотипы для хедера (остальные страницы)</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">ПК</label>
+                      {localSettings.logo_header_desktop && (
+                        <div className="mb-2 p-4 bg-background rounded border">
+                          <img src={localSettings.logo_header_desktop} alt="Header Desktop logo" className="h-16 mx-auto" />
+                        </div>
+                      )}
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const url = await uploadLogo(file, 'header_desktop');
+                            if (url) {
+                              setLocalSettings(prev => ({ ...prev, logo_header_desktop: url }));
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Планшет</label>
+                      {localSettings.logo_header_tablet && (
+                        <div className="mb-2 p-4 bg-background rounded border">
+                          <img src={localSettings.logo_header_tablet} alt="Header Tablet logo" className="h-16 mx-auto" />
+                        </div>
+                      )}
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const url = await uploadLogo(file, 'header_tablet');
+                            if (url) {
+                              setLocalSettings(prev => ({ ...prev, logo_header_tablet: url }));
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Мобильный</label>
+                      {localSettings.logo_header_mobile && (
+                        <div className="mb-2 p-4 bg-background rounded border">
+                          <img src={localSettings.logo_header_mobile} alt="Header Mobile logo" className="h-16 mx-auto" />
+                        </div>
+                      )}
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const url = await uploadLogo(file, 'header_mobile');
+                            if (url) {
+                              setLocalSettings(prev => ({ ...prev, logo_header_mobile: url }));
                             }
                           }
                         }}

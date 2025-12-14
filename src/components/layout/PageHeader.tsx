@@ -9,6 +9,7 @@ interface PageHeaderProps {
   socialLinks: SocialLinks;
   onMenuClick?: (path: string) => void;
   logoDesktop?: string;
+  logoTablet?: string;
   logoMobile?: string;
 }
 
@@ -20,7 +21,7 @@ const navItems = [
   { label: "ПРАВИЛА", subtitle: "Правила заведения", path: "/rules" },
 ];
 
-export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoMobile }: PageHeaderProps) => {
+export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, logoMobile }: PageHeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoMobile }
 
   // Use custom logos if provided, otherwise fall back to default
   const desktopLogoSrc = logoDesktop || bazaLogo;
+  const tabletLogoSrc = logoTablet || logoDesktop || bazaLogo;
   const mobileLogoSrc = logoMobile || bazaLogo;
 
   return (
@@ -44,7 +46,12 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoMobile }
         {/* All versions: Logo left, burger right */}
         <div className="h-full container mx-auto px-6 flex items-center justify-between">
           <Link to="/" className="flex items-center">
-            <img src={desktopLogoSrc} alt="BAZA" className="h-14 md:h-16" />
+            {/* Desktop logo */}
+            <img src={desktopLogoSrc} alt="BAZA" className="h-14 md:h-16 hidden lg:block" />
+            {/* Tablet logo */}
+            <img src={tabletLogoSrc} alt="BAZA" className="h-14 hidden md:block lg:hidden" />
+            {/* Mobile logo */}
+            <img src={mobileLogoSrc} alt="BAZA" className="h-12 block md:hidden" />
           </Link>
           <button
             onClick={() => setIsMenuOpen(true)}

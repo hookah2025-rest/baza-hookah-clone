@@ -1,22 +1,33 @@
-import { useState, useEffect } from "react";
 import { HeroSection } from "@/components/HeroSection";
-import { ContactInfo } from "@/components/ContactInfo";
 import { getSiteData, SiteData } from "@/data/siteData";
-import { Link } from "react-router-dom";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+
 const Index = () => {
-  const [siteData, setSiteData] = useState<SiteData>(getSiteData());
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setSiteData(getSiteData());
-    };
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
-  return <div className="min-h-screen bg-background">
-      <HeroSection siteData={siteData} />
-      
-      {/* Simple footer */}
-      
-    </div>;
+  const { settings } = useSiteSettings();
+  const siteData: SiteData = {
+    ...getSiteData(),
+    name: settings.name,
+    city: settings.city,
+    address: settings.address,
+    phone: settings.phone,
+    hoursWeekday: settings.hoursWeekday,
+    hoursWeekend: settings.hoursWeekend,
+    socialLinks: {
+      instagram: settings.instagram,
+      telegram: settings.telegram,
+      whatsapp: settings.whatsapp,
+    },
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <HeroSection 
+        siteData={siteData}
+        logoDesktop={settings.logo_home_desktop}
+        logoTablet={settings.logo_home_tablet}
+        logoMobile={settings.logo_home_mobile}
+      />
+    </div>
+  );
 };
 export default Index;
