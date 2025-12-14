@@ -149,7 +149,7 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
             </button>
           </div>
 
-          <nav className="flex-1 flex flex-col items-center justify-center gap-6">
+          <nav className="flex-1 flex flex-col items-center justify-center gap-8">
             {mobileNavItems.map((item, index) => {
               const isActive = activeIndex === index;
               return (
@@ -158,32 +158,24 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
                   onClick={() => handleNavClick(item.path, item.requiresAge)}
                   onMouseEnter={() => setActiveIndex(index)}
                   onMouseLeave={() => setActiveIndex(null)}
-                  className="text-center group"
+                  className="group"
                 >
-                  <div className="relative flex items-center justify-center">
-                    {/* Animated line on the left */}
+                  <div className="flex items-center">
+                    {/* Animated line directly attached to text */}
                     <span
-                      className={`absolute right-full mr-3 h-[1px] bg-accent transition-all duration-300 ease-out ${
-                        isActive ? "w-10 opacity-100" : "w-0 opacity-0"
+                      className={`h-[1px] bg-foreground transition-all duration-300 ease-out ${
+                        isActive ? "w-10 mr-3" : "w-0 mr-0"
                       }`}
                     />
-                    {/* Label with padding shift */}
+                    {/* Label */}
                     <span
-                      className={`text-xl tracking-[0.15em] font-heading uppercase transition-all duration-300 ease-out ${
-                        isActive ? "text-accent pl-12" : "text-foreground pl-0"
+                      className={`text-xl tracking-[0.15em] font-heading uppercase transition-colors duration-300 ${
+                        isActive ? "text-accent" : "text-foreground"
                       }`}
                     >
                       {item.label}
                     </span>
                   </div>
-                  {/* Subtitle with color transition */}
-                  <p 
-                    className={`text-xs tracking-wider mt-1 font-body transition-colors duration-300 ${
-                      isActive ? "text-foreground/60" : "text-accent"
-                    }`}
-                  >
-                    {item.subtitle}
-                  </p>
                 </button>
               );
             })}
