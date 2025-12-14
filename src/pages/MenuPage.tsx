@@ -61,7 +61,7 @@ const MenuPage = () => {
         </h1>
 
         {/* Accordion Categories */}
-        <Accordion type="single" collapsible className="space-y-2">
+        <Accordion type="multiple" className="space-y-2">
           {categories.map((cat) => {
             const items = getMenuByCategory(cat.id);
             const grouped = groupBySubcategory(items);
