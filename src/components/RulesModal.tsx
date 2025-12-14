@@ -13,7 +13,7 @@ export const RulesModal = ({
     loading
   } = useRulesData();
   return <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-content-bg">
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-primary border-primary">
         <DialogHeader>
           <DialogTitle className="text-2xl font-heading text-center tracking-wider">
             ПРАВИЛА ЗАВЕДЕНИЯ
