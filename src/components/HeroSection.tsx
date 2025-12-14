@@ -163,16 +163,12 @@ export const HeroSection = ({ siteData }: HeroSectionProps) => {
                   <div className="flex items-center">
                     {/* Animated line directly attached to text */}
                     <span
-                      className={`h-[1px] bg-foreground transition-all duration-300 ease-out ${
+                      className={`h-[2px] bg-foreground transition-all duration-300 ease-out ${
                         isActive ? "w-10 mr-3" : "w-0 mr-0"
                       }`}
                     />
                     {/* Label */}
-                    <span
-                      className={`text-xl tracking-[0.15em] font-heading uppercase transition-colors duration-300 ${
-                        isActive ? "text-accent" : "text-foreground"
-                      }`}
-                    >
+                    <span className="text-xl tracking-[0.15em] font-heading uppercase text-foreground">
                       {item.label}
                     </span>
                   </div>

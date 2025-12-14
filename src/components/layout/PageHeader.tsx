@@ -99,13 +99,11 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoMobile }
             >
               <div className="flex items-center">
                 {/* Animated line directly attached to text */}
-                <span className={`h-[1px] bg-foreground transition-all duration-300 ease-out ${
+                <span className={`h-[2px] bg-foreground transition-all duration-300 ease-out ${
                   location.pathname === "/" ? "w-10 mr-3" : "w-0 mr-0 group-hover:w-10 group-hover:mr-3"
                 }`} />
                 {/* Label */}
-                <span className={`text-2xl tracking-[0.15em] font-heading uppercase transition-colors duration-300 ${
-                  location.pathname === "/" ? "text-accent" : "text-foreground group-hover:text-accent"
-                }`}>
+                <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground">
                   ГЛАВНАЯ
                 </span>
               </div>
@@ -121,15 +119,12 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoMobile }
                   <div className="flex items-center">
                     {/* Animated line directly attached to text */}
                     <span
-                      className={`h-[1px] bg-foreground transition-all duration-300 ease-out ${
+                      className={`h-[2px] bg-foreground transition-all duration-300 ease-out ${
                         isActive ? "w-10 mr-3" : "w-0 mr-0 group-hover:w-10 group-hover:mr-3"
                       }`}
                     />
                     {/* Label */}
-                    <span
-                      className={`text-2xl tracking-[0.15em] font-heading uppercase transition-colors duration-300 ${
-                        isActive ? "text-accent" : "text-foreground group-hover:text-accent"
-                      }`}
+                    <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground"
                     >
                       {item.label}
                     </span>
