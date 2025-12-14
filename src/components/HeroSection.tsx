@@ -109,12 +109,12 @@ export const HeroSection = ({ siteData, logoDesktop, logoTablet, logoMobile }: H
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
           {/* Logo */}
           <div className="text-center mb-8">
-            {/* Desktop logo */}
-            <img src={logoDesktop || bazaLogo} alt="BAZA" className="w-40 md:w-56 mx-auto hidden lg:block" />
+          {/* Desktop logo */}
+            <img src={logoDesktop || bazaLogo} alt="BAZA" className="w-[500px] mx-auto hidden lg:block" />
             {/* Tablet logo */}
-            <img src={logoTablet || logoDesktop || bazaLogo} alt="BAZA" className="w-48 mx-auto hidden md:block lg:hidden" />
+            <img src={logoTablet || logoDesktop || bazaLogo} alt="BAZA" className="w-80 mx-auto hidden md:block lg:hidden" />
             {/* Mobile logo */}
-            <img src={logoMobile || bazaLogo} alt="BAZA" className="w-40 mx-auto block md:hidden" />
+            <img src={logoMobile || bazaLogo} alt="BAZA" className="w-56 mx-auto block md:hidden" />
           </div>
         </div>
 
