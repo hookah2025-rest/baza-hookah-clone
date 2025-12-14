@@ -61,7 +61,7 @@ export const PageLayout = ({ children, settings }: PageLayoutProps) => {
         logoMobile={settings.logo_mobile}
       />
 
-      <main key={location.pathname} className="h-[calc(100vh-300px)] bg-content-bg page-enter overflow-auto">
+      <main key={location.pathname} className="flex-1 bg-content-bg page-enter overflow-auto">
         {children}
       </main>
 
