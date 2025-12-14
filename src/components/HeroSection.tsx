@@ -5,7 +5,6 @@ import { SiteData } from "@/data/siteData";
 import { SocialIcons } from "./SocialIcons";
 import { AgeVerificationModal } from "./AgeVerificationModal";
 import heroBg from "@/assets/hero-bg.jpg";
-import bazaLogo from "@/assets/baza-logo.png";
 
 interface HeroSectionProps {
   siteData: SiteData;
@@ -109,12 +108,12 @@ export const HeroSection = ({ siteData, logoDesktop, logoTablet, logoMobile }: H
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
           {/* Logo */}
           <div className="text-center mb-8">
-          {/* Desktop logo */}
-            <img src={logoDesktop || bazaLogo} alt="BAZA" className="w-[500px] mx-auto hidden lg:block" />
+            {/* Desktop logo */}
+            {logoDesktop && <img src={logoDesktop} alt="BAZA" className="w-[500px] mx-auto hidden lg:block" />}
             {/* Tablet logo */}
-            <img src={logoTablet || logoDesktop || bazaLogo} alt="BAZA" className="w-80 mx-auto hidden md:block lg:hidden" />
+            {(logoTablet || logoDesktop) && <img src={logoTablet || logoDesktop} alt="BAZA" className="w-80 mx-auto hidden md:block lg:hidden" />}
             {/* Mobile logo */}
-            <img src={logoMobile || bazaLogo} alt="BAZA" className="w-56 mx-auto block md:hidden" />
+            {logoMobile && <img src={logoMobile} alt="BAZA" className="w-56 mx-auto block md:hidden" />}
           </div>
         </div>
 
