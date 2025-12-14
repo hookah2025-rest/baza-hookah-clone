@@ -97,18 +97,22 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoMobile }
               }}
               className="text-center group"
             >
-              <div className="flex items-center gap-3">
-                <span className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-right ${
-                  location.pathname === "/" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+              <div className="relative flex items-center justify-center">
+                {/* Animated line on the left */}
+                <span className={`absolute right-full mr-3 h-[1px] bg-accent transition-all duration-300 ease-out ${
+                  location.pathname === "/" ? "w-10 opacity-100" : "w-0 opacity-0 group-hover:w-10 group-hover:opacity-100"
                 }`} />
-                <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground group-hover:text-foreground transition-colors duration-300">
+                {/* Label with padding shift */}
+                <span className={`text-2xl tracking-[0.15em] font-heading uppercase transition-all duration-300 ease-out ${
+                  location.pathname === "/" ? "text-accent pl-12" : "text-foreground pl-0 group-hover:text-accent group-hover:pl-12"
+                }`}>
                   ГЛАВНАЯ
                 </span>
-                <span className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-left ${
-                  location.pathname === "/" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                }`} />
               </div>
-              <p className="text-foreground/50 text-xs tracking-wider mt-1 font-body">
+              {/* Subtitle with color transition */}
+              <p className={`text-xs tracking-wider mt-1 font-body transition-colors duration-300 ${
+                location.pathname === "/" ? "text-foreground/60" : "text-accent group-hover:text-foreground/60"
+              }`}>
                 Добро пожаловать
               </p>
             </button>
@@ -120,26 +124,26 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoMobile }
                   onClick={() => handleNavClick(item.path)}
                   className="text-center group"
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="relative flex items-center justify-center">
+                    {/* Animated line on the left */}
                     <span
-                      className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-right ${
-                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      className={`absolute right-full mr-3 h-[1px] bg-accent transition-all duration-300 ease-out ${
+                        isActive ? "w-10 opacity-100" : "w-0 opacity-0 group-hover:w-10 group-hover:opacity-100"
                       }`}
                     />
+                    {/* Label with padding shift */}
                     <span
-                      className={`text-2xl tracking-[0.15em] font-heading uppercase transition-colors duration-300 ${
-                        isActive ? "text-foreground" : "text-foreground group-hover:text-foreground"
+                      className={`text-2xl tracking-[0.15em] font-heading uppercase transition-all duration-300 ease-out ${
+                        isActive ? "text-accent pl-12" : "text-foreground pl-0 group-hover:text-accent group-hover:pl-12"
                       }`}
                     >
                       {item.label}
                     </span>
-                    <span
-                      className={`w-6 h-[2px] bg-accent transition-transform duration-300 origin-left ${
-                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                      }`}
-                    />
                   </div>
-                  <p className="text-foreground/50 text-xs tracking-wider mt-1 font-body">
+                  {/* Subtitle with color transition */}
+                  <p className={`text-xs tracking-wider mt-1 font-body transition-colors duration-300 ${
+                    isActive ? "text-foreground/60" : "text-accent group-hover:text-foreground/60"
+                  }`}>
                     {item.subtitle}
                   </p>
                 </button>
