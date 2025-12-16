@@ -12,6 +12,7 @@ export interface GalleryImage {
 export const useGalleryData = () => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
 
   const fetchImages = async () => {
     setLoading(true);
@@ -34,6 +35,44 @@ export const useGalleryData = () => {
   useEffect(() => {
     fetchImages();
   }, []);
+
+  const uploadImage = async (file: File, alt: string) => {
+    setUploading(true);
+    try {
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("gallery")
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("gallery")
+        .getPublicUrl(filePath);
+
+      const maxOrder = images.reduce((max, img) => Math.max(max, img.sort_order), 0);
+      const { data, error } = await supabase
+        .from("gallery_images")
+        .insert({ url: publicUrl, alt, sort_order: maxOrder + 1 })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setImages([...images, data]);
+      toast.success("Изображение добавлено");
+      return data;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Ошибка загрузки изображения");
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const addImage = async (url: string, alt: string) => {
     const maxOrder = images.reduce((max, img) => Math.max(max, img.sort_order), 0);
@@ -69,6 +108,20 @@ export const useGalleryData = () => {
   };
 
   const deleteImage = async (id: string) => {
+    const imageToDelete = images.find((img) => img.id === id);
+    
+    // Try to delete from storage if it's a Supabase URL
+    if (imageToDelete?.url.includes("supabase")) {
+      try {
+        const urlParts = imageToDelete.url.split("/gallery/");
+        if (urlParts[1]) {
+          await supabase.storage.from("gallery").remove([urlParts[1]]);
+        }
+      } catch (error) {
+        console.error("Error deleting from storage:", error);
+      }
+    }
+
     const { error } = await supabase
       .from("gallery_images")
       .delete()
@@ -87,7 +140,9 @@ export const useGalleryData = () => {
   return {
     images,
     loading,
+    uploading,
     addImage,
+    uploadImage,
     updateImage,
     deleteImage,
     refetch: fetchImages,
