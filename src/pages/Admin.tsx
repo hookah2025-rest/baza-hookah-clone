@@ -77,7 +77,8 @@ const Admin = () => {
   const {
     images: galleryImages,
     loading: galleryLoading,
-    addImage,
+    uploading: galleryUploading,
+    uploadImage,
     deleteImage,
   } = useGalleryData();
 
@@ -107,7 +108,7 @@ const Admin = () => {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
   const [editCategoryName, setEditCategoryName] = useState("");
-  const [newGalleryImage, setNewGalleryImage] = useState({ url: "", alt: "" });
+  const [newGalleryImage, setNewGalleryImage] = useState<{ file: File | null; alt: string }>({ file: null, alt: "" });
   const [newRuleText, setNewRuleText] = useState("");
 
   // Sync local settings when loaded
@@ -236,12 +237,12 @@ const Admin = () => {
 
   // Gallery handlers
   const handleAddGalleryImage = async () => {
-    if (!newGalleryImage.url) {
-      toast.error("Укажите URL изображения");
+    if (!newGalleryImage.file) {
+      toast.error("Выберите файл изображения");
       return;
     }
-    await addImage(newGalleryImage.url, newGalleryImage.alt || "Изображение галереи");
-    setNewGalleryImage({ url: "", alt: "" });
+    await uploadImage(newGalleryImage.file, newGalleryImage.alt || "Изображение галереи");
+    setNewGalleryImage({ file: null, alt: "" });
   };
 
   const handleDeleteGalleryImage = async (id: string) => {
@@ -776,20 +777,22 @@ const Admin = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Input
-                    placeholder="URL изображения"
-                    value={newGalleryImage.url}
-                    onChange={(e) => setNewGalleryImage({ ...newGalleryImage, url: e.target.value })}
-                    className="md:col-span-1"
-                  />
+                  <div className="md:col-span-1">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setNewGalleryImage({ ...newGalleryImage, file: e.target.files?.[0] || null })}
+                      className="cursor-pointer"
+                    />
+                  </div>
                   <Input
                     placeholder="Описание (alt)"
                     value={newGalleryImage.alt}
                     onChange={(e) => setNewGalleryImage({ ...newGalleryImage, alt: e.target.value })}
                   />
-                  <Button onClick={handleAddGalleryImage} className="gap-2">
+                  <Button onClick={handleAddGalleryImage} disabled={galleryUploading} className="gap-2">
                     <Plus className="w-4 h-4" />
-                    Добавить
+                    {galleryUploading ? "Загрузка..." : "Добавить"}
                   </Button>
                 </div>
               </CardContent>
