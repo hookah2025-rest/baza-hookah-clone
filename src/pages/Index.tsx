@@ -26,6 +26,8 @@ const Index = () => {
         logoDesktop={settings.logo_home_desktop}
         logoTablet={settings.logo_home_tablet}
         logoMobile={settings.logo_home_mobile}
+        heroTitle={settings.heroTitle}
+        heroSubtitle={settings.heroSubtitle}
       />
     </div>
   );

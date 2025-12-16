@@ -14,6 +14,9 @@ export interface SiteSettings {
   instagram: string;
   telegram: string;
   whatsapp: string;
+  // Название и подназвание для главной страницы (если нет логотипа)
+  heroTitle: string;
+  heroSubtitle: string;
   // Логотипы для главной страницы
   logo_home_desktop: string;
   logo_home_tablet: string;
@@ -36,6 +39,8 @@ const defaultSettings: SiteSettings = {
   instagram: "",
   telegram: "",
   whatsapp: "",
+  heroTitle: "HookahPlace",
+  heroSubtitle: "BAZA",
   logo_home_desktop: "",
   logo_home_tablet: "",
   logo_home_mobile: "",
@@ -75,6 +80,8 @@ export const useSiteSettings = () => {
           instagram: settingsMap.instagram || defaultSettings.instagram,
           telegram: settingsMap.telegram || defaultSettings.telegram,
           whatsapp: settingsMap.whatsapp || defaultSettings.whatsapp,
+          heroTitle: settingsMap.heroTitle || defaultSettings.heroTitle,
+          heroSubtitle: settingsMap.heroSubtitle || defaultSettings.heroSubtitle,
           logo_home_desktop: settingsMap.logo_home_desktop || defaultSettings.logo_home_desktop,
           logo_home_tablet: settingsMap.logo_home_tablet || defaultSettings.logo_home_tablet,
           logo_home_mobile: settingsMap.logo_home_mobile || defaultSettings.logo_home_mobile,

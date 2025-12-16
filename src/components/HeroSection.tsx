@@ -12,6 +12,8 @@ interface HeroSectionProps {
   logoDesktop?: string;
   logoTablet?: string;
   logoMobile?: string;
+  heroTitle?: string;
+  heroSubtitle?: string;
 }
 
 const navItems = [{
@@ -52,7 +54,9 @@ export const HeroSection = ({
   siteData,
   logoDesktop,
   logoTablet,
-  logoMobile
+  logoMobile,
+  heroTitle,
+  heroSubtitle
 }: HeroSectionProps) => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -126,14 +130,27 @@ export const HeroSection = ({
         </div>
 
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
-          {/* Logo */}
+          {/* Logo or Title */}
           <div className="text-center mb-8">
-            {/* Desktop logo */}
-            {logoDesktop && <img src={logoDesktop} alt="BAZA" className="w-[500px] mx-auto hidden lg:block" />}
-            {/* Tablet logo */}
-            {(logoTablet || logoDesktop) && <img src={logoTablet || logoDesktop} alt="BAZA" className="w-80 mx-auto hidden md:block lg:hidden" />}
-            {/* Mobile logo */}
-            {logoMobile && <img src={logoMobile} alt="BAZA" className="w-56 mx-auto block md:hidden" />}
+            {logoDesktop || logoTablet || logoMobile ? (
+              <>
+                {/* Desktop logo */}
+                {logoDesktop && <img src={logoDesktop} alt="BAZA" className="w-[500px] mx-auto hidden lg:block" />}
+                {/* Tablet logo */}
+                {(logoTablet || logoDesktop) && <img src={logoTablet || logoDesktop} alt="BAZA" className="w-80 mx-auto hidden md:block lg:hidden" />}
+                {/* Mobile logo */}
+                {logoMobile && <img src={logoMobile} alt="BAZA" className="w-56 mx-auto block md:hidden" />}
+              </>
+            ) : (
+              <div className="flex flex-col items-center">
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading italic text-foreground/70 tracking-wide">
+                  {heroTitle || "HookahPlace"}
+                </h1>
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading uppercase text-foreground tracking-[0.2em] mt-2">
+                  {heroSubtitle || siteData.name}
+                </h2>
+              </div>
+            )}
           </div>
         </div>
 
