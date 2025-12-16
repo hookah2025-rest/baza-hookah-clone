@@ -4,13 +4,16 @@ import { X } from "lucide-react";
 import { SiteData } from "@/data/siteData";
 import { SocialIcons } from "./SocialIcons";
 import { AgeVerificationModal } from "./AgeVerificationModal";
+import { RulesModal } from "./RulesModal";
 import heroBg from "@/assets/hero-bg.jpg";
+
 interface HeroSectionProps {
   siteData: SiteData;
   logoDesktop?: string;
   logoTablet?: string;
   logoMobile?: string;
 }
+
 const navItems = [{
   label: "О НАС",
   subtitle: "Концепция",
@@ -34,15 +37,17 @@ const navItems = [{
 }, {
   label: "ПРАВИЛА",
   subtitle: "Правила заведения",
-  path: "/rules",
+  path: "#rules",
   requiresAge: false
 }];
+
 const mobileNavItems = [{
   label: "ГЛАВНАЯ",
   subtitle: "Добро пожаловать",
   path: "/",
   requiresAge: false
 }, ...navItems];
+
 export const HeroSection = ({
   siteData,
   logoDesktop,
@@ -53,15 +58,23 @@ export const HeroSection = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [showAgeModal, setShowAgeModal] = useState(false);
+  const [showRulesModal, setShowRulesModal] = useState(false);
   const [ageVerified, setAgeVerified] = useState(false);
   const [pendingPath, setPendingPath] = useState<string | null>(null);
+
   useEffect(() => {
     const verified = localStorage.getItem("age_verified") === "true";
     setAgeVerified(verified);
   }, []);
+
   const handleNavClick = (path: string, requiresAge: boolean) => {
     if (path === "/") {
       setIsMenuOpen(false);
+      return;
+    }
+    if (path === "#rules") {
+      setIsMenuOpen(false);
+      setShowRulesModal(true);
       return;
     }
     if (requiresAge && !ageVerified) {
@@ -72,6 +85,7 @@ export const HeroSection = ({
     setIsMenuOpen(false);
     navigate(path);
   };
+
   const handleAgeConfirm = () => {
     localStorage.setItem("age_verified", "true");
     setAgeVerified(true);
@@ -82,13 +96,18 @@ export const HeroSection = ({
     }
     setPendingPath(null);
   };
+
   const handleAgeDecline = () => {
     setShowAgeModal(false);
     setPendingPath(null);
   };
+
   return <>
       {/* Age verification modal */}
       {showAgeModal && <AgeVerificationModal onConfirm={handleAgeConfirm} onDecline={handleAgeDecline} />}
+
+      {/* Rules modal */}
+      <RulesModal open={showRulesModal} onOpenChange={setShowRulesModal} />
 
       <section id="hero" className="relative min-h-screen flex flex-col" style={{
       backgroundImage: `url(${heroBg})`,
