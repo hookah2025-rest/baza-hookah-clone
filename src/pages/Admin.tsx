@@ -334,6 +334,23 @@ const Admin = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
+                  <label className="text-sm font-medium mb-2 block">Название (для логотипа)</label>
+                  <Input
+                    placeholder="HookahPlace"
+                    value={localSettings.heroTitle}
+                    onChange={(e) => handleSettingsChange("heroTitle", e.target.value)}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">Отображается вместо логотипа, если логотип не загружен</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Подназвание (для логотипа)</label>
+                  <Input
+                    placeholder="BAZA"
+                    value={localSettings.heroSubtitle}
+                    onChange={(e) => handleSettingsChange("heroSubtitle", e.target.value)}
+                  />
+                </div>
+                <div>
                   <label className="text-sm font-medium mb-2 block">Название заведения</label>
                   <Input
                     value={localSettings.name}
