@@ -131,21 +131,21 @@ export const HeroSection = ({
           <div className="text-center mb-8 hero-content-appear">
             {logoDesktop || logoTablet || logoMobile ? <>
                 {/* Desktop logo */}
-                {logoDesktop && <img src={logoDesktop} alt="BAZA" className="w-[500px] mx-auto hidden lg:block" />}
+                {logoDesktop && <img src={logoDesktop} alt="BAZA" className="max-w-[90vw] w-auto max-h-[30vh] mx-auto hidden lg:block object-contain" />}
                 {/* Tablet logo */}
-                {(logoTablet || logoDesktop) && <img src={logoTablet || logoDesktop} alt="BAZA" className="w-80 mx-auto hidden md:block lg:hidden" />}
+                <img src={logoTablet || logoDesktop || logoMobile} alt="BAZA" className="max-w-[85vw] w-auto max-h-[25vh] mx-auto hidden md:block lg:hidden object-contain" />
                 {/* Mobile logo */}
-                {logoMobile && <img src={logoMobile} alt="BAZA" className="w-56 mx-auto block md:hidden" />}
-              </> : <div className="flex flex-col items-center">
-                <h1 className="text-5xl md:text-7xl lg:text-8xl text-foreground/80 tracking-[0.15em] font-typewriter">
+                <img src={logoMobile || logoTablet || logoDesktop} alt="BAZA" className="max-w-[80vw] w-auto max-h-[20vh] mx-auto block md:hidden object-contain" />
+              </> : <div className="flex flex-col items-center px-4">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl text-foreground/80 tracking-[0.1em] sm:tracking-[0.15em] font-typewriter">
                   {heroTitle || "HookahPlace"}
                 </h1>
                 {heroSubtitle ? (
-                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading uppercase text-foreground tracking-[0.3em] mt-1">
+                  <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-heading uppercase text-foreground tracking-[0.15em] sm:tracking-[0.3em] mt-1">
                     {heroSubtitle}
                   </h2>
                 ) : (
-                  <img src={bazaSubtitleLogo} alt="BAZA" className="h-16 md:h-24 lg:h-32 mt-2" />
+                  <img src={bazaSubtitleLogo} alt="BAZA" className="h-10 sm:h-14 md:h-20 lg:h-28 xl:h-32 mt-2 max-w-[80vw] object-contain" />
                 )}
               </div>}
           </div>
