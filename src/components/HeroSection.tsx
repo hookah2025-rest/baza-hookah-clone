@@ -105,7 +105,7 @@ export const HeroSection = ({
       {/* Rules modal */}
       <RulesModal open={showRulesModal} onOpenChange={setShowRulesModal} />
 
-      <section id="hero" className="relative min-h-screen flex flex-col" style={{
+      <section id="hero" className="relative h-screen h-[100dvh] flex flex-col overflow-hidden" style={{
       backgroundImage: `url(${heroBg})`,
       backgroundSize: "cover",
       backgroundPosition: "center"
