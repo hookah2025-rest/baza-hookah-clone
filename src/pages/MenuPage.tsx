@@ -4,6 +4,7 @@ import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { useMenuData } from "@/hooks/useMenuData";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import kitchenIcon from "@/assets/kitchen-icon.png";
+import { HookahIcon } from "@/components/HookahIcon";
 const MenuPage = () => {
   const {
     settings,
@@ -79,10 +80,32 @@ const MenuPage = () => {
                 <AccordionContent className="pb-6">
                   {/* Hookah special section */}
                   {isHookah && items.length > 0 && <div className="space-y-3 mb-6">
-                      {items.map(item => <div key={item.id} className="flex justify-between items-center">
-                          <span className="text-sm text-gray-800">{item.name}</span>
-                          <span className="text-sm font-bold text-background">{item.price}</span>
-                        </div>)}
+                      {items.map(item => {
+                        // Determine number of hookah icons based on item name
+                        const getHookahCount = (name: string) => {
+                          if (name.includes("1-3")) return 1;
+                          if (name.includes("4-6")) return 2;
+                          if (name.includes("7-9")) return 3;
+                          return 0;
+                        };
+                        const hookahCount = getHookahCount(item.name);
+                        
+                        return (
+                          <div key={item.id} className="flex justify-between items-center">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-gray-800">{item.name}</span>
+                              {hookahCount > 0 && (
+                                <div className="flex items-center gap-0.5">
+                                  {Array.from({ length: hookahCount }).map((_, i) => (
+                                    <HookahIcon key={i} className="w-3.5 h-4 text-primary" />
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                            <span className="text-sm font-bold text-background">{item.price}</span>
+                          </div>
+                        );
+                      })}
                       {cat.note && <div className="mt-4 border border-background/30 p-4">
                           <p className="text-xs text-gray-700 text-center leading-relaxed whitespace-pre-line">
                             {cat.note}
