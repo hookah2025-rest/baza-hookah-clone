@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SocialIcons } from "../SocialIcons";
 import { SocialLinks } from "@/data/siteData";
 import { RulesModal } from "../RulesModal";
+import bazaSubtitleLogo from "@/assets/baza-subtitle-logo.png";
 
 interface PageHeaderProps {
   socialLinks: SocialLinks;
@@ -12,6 +13,7 @@ interface PageHeaderProps {
   logoTablet?: string;
   logoMobile?: string;
   siteName?: string;
+  heroTitle?: string;
 }
 
 const navItems = [
@@ -21,7 +23,7 @@ const navItems = [
   { label: "КАК ДОБРАТЬСЯ", subtitle: "Локация", path: "/location" },
 ];
 
-export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, logoMobile, siteName }: PageHeaderProps) => {
+export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, logoMobile, siteName, heroTitle }: PageHeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isRulesOpen, setIsRulesOpen] = useState(false);
   const location = useLocation();
@@ -44,20 +46,23 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
       <header className="h-[100px] flex-shrink-0 bg-background border-b border-foreground/10 relative">
         {/* All versions: Logo left, burger right */}
         <div className="h-full container mx-auto px-6 flex items-center justify-between">
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center gap-2">
             {hasAnyLogo ? (
               <>
                 {/* Desktop logo */}
-                {logoDesktop && <img src={logoDesktop} alt={siteName || "BAZA"} className="h-14 md:h-16 hidden lg:block" />}
+                {logoDesktop && <img src={logoDesktop} alt={siteName || "BAZA"} className="h-14 md:h-16 hidden lg:block object-contain" />}
                 {/* Tablet logo */}
-                {(logoTablet || logoDesktop) && <img src={logoTablet || logoDesktop} alt={siteName || "BAZA"} className="h-14 hidden md:block lg:hidden" />}
+                <img src={logoTablet || logoDesktop || logoMobile} alt={siteName || "BAZA"} className="h-14 hidden md:block lg:hidden object-contain" />
                 {/* Mobile logo */}
-                {(logoMobile || logoDesktop) && <img src={logoMobile || logoDesktop} alt={siteName || "BAZA"} className="h-12 block md:hidden" />}
+                <img src={logoMobile || logoTablet || logoDesktop} alt={siteName || "BAZA"} className="h-12 block md:hidden object-contain" />
               </>
             ) : (
-              <span className="text-2xl md:text-3xl font-medium tracking-[0.1em] text-foreground uppercase">
-                {siteName || "BAZA"}
-              </span>
+              <div className="flex items-center gap-2 md:gap-3">
+                <span className="text-lg sm:text-xl md:text-2xl font-typewriter tracking-[0.1em] text-foreground/80">
+                  {heroTitle || "HookahPlace"}
+                </span>
+                <img src={bazaSubtitleLogo} alt={siteName || "BAZA"} className="h-6 sm:h-7 md:h-8 object-contain" />
+              </div>
             )}
           </Link>
           <button
