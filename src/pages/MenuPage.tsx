@@ -14,6 +14,8 @@ const MenuPage = () => {
     menuItems,
     loading: menuLoading
   } = useMenuData();
+  const [openItems, setOpenItems] = useState<string[]>([]);
+
   useEffect(() => {
     const verified = localStorage.getItem("age_verified") === "true";
     if (!verified) {
@@ -44,15 +46,18 @@ const MenuPage = () => {
   const isKitchenCategory = (name: string) => {
     return name.toLowerCase().includes("кухня");
   };
+
+  const isAnyCategoryOpen = openItems.length > 0;
+
   return <PageLayout settings={settings} flexibleHeight>
-      <div className="container mx-auto px-6 max-w-3xl min-h-[calc(100vh-300px)] flex flex-col justify-center py-6">
+      <div className={`container mx-auto px-6 max-w-3xl min-h-[calc(100vh-300px)] flex flex-col py-6 ${isAnyCategoryOpen ? 'justify-start' : 'justify-center'}`}>
         {/* Title */}
         <h1 className="text-2xl font-heading tracking-wider text-center mb-8 uppercase text-primary">
           Меню
         </h1>
 
         {/* Accordion Categories */}
-        <Accordion type="multiple" className="space-y-2">
+        <Accordion type="multiple" className="space-y-2" value={openItems} onValueChange={setOpenItems}>
           {categories.map(cat => {
           const items = getMenuByCategory(cat.id);
           const grouped = groupBySubcategory(items);
