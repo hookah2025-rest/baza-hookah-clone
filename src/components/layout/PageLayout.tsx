@@ -8,9 +8,10 @@ import { SiteSettings } from "@/hooks/useSiteSettings";
 interface PageLayoutProps {
   children: ReactNode;
   settings: SiteSettings;
+  flexibleHeight?: boolean;
 }
 
-export const PageLayout = ({ children, settings }: PageLayoutProps) => {
+export const PageLayout = ({ children, settings, flexibleHeight = false }: PageLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showAgeModal, setShowAgeModal] = useState(false);
@@ -53,7 +54,7 @@ export const PageLayout = ({ children, settings }: PageLayoutProps) => {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-background overflow-hidden">
+    <div className={`flex flex-col bg-background ${flexibleHeight ? 'min-h-screen' : 'h-screen overflow-hidden'}`}>
       <PageHeader 
         socialLinks={socialLinks} 
         onMenuClick={handleMenuClick}
@@ -62,7 +63,7 @@ export const PageLayout = ({ children, settings }: PageLayoutProps) => {
         logoMobile={settings.logo_header_mobile}
       />
 
-      <main key={location.pathname} className="flex-1 bg-content-bg page-enter overflow-auto">
+      <main key={location.pathname} className={`flex-1 bg-content-bg page-enter ${flexibleHeight ? '' : 'overflow-auto'}`}>
         {children}
       </main>
 
