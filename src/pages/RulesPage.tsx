@@ -18,7 +18,7 @@ const RulesPage = () => {
     <PageLayout settings={settings} flexibleHeight>
       <div className="container mx-auto px-6 max-w-3xl min-h-[calc(100svh-300px)] flex flex-col py-6 justify-center">
         {/* Title */}
-        <h1 className="text-2xl font-heading tracking-wider text-center mb-8 uppercase text-primary">
+        <h1 className="text-2xl font-heading font-black tracking-wider text-center mb-8 uppercase text-primary">
           Правила заведения
         </h1>
 

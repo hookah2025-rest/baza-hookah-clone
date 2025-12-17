@@ -56,7 +56,7 @@ const MenuPage = () => {
         isAnyCategoryOpen ? "justify-start" : "justify-center"
       }`}>
         {/* Title */}
-        <h1 className="text-2xl font-heading tracking-wider text-center mb-8 uppercase text-primary">
+        <h1 className="text-2xl font-heading font-black tracking-wider text-center mb-8 uppercase text-primary">
           Меню
         </h1>
 
