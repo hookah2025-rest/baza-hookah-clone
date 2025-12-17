@@ -8,7 +8,8 @@ const GalleryPage = () => {
   const { images, loading: galleryLoading } = useGalleryData();
   const { settings, loading: settingsLoading } = useSiteSettings();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [slideDirection, setSlideDirection] = useState<"left" | "right">("left");
+  const [isAnimating, setIsAnimating] = useState(false);
 
   if (galleryLoading || settingsLoading) {
     return (
@@ -18,23 +19,30 @@ const GalleryPage = () => {
     );
   }
 
-  const changeSlide = (newIndex: number) => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
+  const changeSlide = (newIndex: number, direction: "left" | "right") => {
+    if (isAnimating) return;
+    setSlideDirection(direction);
+    setIsAnimating(true);
     setTimeout(() => {
       setCurrentIndex(newIndex);
-      setTimeout(() => setIsTransitioning(false), 50);
+      setIsAnimating(false);
     }, 300);
   };
 
   const nextSlide = () => {
     const newIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
-    changeSlide(newIndex);
+    changeSlide(newIndex, "left");
   };
 
   const prevSlide = () => {
     const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
-    changeSlide(newIndex);
+    changeSlide(newIndex, "right");
+  };
+
+  const goToSlide = (index: number) => {
+    if (index === currentIndex) return;
+    const direction = index > currentIndex ? "left" : "right";
+    changeSlide(index, direction);
   };
 
   if (images.length === 0) {
@@ -49,14 +57,18 @@ const GalleryPage = () => {
 
   return (
     <PageLayout settings={settings}>
-      <div className="relative w-full h-full">
-        {/* Current Image - Full width with fade transition */}
+      <div className="relative w-full h-full overflow-hidden">
+        {/* Current Image with slide transition */}
         <div className="w-full h-full">
           <img
             src={images[currentIndex]?.url}
             alt={images[currentIndex]?.alt}
-            className={`w-full h-full object-cover transition-opacity duration-300 ease-in-out ${
-              isTransitioning ? "opacity-0" : "opacity-100"
+            className={`w-full h-full object-cover transition-transform duration-300 ease-in-out ${
+              isAnimating 
+                ? slideDirection === "left" 
+                  ? "-translate-x-full" 
+                  : "translate-x-full"
+                : "translate-x-0"
             }`}
           />
         </div>
@@ -84,7 +96,7 @@ const GalleryPage = () => {
           {images.map((_, index) => (
             <button
               key={index}
-              onClick={() => changeSlide(index)}
+              onClick={() => goToSlide(index)}
               className={`w-2.5 h-2.5 rounded-full transition-colors border border-white/50 ${
                 index === currentIndex ? "bg-white" : "bg-transparent"
               }`}
