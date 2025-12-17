@@ -16,7 +16,7 @@ export const PageFooter = ({
         <SocialIcons socialLinks={socialLinks} />
 
         <p className="text-[13px] tracking-[0.2em] mt-3 font-heading">
-          Hookah place  <span className="font-bold">{settings.name}</span>
+          {settings.heroTitle || "HookahPlace"}  <span className="font-bold">{settings.name}</span>
         </p>
 
         <p className="text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-1">
