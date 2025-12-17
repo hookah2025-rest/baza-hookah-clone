@@ -6,7 +6,6 @@ import { SocialIcons } from "./SocialIcons";
 import { AgeVerificationModal } from "./AgeVerificationModal";
 import { RulesModal } from "./RulesModal";
 import heroBg from "@/assets/hero-bg.jpg";
-
 interface HeroSectionProps {
   siteData: SiteData;
   logoDesktop?: string;
@@ -15,7 +14,6 @@ interface HeroSectionProps {
   heroTitle?: string;
   heroSubtitle?: string;
 }
-
 const navItems = [{
   label: "О НАС",
   subtitle: "Концепция",
@@ -42,14 +40,12 @@ const navItems = [{
   path: "#rules",
   requiresAge: false
 }];
-
 const mobileNavItems = [{
   label: "ГЛАВНАЯ",
   subtitle: "Добро пожаловать",
   path: "/",
   requiresAge: false
 }, ...navItems];
-
 export const HeroSection = ({
   siteData,
   logoDesktop,
@@ -65,12 +61,10 @@ export const HeroSection = ({
   const [showRulesModal, setShowRulesModal] = useState(false);
   const [ageVerified, setAgeVerified] = useState(false);
   const [pendingPath, setPendingPath] = useState<string | null>(null);
-
   useEffect(() => {
     const verified = localStorage.getItem("age_verified") === "true";
     setAgeVerified(verified);
   }, []);
-
   const handleNavClick = (path: string, requiresAge: boolean) => {
     if (path === "/") {
       setIsMenuOpen(false);
@@ -89,7 +83,6 @@ export const HeroSection = ({
     setIsMenuOpen(false);
     navigate(path);
   };
-
   const handleAgeConfirm = () => {
     localStorage.setItem("age_verified", "true");
     setAgeVerified(true);
@@ -100,12 +93,10 @@ export const HeroSection = ({
     }
     setPendingPath(null);
   };
-
   const handleAgeDecline = () => {
     setShowAgeModal(false);
     setPendingPath(null);
   };
-
   return <>
       {/* Age verification modal */}
       {showAgeModal && <AgeVerificationModal onConfirm={handleAgeConfirm} onDecline={handleAgeDecline} />}
@@ -123,11 +114,7 @@ export const HeroSection = ({
 
         {/* Menu button - visible on all screen sizes, top right */}
         <div className="absolute top-6 right-6 z-20">
-          <button 
-            onClick={() => setIsMenuOpen(true)} 
-            className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300" 
-            aria-label="Открыть меню"
-          >
+          <button onClick={() => setIsMenuOpen(true)} className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300" aria-label="Открыть меню">
             <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent burger-line transition-all duration-300" />
             <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent burger-line transition-all duration-300" />
           </button>
@@ -136,25 +123,24 @@ export const HeroSection = ({
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
           {/* Logo or Title */}
           <div className="text-center mb-8 hero-content-appear">
-            {logoDesktop || logoTablet || logoMobile ? (
-              <>
+            {logoDesktop || logoTablet || logoMobile ? <>
                 {/* Desktop logo */}
                 {logoDesktop && <img src={logoDesktop} alt="BAZA" className="w-[500px] mx-auto hidden lg:block" />}
                 {/* Tablet logo */}
                 {(logoTablet || logoDesktop) && <img src={logoTablet || logoDesktop} alt="BAZA" className="w-80 mx-auto hidden md:block lg:hidden" />}
                 {/* Mobile logo */}
                 {logoMobile && <img src={logoMobile} alt="BAZA" className="w-56 mx-auto block md:hidden" />}
-              </>
-            ) : (
-              <div className="flex flex-col items-center">
-                <h1 className="text-5xl md:text-7xl lg:text-8xl text-foreground/80 tracking-[0.15em]" style={{ fontFamily: 'Oswald', fontWeight: 200 }}>
+              </> : <div className="flex flex-col items-center">
+                <h1 className="text-5xl md:text-7xl lg:text-8xl text-foreground/80 tracking-[0.15em]" style={{
+              fontFamily: 'Oswald',
+              fontWeight: 200
+            }}>
                   {heroTitle || "HookahPlace"}
                 </h1>
                 <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading uppercase text-foreground tracking-[0.3em] mt-1">
                   {heroSubtitle || siteData.name}
                 </h2>
-              </div>
-            )}
+              </div>}
           </div>
         </div>
 
@@ -163,7 +149,7 @@ export const HeroSection = ({
           <SocialIcons socialLinks={siteData.socialLinks} />
 
           <p className="text-center text-[13px] tracking-[0.2em] mt-3 font-heading">
-            Hookah place  <span className="font-bold">{siteData.name}</span>
+            Hookah Place  <span className="font-bold">{siteData.name}</span>
           </p>
 
           <p className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-1">
@@ -185,29 +171,19 @@ export const HeroSection = ({
       </section>
 
       {/* Mobile Navigation Fullscreen */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-50 backdrop-appear flex flex-col">
+      {isMenuOpen && <div className="fixed inset-0 z-50 backdrop-appear flex flex-col">
           <div className="flex justify-end p-6">
-            <button 
-              onClick={() => setIsMenuOpen(false)} 
-              className="p-2 hover:rotate-90 transition-transform duration-300"
-            >
+            <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:rotate-90 transition-transform duration-300">
               <X className="w-8 h-8 text-foreground" />
             </button>
           </div>
 
           <nav className="flex-1 flex flex-col items-center justify-center gap-8">
             {mobileNavItems.map((item, index) => {
-              const isActive = activeIndex === index;
-              return (
-                <button 
-                  key={item.label} 
-                  onClick={() => handleNavClick(item.path, item.requiresAge)} 
-                  onMouseEnter={() => setActiveIndex(index)} 
-                  onMouseLeave={() => setActiveIndex(null)} 
-                  className="group menu-item-appear"
-                  style={{ animationDelay: `${index * 0.08}s` }}
-                >
+          const isActive = activeIndex === index;
+          return <button key={item.label} onClick={() => handleNavClick(item.path, item.requiresAge)} onMouseEnter={() => setActiveIndex(index)} onMouseLeave={() => setActiveIndex(null)} className="group menu-item-appear" style={{
+            animationDelay: `${index * 0.08}s`
+          }}>
                   <div className="flex items-center">
                     {/* Animated line directly attached to text */}
                     <span className={`h-[2px] bg-foreground transition-all duration-300 ease-out ${isActive ? "w-10 mr-3" : "w-0 mr-0"}`} />
@@ -216,15 +192,15 @@ export const HeroSection = ({
                       {item.label}
                     </span>
                   </div>
-                </button>
-              );
-            })}
+                </button>;
+        })}
           </nav>
 
-          <div className="pb-10 menu-item-appear" style={{ animationDelay: '0.5s' }}>
+          <div className="pb-10 menu-item-appear" style={{
+        animationDelay: '0.5s'
+      }}>
             <SocialIcons socialLinks={siteData.socialLinks} />
           </div>
-        </div>
-      )}
+        </div>}
     </>;
 };
