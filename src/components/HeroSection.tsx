@@ -6,6 +6,7 @@ import { SocialIcons } from "./SocialIcons";
 import { AgeVerificationModal } from "./AgeVerificationModal";
 import { RulesModal } from "./RulesModal";
 import heroBg from "@/assets/hero-bg.jpg";
+import bazaSubtitleLogo from "@/assets/baza-subtitle-logo.png";
 interface HeroSectionProps {
   siteData: SiteData;
   logoDesktop?: string;
@@ -139,9 +140,13 @@ export const HeroSection = ({
                 <h1 className="text-5xl md:text-7xl lg:text-8xl text-foreground/80 tracking-[0.15em] font-typewriter">
                   {heroTitle || "HookahPlace"}
                 </h1>
-                <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading uppercase text-foreground tracking-[0.3em] mt-1">
-                  {heroSubtitle || siteData.name}
-                </h2>
+                {heroSubtitle ? (
+                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading uppercase text-foreground tracking-[0.3em] mt-1">
+                    {heroSubtitle}
+                  </h2>
+                ) : (
+                  <img src={bazaSubtitleLogo} alt="BAZA" className="h-16 md:h-24 lg:h-32 mt-2" />
+                )}
               </div>}
           </div>
         </div>
