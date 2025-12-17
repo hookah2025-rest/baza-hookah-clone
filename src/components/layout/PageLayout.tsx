@@ -61,6 +61,7 @@ export const PageLayout = ({ children, settings, flexibleHeight = false }: PageL
         logoDesktop={settings.logo_header_desktop}
         logoTablet={settings.logo_header_tablet}
         logoMobile={settings.logo_header_mobile}
+        siteName={settings.name}
       />
 
       <main key={location.pathname} className={`flex-1 bg-content-bg page-enter ${flexibleHeight ? '' : 'overflow-auto'}`}>
