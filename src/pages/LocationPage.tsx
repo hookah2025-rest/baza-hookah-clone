@@ -6,7 +6,7 @@ const LocationPage = () => {
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-content-bg">
+      <div className="min-h-[100svh] flex items-center justify-center bg-content-bg">
         <div className="text-lg">Загрузка...</div>
       </div>
     );

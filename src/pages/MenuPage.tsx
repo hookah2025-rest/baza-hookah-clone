@@ -23,9 +23,11 @@ const MenuPage = () => {
     }
   }, []);
   if (settingsLoading || menuLoading) {
-    return <div className="h-screen flex items-center justify-center bg-content-bg">
+    return (
+      <div className="min-h-[100svh] flex items-center justify-center bg-content-bg">
         <div className="text-lg">Загрузка...</div>
-      </div>;
+      </div>
+    );
   }
   const getMenuByCategory = (categoryId: string) => {
     return menuItems.filter(item => item.category_id === categoryId);
@@ -50,7 +52,9 @@ const MenuPage = () => {
   const isAnyCategoryOpen = openItems.length > 0;
 
   return <PageLayout settings={settings} flexibleHeight>
-      <div className={`container mx-auto px-6 max-w-3xl min-h-[calc(100vh-300px)] flex flex-col py-6 ${isAnyCategoryOpen ? 'justify-start' : 'justify-center'}`}>
+      <div className={`container mx-auto px-6 max-w-3xl min-h-[calc(100svh-300px)] flex flex-col py-6 ${
+        isAnyCategoryOpen ? "justify-start" : "justify-center"
+      }`}>
         {/* Title */}
         <h1 className="text-2xl font-heading tracking-wider text-center mb-8 uppercase text-primary">
           Меню

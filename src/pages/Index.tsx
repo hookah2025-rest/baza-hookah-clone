@@ -20,7 +20,7 @@ const Index = () => {
   };
 
   return (
-    <div className="h-screen h-[100dvh] bg-background overflow-hidden">
+    <div className="min-h-[100svh] h-[100svh] bg-background overflow-hidden">
       <HeroSection 
         siteData={siteData}
         logoDesktop={settings.logo_home_desktop}
