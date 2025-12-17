@@ -143,10 +143,10 @@ export const HeroSection = ({
               </>
             ) : (
               <div className="flex flex-col items-center">
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading italic text-foreground/70 tracking-wide">
+                <h1 className="text-5xl md:text-7xl lg:text-8xl text-foreground/80 tracking-[0.15em] uppercase" style={{ fontFamily: 'Oswald', fontWeight: 200 }}>
                   {heroTitle || "HookahPlace"}
                 </h1>
-                <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading uppercase text-foreground tracking-[0.2em] mt-2">
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading uppercase text-foreground tracking-[0.3em] mt-1">
                   {heroSubtitle || siteData.name}
                 </h2>
               </div>
