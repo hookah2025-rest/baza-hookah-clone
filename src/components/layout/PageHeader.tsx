@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { SocialIcons } from "../SocialIcons";
-import bazaLogo from "@/assets/baza-logo.png";
 import { SocialLinks } from "@/data/siteData";
 import { RulesModal } from "../RulesModal";
 
@@ -12,6 +11,7 @@ interface PageHeaderProps {
   logoDesktop?: string;
   logoTablet?: string;
   logoMobile?: string;
+  siteName?: string;
 }
 
 const navItems = [
@@ -21,7 +21,7 @@ const navItems = [
   { label: "КАК ДОБРАТЬСЯ", subtitle: "Локация", path: "/location" },
 ];
 
-export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, logoMobile }: PageHeaderProps) => {
+export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, logoMobile, siteName }: PageHeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isRulesOpen, setIsRulesOpen] = useState(false);
   const location = useLocation();
@@ -36,10 +36,8 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
     setIsMenuOpen(false);
   };
 
-  // Use custom logos if provided, otherwise fall back to default
-  const desktopLogoSrc = logoDesktop || bazaLogo;
-  const tabletLogoSrc = logoTablet || logoDesktop || bazaLogo;
-  const mobileLogoSrc = logoMobile || bazaLogo;
+  // Check if any logo is available
+  const hasAnyLogo = logoDesktop || logoTablet || logoMobile;
 
   return (
     <>
@@ -47,12 +45,20 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
         {/* All versions: Logo left, burger right */}
         <div className="h-full container mx-auto px-6 flex items-center justify-between">
           <Link to="/" className="flex items-center">
-            {/* Desktop logo */}
-            <img src={desktopLogoSrc} alt="BAZA" className="h-14 md:h-16 hidden lg:block" />
-            {/* Tablet logo */}
-            <img src={tabletLogoSrc} alt="BAZA" className="h-14 hidden md:block lg:hidden" />
-            {/* Mobile logo */}
-            <img src={mobileLogoSrc} alt="BAZA" className="h-12 block md:hidden" />
+            {hasAnyLogo ? (
+              <>
+                {/* Desktop logo */}
+                {logoDesktop && <img src={logoDesktop} alt={siteName || "BAZA"} className="h-14 md:h-16 hidden lg:block" />}
+                {/* Tablet logo */}
+                {(logoTablet || logoDesktop) && <img src={logoTablet || logoDesktop} alt={siteName || "BAZA"} className="h-14 hidden md:block lg:hidden" />}
+                {/* Mobile logo */}
+                {(logoMobile || logoDesktop) && <img src={logoMobile || logoDesktop} alt={siteName || "BAZA"} className="h-12 block md:hidden" />}
+              </>
+            ) : (
+              <span className="text-2xl md:text-3xl font-medium tracking-[0.1em] text-foreground uppercase">
+                {siteName || "BAZA"}
+              </span>
+            )}
           </Link>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
