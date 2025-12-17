@@ -156,7 +156,7 @@ export const HeroSection = ({
           <SocialIcons socialLinks={siteData.socialLinks} />
 
           <p className="text-center text-[13px] tracking-[0.2em] mt-3 font-heading">
-            Hookah Place  <span className="font-bold">{siteData.name}</span>
+            {heroTitle || "HookahPlace"}  <span className="font-bold">{siteData.name}</span>
           </p>
 
           <p className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-1">
