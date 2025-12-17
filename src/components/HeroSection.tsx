@@ -136,7 +136,7 @@ export const HeroSection = ({
                 {/* Mobile logo */}
                 {logoMobile && <img src={logoMobile} alt="BAZA" className="w-56 mx-auto block md:hidden" />}
               </> : <div className="flex flex-col items-center">
-                <h1 className="text-5xl md:text-7xl lg:text-8xl text-foreground/80 tracking-[0.15em] font-medium">
+                <h1 className="text-5xl md:text-7xl lg:text-8xl text-foreground/80 tracking-[0.15em] font-typewriter">
                   {heroTitle || "HookahPlace"}
                 </h1>
                 <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading uppercase text-foreground tracking-[0.3em] mt-1">
