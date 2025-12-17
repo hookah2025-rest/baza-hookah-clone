@@ -68,26 +68,34 @@ export const useSiteSettings = () => {
           settingsMap[item.key] = item.value;
         });
 
+        // Helper to get value - use empty string if key exists with empty value
+        const getValue = (key: string, defaultValue: string) => {
+          if (key in settingsMap) {
+            return settingsMap[key];
+          }
+          return defaultValue;
+        };
+
         setSettings({
-          name: settingsMap.name || defaultSettings.name,
-          city: settingsMap.city || defaultSettings.city,
-          address: settingsMap.address || defaultSettings.address,
-          phone: settingsMap.phone || defaultSettings.phone,
-          hoursWeekday: settingsMap.hoursWeekday || defaultSettings.hoursWeekday,
-          hoursWeekend: settingsMap.hoursWeekend || defaultSettings.hoursWeekend,
-          aboutText: settingsMap.aboutText || defaultSettings.aboutText,
-          menuNote: settingsMap.menuNote || defaultSettings.menuNote,
-          instagram: settingsMap.instagram || defaultSettings.instagram,
-          telegram: settingsMap.telegram || defaultSettings.telegram,
-          whatsapp: settingsMap.whatsapp || defaultSettings.whatsapp,
-          heroTitle: settingsMap.heroTitle || defaultSettings.heroTitle,
-          heroSubtitle: settingsMap.heroSubtitle || defaultSettings.heroSubtitle,
-          logo_home_desktop: settingsMap.logo_home_desktop || defaultSettings.logo_home_desktop,
-          logo_home_tablet: settingsMap.logo_home_tablet || defaultSettings.logo_home_tablet,
-          logo_home_mobile: settingsMap.logo_home_mobile || defaultSettings.logo_home_mobile,
-          logo_header_desktop: settingsMap.logo_header_desktop || defaultSettings.logo_header_desktop,
-          logo_header_tablet: settingsMap.logo_header_tablet || defaultSettings.logo_header_tablet,
-          logo_header_mobile: settingsMap.logo_header_mobile || defaultSettings.logo_header_mobile,
+          name: getValue('name', defaultSettings.name),
+          city: getValue('city', defaultSettings.city),
+          address: getValue('address', defaultSettings.address),
+          phone: getValue('phone', defaultSettings.phone),
+          hoursWeekday: getValue('hoursWeekday', defaultSettings.hoursWeekday),
+          hoursWeekend: getValue('hoursWeekend', defaultSettings.hoursWeekend),
+          aboutText: getValue('aboutText', defaultSettings.aboutText),
+          menuNote: getValue('menuNote', defaultSettings.menuNote),
+          instagram: getValue('instagram', defaultSettings.instagram),
+          telegram: getValue('telegram', defaultSettings.telegram),
+          whatsapp: getValue('whatsapp', defaultSettings.whatsapp),
+          heroTitle: getValue('heroTitle', defaultSettings.heroTitle),
+          heroSubtitle: getValue('heroSubtitle', defaultSettings.heroSubtitle),
+          logo_home_desktop: getValue('logo_home_desktop', defaultSettings.logo_home_desktop),
+          logo_home_tablet: getValue('logo_home_tablet', defaultSettings.logo_home_tablet),
+          logo_home_mobile: getValue('logo_home_mobile', defaultSettings.logo_home_mobile),
+          logo_header_desktop: getValue('logo_header_desktop', defaultSettings.logo_header_desktop),
+          logo_header_tablet: getValue('logo_header_tablet', defaultSettings.logo_header_tablet),
+          logo_header_mobile: getValue('logo_header_mobile', defaultSettings.logo_header_mobile),
         });
       }
     } catch (error) {
@@ -167,7 +175,10 @@ export const useSiteSettings = () => {
   const saveAllSettings = async (newSettings: SiteSettings) => {
     try {
       const updates = Object.entries(newSettings).map(([key, value]) =>
-        supabase.from("site_settings").update({ value }).eq("key", key)
+        supabase.from("site_settings").upsert(
+          { key, value, updated_at: new Date().toISOString() },
+          { onConflict: 'key' }
+        )
       );
 
       await Promise.all(updates);
