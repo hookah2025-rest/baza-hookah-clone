@@ -137,7 +137,7 @@ export const HeroSection = ({
                 {/* Mobile logo */}
                 <img src={logoMobile || logoTablet || logoDesktop} alt="BAZA" className="max-w-[80vw] w-auto max-h-[20vh] mx-auto block md:hidden object-contain" />
               </> : <div className="flex flex-col items-center justify-center text-center">
-                <h1 className="text-[8vw] lg:text-[75px] text-foreground tracking-tighter font-heading leading-none">
+                <h1 className="text-[9vw] lg:text-[82px] text-foreground tracking-tighter font-heading leading-none">
                   {heroTitle || "HookahPlace"}
                 </h1>
                 {heroSubtitle ? (
