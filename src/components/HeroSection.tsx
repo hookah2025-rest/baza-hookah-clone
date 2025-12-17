@@ -170,8 +170,8 @@ export const HeroSection = ({
         <div className="absolute bottom-0 left-0 right-0 z-10 pb-[calc(2.5rem+env(safe-area-inset-bottom))]">
           <SocialIcons socialLinks={siteData.socialLinks} />
 
-          <p className="text-center text-[13px] tracking-[0.2em] mt-3 font-heading">
-            {heroTitle || "HookahPlace"}  <span className="font-bold">{siteData.name}</span>
+          <p className="text-center text-[13px] tracking-[0.2em] mt-3 font-heading font-bold">
+            {siteData.name}
           </p>
 
           <p className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-1">
