@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useGalleryData } from "@/hooks/useGalleryData";
@@ -8,6 +8,7 @@ const GalleryPage = () => {
   const { images, loading: galleryLoading } = useGalleryData();
   const { settings, loading: settingsLoading } = useSiteSettings();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   if (galleryLoading || settingsLoading) {
     return (
@@ -17,16 +18,23 @@ const GalleryPage = () => {
     );
   }
 
+  const changeSlide = (newIndex: number) => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentIndex(newIndex);
+      setTimeout(() => setIsTransitioning(false), 50);
+    }, 300);
+  };
+
   const nextSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === images.length - 1 ? 0 : prev + 1
-    );
+    const newIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+    changeSlide(newIndex);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? images.length - 1 : prev - 1
-    );
+    const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+    changeSlide(newIndex);
   };
 
   if (images.length === 0) {
@@ -42,12 +50,14 @@ const GalleryPage = () => {
   return (
     <PageLayout settings={settings}>
       <div className="relative w-full h-full">
-        {/* Current Image - Full width */}
+        {/* Current Image - Full width with fade transition */}
         <div className="w-full h-full">
           <img
             src={images[currentIndex]?.url}
             alt={images[currentIndex]?.alt}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover transition-opacity duration-300 ease-in-out ${
+              isTransitioning ? "opacity-0" : "opacity-100"
+            }`}
           />
         </div>
 
@@ -74,7 +84,7 @@ const GalleryPage = () => {
           {images.map((_, index) => (
             <button
               key={index}
-              onClick={() => setCurrentIndex(index)}
+              onClick={() => changeSlide(index)}
               className={`w-2.5 h-2.5 rounded-full transition-colors border border-white/50 ${
                 index === currentIndex ? "bg-white" : "bg-transparent"
               }`}
