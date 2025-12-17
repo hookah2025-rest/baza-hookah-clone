@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { X } from "lucide-react";
+
 import { SocialIcons } from "../SocialIcons";
 import bazaLogo from "@/assets/baza-logo.png";
 import { SocialLinks } from "@/data/siteData";
@@ -55,27 +55,21 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
             <img src={mobileLogoSrc} alt="BAZA" className="h-12 block md:hidden" />
           </Link>
           <button
-            onClick={() => setIsMenuOpen(true)}
-            className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300"
-            aria-label="Открыть меню"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300 z-50"
+            aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}
           >
-            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent burger-line transition-all duration-300" />
-            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent burger-line transition-all duration-300" />
+            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 ${isMenuOpen ? 'opacity-0 scale-0' : ''}`} />
+            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
           </button>
         </div>
       </header>
 
       {/* Mobile Navigation Fullscreen */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-50 backdrop-appear flex flex-col">
-          <div className="h-20 flex-shrink-0 flex justify-end items-center px-6">
-            <button 
-              onClick={() => setIsMenuOpen(false)} 
-              className="p-2 hover:rotate-90 transition-transform duration-300"
-            >
-              <X className="w-8 h-8 text-foreground" />
-            </button>
-          </div>
+        <div className="fixed inset-0 z-40 menu-slide-in flex flex-col bg-background/95 backdrop-blur-sm">
+          <div className="h-20 flex-shrink-0" />
 
           <nav className="flex-1 flex flex-col items-center justify-center gap-8">
             <button

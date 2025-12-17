@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { X } from "lucide-react";
+
 import { SiteData } from "@/data/siteData";
 import { SocialIcons } from "./SocialIcons";
 import { AgeVerificationModal } from "./AgeVerificationModal";
@@ -113,10 +113,15 @@ export const HeroSection = ({
         <div className="absolute inset-0 bg-background/60" />
 
         {/* Menu button - visible on all screen sizes, top right */}
-        <div className="absolute top-6 right-6 z-20">
-          <button onClick={() => setIsMenuOpen(true)} className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300" aria-label="Открыть меню">
-            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent burger-line transition-all duration-300" />
-            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent burger-line transition-all duration-300" />
+        <div className="absolute top-6 right-6 z-50">
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)} 
+            className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300" 
+            aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}
+          >
+            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 ${isMenuOpen ? 'opacity-0 scale-0' : ''}`} />
+            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
           </button>
         </div>
 
@@ -171,12 +176,8 @@ export const HeroSection = ({
       </section>
 
       {/* Mobile Navigation Fullscreen */}
-      {isMenuOpen && <div className="fixed inset-0 z-50 backdrop-appear flex flex-col">
-          <div className="flex justify-end p-6">
-            <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:rotate-90 transition-transform duration-300">
-              <X className="w-8 h-8 text-foreground" />
-            </button>
-          </div>
+      {isMenuOpen && <div className="fixed inset-0 z-40 menu-slide-in flex flex-col bg-background/95 backdrop-blur-sm">
+          <div className="h-20" /> {/* Spacer for burger button */}
 
           <nav className="flex-1 flex flex-col items-center justify-center gap-8">
             {mobileNavItems.map((item, index) => {
