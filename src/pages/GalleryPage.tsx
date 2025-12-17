@@ -22,7 +22,7 @@ const GalleryPage = () => {
   const nextSlide = () => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setOffset(-100);
+    setOffset(-33.333);
     setTimeout(() => {
       setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
       setOffset(0);
@@ -33,7 +33,7 @@ const GalleryPage = () => {
   const prevSlide = () => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setOffset(100);
+    setOffset(33.333);
     setTimeout(() => {
       setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
       setOffset(0);
@@ -43,7 +43,7 @@ const GalleryPage = () => {
 
   const goToSlide = (index: number) => {
     if (isAnimating || index === currentIndex) return;
-    const direction = index > currentIndex ? -100 : 100;
+    const direction = index > currentIndex ? -33.333 : 33.333;
     setIsAnimating(true);
     setOffset(direction);
     setTimeout(() => {
