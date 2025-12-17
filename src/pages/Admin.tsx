@@ -619,6 +619,93 @@ const Admin = () => {
                     </div>
                   </div>
                 </div>
+                <div className="border-t pt-4">
+                  <h3 className="text-lg font-semibold mb-4">SEO настройки</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Заголовок страницы (title)</label>
+                      <Input
+                        value={localSettings.seo_title}
+                        onChange={(e) => handleSettingsChange("seo_title", e.target.value)}
+                        placeholder="Hookah Place BAZA | Москва"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">Отображается во вкладке браузера</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Описание (meta description)</label>
+                      <Textarea
+                        value={localSettings.seo_description}
+                        onChange={(e) => handleSettingsChange("seo_description", e.target.value)}
+                        placeholder="Описание для поисковых систем..."
+                        rows={3}
+                        maxLength={160}
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">{localSettings.seo_description?.length || 0}/160 символов</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Картинка для соцсетей (OG Image)</label>
+                      {localSettings.seo_og_image && (
+                        <div className="mb-2 p-4 bg-background rounded border relative">
+                          <img src={localSettings.seo_og_image} alt="OG Image" className="h-32 mx-auto object-cover" />
+                          <button
+                            onClick={async () => {
+                              await deleteLogo('seo_og_image');
+                              setLocalSettings(prev => ({ ...prev, seo_og_image: '' }));
+                            }}
+                            className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded hover:bg-destructive/80"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const url = await uploadLogo(file, 'seo_og_image');
+                            if (url) {
+                              setLocalSettings(prev => ({ ...prev, seo_og_image: url }));
+                            }
+                          }
+                        }}
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">Рекомендуемый размер: 1200x630px</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Favicon</label>
+                      {localSettings.seo_favicon && (
+                        <div className="mb-2 p-4 bg-background rounded border relative">
+                          <img src={localSettings.seo_favicon} alt="Favicon" className="h-16 mx-auto" />
+                          <button
+                            onClick={async () => {
+                              await deleteLogo('seo_favicon');
+                              setLocalSettings(prev => ({ ...prev, seo_favicon: '' }));
+                            }}
+                            className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded hover:bg-destructive/80"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+                      <Input
+                        type="file"
+                        accept="image/png,image/x-icon,image/svg+xml"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const url = await uploadLogo(file, 'seo_favicon');
+                            if (url) {
+                              setLocalSettings(prev => ({ ...prev, seo_favicon: url }));
+                            }
+                          }
+                        }}
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">Рекомендуемый размер: 32x32px или 64x64px (PNG, ICO)</p>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
