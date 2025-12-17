@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useGalleryData } from "@/hooks/useGalleryData";
@@ -8,10 +8,8 @@ const GalleryPage = () => {
   const { images, loading: galleryLoading } = useGalleryData();
   const { settings, loading: settingsLoading } = useSiteSettings();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState<number | null>(null);
-  const [slideDirection, setSlideDirection] = useState<"left" | "right">("left");
+  const [offset, setOffset] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   if (galleryLoading || settingsLoading) {
     return (
@@ -21,36 +19,38 @@ const GalleryPage = () => {
     );
   }
 
-  const changeSlide = (newIndex: number, direction: "left" | "right") => {
-    if (isAnimating || newIndex === currentIndex) return;
-    
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    
-    setPrevIndex(currentIndex);
-    setSlideDirection(direction);
-    setCurrentIndex(newIndex);
+  const nextSlide = () => {
+    if (isAnimating) return;
     setIsAnimating(true);
-    
-    timeoutRef.current = setTimeout(() => {
-      setPrevIndex(null);
+    setOffset(-100);
+    setTimeout(() => {
+      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+      setOffset(0);
       setIsAnimating(false);
     }, 500);
   };
 
-  const nextSlide = () => {
-    const newIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
-    changeSlide(newIndex, "left");
-  };
-
   const prevSlide = () => {
-    const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
-    changeSlide(newIndex, "right");
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setOffset(100);
+    setTimeout(() => {
+      setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+      setOffset(0);
+      setIsAnimating(false);
+    }, 500);
   };
 
   const goToSlide = (index: number) => {
-    if (index === currentIndex) return;
-    const direction = index > currentIndex ? "left" : "right";
-    changeSlide(index, direction);
+    if (isAnimating || index === currentIndex) return;
+    const direction = index > currentIndex ? -100 : 100;
+    setIsAnimating(true);
+    setOffset(direction);
+    setTimeout(() => {
+      setCurrentIndex(index);
+      setOffset(0);
+      setIsAnimating(false);
+    }, 500);
   };
 
   if (images.length === 0) {
@@ -63,35 +63,48 @@ const GalleryPage = () => {
     );
   }
 
+  const prevImageIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+  const nextImageIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+
   return (
     <PageLayout settings={settings}>
       <div className="relative w-full h-full overflow-hidden">
-        {/* Previous image (sliding out) */}
-        {prevIndex !== null && (
-          <img
-            src={images[prevIndex]?.url}
-            alt={images[prevIndex]?.alt}
-            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out ${
-              slideDirection === "left" ? "-translate-x-full" : "translate-x-full"
-            }`}
-          />
-        )}
-        
-        {/* Current image (sliding in) */}
-        <img
-          src={images[currentIndex]?.url}
-          alt={images[currentIndex]?.alt}
-          className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out ${
-            isAnimating ? "translate-x-0" : ""
-          }`}
+        {/* Slider track with all three images */}
+        <div 
+          className="flex h-full"
           style={{
-            transform: isAnimating 
-              ? "translateX(0)" 
-              : prevIndex !== null 
-                ? slideDirection === "left" ? "translateX(100%)" : "translateX(-100%)"
-                : "translateX(0)"
+            width: "300%",
+            transform: `translateX(calc(-33.333% + ${offset}%))`,
+            transition: isAnimating ? "transform 500ms ease-out" : "none"
           }}
-        />
+        >
+          {/* Previous image */}
+          <div className="w-1/3 h-full flex-shrink-0">
+            <img
+              src={images[prevImageIndex]?.url}
+              alt={images[prevImageIndex]?.alt}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          
+          {/* Current image */}
+          <div className="w-1/3 h-full flex-shrink-0">
+            <img
+              src={images[currentIndex]?.url}
+              alt={images[currentIndex]?.alt}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          
+          {/* Next image */}
+          <div className="w-1/3 h-full flex-shrink-0">
+            <img
+              src={images[nextImageIndex]?.url}
+              alt={images[nextImageIndex]?.alt}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
 
         {/* Left Arrow */}
         <button
