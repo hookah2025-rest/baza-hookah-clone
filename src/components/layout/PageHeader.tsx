@@ -43,8 +43,8 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
   return (
     <>
       <header className="h-[100px] flex-shrink-0 bg-background border-b border-foreground/10 relative">
-        {/* All versions: Logo left, burger right */}
-        <div className="h-full container mx-auto px-6 flex items-center justify-between">
+        <div className="h-full container mx-auto px-6 flex items-center justify-center md:justify-between relative">
+          {/* Logo - centered on mobile, left on tablet+ */}
           <Link to="/" className="flex items-center gap-2">
             {hasAnyLogo ? (
               <>
@@ -59,9 +59,10 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
               <img src={bazaHeaderLogo} alt={siteName || "BAZA"} className="h-10 sm:h-12 md:h-14 object-contain" />
             )}
           </Link>
+          {/* Burger - absolute on mobile to keep logo centered */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300 z-50"
+            className="absolute right-6 md:relative md:right-auto p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300 z-50"
             aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}
           >
             <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
