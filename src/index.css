@@ -96,12 +96,16 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-background text-foreground;
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
+    overflow-x: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 }
 
