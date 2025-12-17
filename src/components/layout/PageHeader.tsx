@@ -57,11 +57,11 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
                 <img src={logoMobile || logoTablet || logoDesktop} alt={siteName || "BAZA"} className="h-12 block md:hidden object-contain" />
               </>
             ) : (
-              <div className="flex items-center gap-2 md:gap-3">
-                <span className="text-[9vw] lg:text-[115px] font-typewriter font-normal tracking-tight text-foreground/80 leading-none">
+              <div className="flex items-center gap-1 md:gap-2">
+                <span className="text-lg sm:text-xl md:text-2xl font-typewriter font-normal tracking-tight text-foreground leading-none">
                   {heroTitle || "HookahPlace"}
                 </span>
-                <img src={bazaSubtitleLogo} alt={siteName || "BAZA"} className="h-[7vw] lg:h-[80px] object-contain" />
+                <img src={bazaSubtitleLogo} alt={siteName || "BAZA"} className="h-5 sm:h-6 md:h-7 object-contain" />
               </div>
             )}
           </Link>
