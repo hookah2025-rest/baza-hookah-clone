@@ -34,7 +34,7 @@ const AboutPage = () => {
       <div className="flex flex-col lg:flex-row h-full">
         {/* Left content - gray background */}
         <div className="flex-1 flex flex-col items-center justify-center p-8 lg:p-16 bg-content-bg">
-          <h1 className="text-2xl font-heading tracking-wider text-center mb-8 uppercase text-primary">
+          <h1 className="text-2xl font-heading font-black tracking-wider text-center mb-8 uppercase text-primary">
             О нас
           </h1>
           <div className="border border-background p-8 lg:p-12 max-w-lg">
