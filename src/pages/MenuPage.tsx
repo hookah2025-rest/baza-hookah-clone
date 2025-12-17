@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Leaf } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { useMenuData } from "@/hooks/useMenuData";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import kitchenIcon from "@/assets/kitchen-icon.png";
 const MenuPage = () => {
   const {
     settings,
@@ -63,7 +63,7 @@ const MenuPage = () => {
                   <span className="text-lg tracking-wider font-heading uppercase">
                     {cat.name}
                   </span>
-                  {isKitchen && <Leaf className="w-4 h-4" />}
+                  {isKitchen && <img src={kitchenIcon} alt="" className="w-4 h-4" />}
                 </AccordionTrigger>
                 <AccordionContent className="pb-6">
                   {/* Hookah special section */}
