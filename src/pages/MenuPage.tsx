@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Flame } from "lucide-react";
+import { Leaf } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { useMenuData } from "@/hooks/useMenuData";
@@ -63,7 +63,7 @@ const MenuPage = () => {
                   <span className="text-lg tracking-wider font-heading uppercase">
                     {cat.name}
                   </span>
-                  {isKitchen && <Flame className="w-4 h-4" />}
+                  {isKitchen && <Leaf className="w-4 h-4" />}
                 </AccordionTrigger>
                 <AccordionContent className="pb-6">
                   {/* Hookah special section */}
