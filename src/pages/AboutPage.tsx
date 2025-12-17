@@ -41,8 +41,8 @@ const AboutPage = () => {
           </div>
         </div>
 
-        {/* Right slideshow */}
-        <div className="flex-1 relative overflow-hidden">
+        {/* Right slideshow - hidden on mobile/tablet */}
+        <div className="hidden lg:block flex-1 relative overflow-hidden">
           {images.map((image, index) => (
             <div
               key={image.id}
