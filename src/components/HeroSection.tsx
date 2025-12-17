@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { SiteData } from "@/data/siteData";
 import { SocialIcons } from "./SocialIcons";
 import { AgeVerificationModal } from "./AgeVerificationModal";
-import { RulesModal } from "./RulesModal";
 import heroBg from "@/assets/hero-bg.jpg";
 import bazaSubtitleLogo from "@/assets/baza-subtitle-logo.png";
 interface HeroSectionProps {
@@ -38,7 +37,7 @@ const navItems = [{
 }, {
   label: "ПРАВИЛА",
   subtitle: "Правила заведения",
-  path: "#rules",
+  path: "/rules",
   requiresAge: false
 }];
 const mobileNavItems = [{
@@ -59,7 +58,6 @@ export const HeroSection = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [showAgeModal, setShowAgeModal] = useState(false);
-  const [showRulesModal, setShowRulesModal] = useState(false);
   const [ageVerified, setAgeVerified] = useState(false);
   const [pendingPath, setPendingPath] = useState<string | null>(null);
   useEffect(() => {
@@ -69,11 +67,6 @@ export const HeroSection = ({
   const handleNavClick = (path: string, requiresAge: boolean) => {
     if (path === "/") {
       setIsMenuOpen(false);
-      return;
-    }
-    if (path === "#rules") {
-      setIsMenuOpen(false);
-      setShowRulesModal(true);
       return;
     }
     if (requiresAge && !ageVerified) {
@@ -101,9 +94,6 @@ export const HeroSection = ({
   return <>
       {/* Age verification modal */}
       {showAgeModal && <AgeVerificationModal onConfirm={handleAgeConfirm} onDecline={handleAgeDecline} />}
-
-      {/* Rules modal */}
-      <RulesModal open={showRulesModal} onOpenChange={setShowRulesModal} />
 
       <section
         id="hero"
