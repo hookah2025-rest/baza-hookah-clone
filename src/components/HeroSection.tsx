@@ -105,24 +105,40 @@ export const HeroSection = ({
       {/* Rules modal */}
       <RulesModal open={showRulesModal} onOpenChange={setShowRulesModal} />
 
-      <section id="hero" className="relative h-screen h-[100dvh] flex flex-col overflow-hidden" style={{
-      backgroundImage: `url(${heroBg})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center"
-    }}>
+      <section
+        id="hero"
+        className="relative min-h-[100svh] h-[100svh] flex flex-col overflow-hidden"
+        style={{
+          backgroundImage: `url(${heroBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-background/60" />
 
         {/* Menu button - visible on all screen sizes, top right */}
-        <div className="absolute top-6 right-6 z-50">
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)} 
-            className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300" 
+        <div className="absolute top-[calc(1.5rem+env(safe-area-inset-top))] right-6 z-50">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300"
             aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}
           >
-            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 ${isMenuOpen ? 'opacity-0 scale-0' : ''}`} />
-            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+            <span
+              className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${
+                isMenuOpen ? "rotate-45 translate-y-2" : ""
+              }`}
+            />
+            <span
+              className={`w-7 h-0.5 bg-foreground transition-all duration-300 ${
+                isMenuOpen ? "opacity-0 scale-0" : ""
+              }`}
+            />
+            <span
+              className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${
+                isMenuOpen ? "-rotate-45 -translate-y-2" : ""
+              }`}
+            />
           </button>
         </div>
 
@@ -151,8 +167,7 @@ export const HeroSection = ({
           </div>
         </div>
 
-        {/* Bottom section with social and contact */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 pb-10">
+        <div className="absolute bottom-0 left-0 right-0 z-10 pb-[calc(2.5rem+env(safe-area-inset-bottom))]">
           <SocialIcons socialLinks={siteData.socialLinks} />
 
           <p className="text-center text-[13px] tracking-[0.2em] mt-3 font-heading">

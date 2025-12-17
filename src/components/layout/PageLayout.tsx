@@ -54,9 +54,13 @@ export const PageLayout = ({ children, settings, flexibleHeight = false }: PageL
   };
 
   return (
-    <div className={`flex flex-col bg-background ${flexibleHeight ? 'min-h-screen' : 'h-screen overflow-hidden'}`}>
-      <PageHeader 
-        socialLinks={socialLinks} 
+    <div
+      className={`flex flex-col bg-background ${
+        flexibleHeight ? "min-h-screen" : "h-[100svh] overflow-hidden"
+      }`}
+    >
+      <PageHeader
+        socialLinks={socialLinks}
         onMenuClick={handleMenuClick}
         logoDesktop={settings.logo_header_desktop}
         logoTablet={settings.logo_header_tablet}
@@ -65,7 +69,12 @@ export const PageLayout = ({ children, settings, flexibleHeight = false }: PageL
         heroTitle={settings.heroTitle}
       />
 
-      <main key={location.pathname} className={`flex-1 bg-content-bg page-enter ${flexibleHeight ? '' : 'overflow-auto'}`}>
+      <main
+        key={location.pathname}
+        className={`min-h-0 flex-1 bg-content-bg page-enter ${
+          flexibleHeight ? "" : "overflow-auto"
+        }`}
+      >
         {children}
       </main>
 
