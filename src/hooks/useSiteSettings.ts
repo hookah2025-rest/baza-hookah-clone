@@ -25,6 +25,11 @@ export interface SiteSettings {
   logo_header_desktop: string;
   logo_header_tablet: string;
   logo_header_mobile: string;
+  // SEO настройки
+  seo_title: string;
+  seo_description: string;
+  seo_og_image: string;
+  seo_favicon: string;
 }
 
 const defaultSettings: SiteSettings = {
@@ -47,6 +52,10 @@ const defaultSettings: SiteSettings = {
   logo_header_desktop: "",
   logo_header_tablet: "",
   logo_header_mobile: "",
+  seo_title: "Hookah Place BAZA | Москва",
+  seo_description: "Hookah Place BAZA в Москве. Проспект Вернадского, 86Бс1, 3 этаж. Уютная атмосфера, авторские кальяны, вкусная кухня.",
+  seo_og_image: "",
+  seo_favicon: "",
 };
 
 export const useSiteSettings = () => {
@@ -96,6 +105,10 @@ export const useSiteSettings = () => {
           logo_header_desktop: getValue('logo_header_desktop', defaultSettings.logo_header_desktop),
           logo_header_tablet: getValue('logo_header_tablet', defaultSettings.logo_header_tablet),
           logo_header_mobile: getValue('logo_header_mobile', defaultSettings.logo_header_mobile),
+          seo_title: getValue('seo_title', defaultSettings.seo_title),
+          seo_description: getValue('seo_description', defaultSettings.seo_description),
+          seo_og_image: getValue('seo_og_image', defaultSettings.seo_og_image),
+          seo_favicon: getValue('seo_favicon', defaultSettings.seo_favicon),
         });
       }
     } catch (error) {
@@ -125,7 +138,7 @@ export const useSiteSettings = () => {
     return true;
   };
 
-  type LogoType = 'home_desktop' | 'home_tablet' | 'home_mobile' | 'header_desktop' | 'header_tablet' | 'header_mobile';
+  type LogoType = 'home_desktop' | 'home_tablet' | 'home_mobile' | 'header_desktop' | 'header_tablet' | 'header_mobile' | 'seo_og_image' | 'seo_favicon';
 
   const uploadLogo = async (file: File, type: LogoType): Promise<string | null> => {
     const fileExt = file.name.split('.').pop();
@@ -137,7 +150,7 @@ export const useSiteSettings = () => {
 
     if (uploadError) {
       console.error('Upload error:', uploadError);
-      toast.error('Ошибка загрузки логотипа');
+      toast.error('Ошибка загрузки');
       return null;
     }
 
@@ -145,15 +158,15 @@ export const useSiteSettings = () => {
       .from('logos')
       .getPublicUrl(fileName);
 
-    // Save URL to settings
-    const settingKey = `logo_${type}` as keyof SiteSettings;
+    // Save URL to settings - SEO types use direct key, others use logo_ prefix
+    const settingKey = (type.startsWith('seo_') ? type : `logo_${type}`) as keyof SiteSettings;
     await updateSetting(settingKey, publicUrl);
     
     return publicUrl;
   };
 
   const deleteLogo = async (type: LogoType): Promise<boolean> => {
-    const settingKey = `logo_${type}` as keyof SiteSettings;
+    const settingKey = (type.startsWith('seo_') ? type : `logo_${type}`) as keyof SiteSettings;
     const currentUrl = settings[settingKey];
     
     if (currentUrl) {
@@ -167,7 +180,7 @@ export const useSiteSettings = () => {
     // Clear the setting
     const success = await updateSetting(settingKey, '');
     if (success) {
-      toast.success('Логотип удалён');
+      toast.success('Удалено');
     }
     return success;
   };

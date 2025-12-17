@@ -12,12 +12,14 @@ import MenuPage from "./pages/MenuPage";
 import GalleryPage from "./pages/GalleryPage";
 import LocationPage from "./pages/LocationPage";
 import RulesPage from "./pages/RulesPage";
+import { SEOHead } from "./components/SEOHead";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <SEOHead />
       <Toaster />
       <Sonner />
       <BrowserRouter>
