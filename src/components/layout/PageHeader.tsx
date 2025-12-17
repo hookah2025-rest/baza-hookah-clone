@@ -56,20 +56,23 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
           </Link>
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="p-2 flex flex-col gap-1.5 group"
+            className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300"
             aria-label="Открыть меню"
           >
-            <span className="w-7 h-0.5 bg-foreground group-hover:bg-foreground/70 transition-colors" />
-            <span className="w-7 h-0.5 bg-foreground group-hover:bg-foreground/70 transition-colors" />
+            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent burger-line transition-all duration-300" />
+            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent burger-line transition-all duration-300" />
           </button>
         </div>
       </header>
 
       {/* Mobile Navigation Fullscreen */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-background menu-slide-in flex flex-col">
+        <div className="fixed inset-0 z-50 backdrop-appear flex flex-col">
           <div className="h-20 flex-shrink-0 flex justify-end items-center px-6">
-            <button onClick={() => setIsMenuOpen(false)} className="p-2">
+            <button 
+              onClick={() => setIsMenuOpen(false)} 
+              className="p-2 hover:rotate-90 transition-transform duration-300"
+            >
               <X className="w-8 h-8 text-foreground" />
             </button>
           </div>
@@ -80,37 +83,34 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
                 navigate("/");
                 setIsMenuOpen(false);
               }}
-              className="group"
+              className="group menu-item-appear"
+              style={{ animationDelay: '0s' }}
             >
               <div className="flex items-center">
-                {/* Animated line directly attached to text */}
                 <span className={`h-[2px] bg-foreground transition-all duration-300 ease-out ${
                   location.pathname === "/" ? "w-10 mr-3" : "w-0 mr-0 group-hover:w-10 group-hover:mr-3"
                 }`} />
-                {/* Label */}
-                <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground">
+                <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground transition-all duration-300 group-hover:tracking-[0.25em]">
                   ГЛАВНАЯ
                 </span>
               </div>
             </button>
-            {navItems.map((item) => {
+            {navItems.map((item, index) => {
               const isActive = location.pathname === item.path;
               return (
                 <button
                   key={item.path}
                   onClick={() => handleNavClick(item.path)}
-                  className="group"
+                  className="group menu-item-appear"
+                  style={{ animationDelay: `${(index + 1) * 0.08}s` }}
                 >
                   <div className="flex items-center">
-                    {/* Animated line directly attached to text */}
                     <span
                       className={`h-[2px] bg-foreground transition-all duration-300 ease-out ${
                         isActive ? "w-10 mr-3" : "w-0 mr-0 group-hover:w-10 group-hover:mr-3"
                       }`}
                     />
-                    {/* Label */}
-                    <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground"
-                    >
+                    <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground transition-all duration-300 group-hover:tracking-[0.25em]">
                       {item.label}
                     </span>
                   </div>
@@ -123,18 +123,19 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
                 setIsMenuOpen(false);
                 setIsRulesOpen(true);
               }}
-              className="group"
+              className="group menu-item-appear"
+              style={{ animationDelay: `${(navItems.length + 1) * 0.08}s` }}
             >
               <div className="flex items-center">
                 <span className="h-[2px] bg-foreground transition-all duration-300 ease-out w-0 mr-0 group-hover:w-10 group-hover:mr-3" />
-                <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground">
+                <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground transition-all duration-300 group-hover:tracking-[0.25em]">
                   ПРАВИЛА
                 </span>
               </div>
             </button>
           </nav>
 
-          <div className="pb-10">
+          <div className="pb-10 menu-item-appear" style={{ animationDelay: '0.5s' }}>
             <SocialIcons socialLinks={socialLinks} />
           </div>
         </div>

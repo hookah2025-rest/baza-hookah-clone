@@ -123,15 +123,19 @@ export const HeroSection = ({
 
         {/* Menu button - visible on all screen sizes, top right */}
         <div className="absolute top-6 right-6 z-20">
-          <button onClick={() => setIsMenuOpen(true)} className="p-2 flex flex-col gap-1.5 group" aria-label="Открыть меню">
-            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
-            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent transition-colors" />
+          <button 
+            onClick={() => setIsMenuOpen(true)} 
+            className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300" 
+            aria-label="Открыть меню"
+          >
+            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent burger-line transition-all duration-300" />
+            <span className="w-7 h-0.5 bg-foreground group-hover:bg-accent burger-line transition-all duration-300" />
           </button>
         </div>
 
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
           {/* Logo or Title */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-8 hero-content-appear">
             {logoDesktop || logoTablet || logoMobile ? (
               <>
                 {/* Desktop logo */}
@@ -181,32 +185,46 @@ export const HeroSection = ({
       </section>
 
       {/* Mobile Navigation Fullscreen */}
-      {isMenuOpen && <div className="fixed inset-0 z-50 bg-background flex flex-col">
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-50 backdrop-appear flex flex-col">
           <div className="flex justify-end p-6">
-            <button onClick={() => setIsMenuOpen(false)} className="p-2">
+            <button 
+              onClick={() => setIsMenuOpen(false)} 
+              className="p-2 hover:rotate-90 transition-transform duration-300"
+            >
               <X className="w-8 h-8 text-foreground" />
             </button>
           </div>
 
           <nav className="flex-1 flex flex-col items-center justify-center gap-8">
             {mobileNavItems.map((item, index) => {
-          const isActive = activeIndex === index;
-          return <button key={item.label} onClick={() => handleNavClick(item.path, item.requiresAge)} onMouseEnter={() => setActiveIndex(index)} onMouseLeave={() => setActiveIndex(null)} className="group">
+              const isActive = activeIndex === index;
+              return (
+                <button 
+                  key={item.label} 
+                  onClick={() => handleNavClick(item.path, item.requiresAge)} 
+                  onMouseEnter={() => setActiveIndex(index)} 
+                  onMouseLeave={() => setActiveIndex(null)} 
+                  className="group menu-item-appear"
+                  style={{ animationDelay: `${index * 0.08}s` }}
+                >
                   <div className="flex items-center">
                     {/* Animated line directly attached to text */}
                     <span className={`h-[2px] bg-foreground transition-all duration-300 ease-out ${isActive ? "w-10 mr-3" : "w-0 mr-0"}`} />
                     {/* Label */}
-                    <span className="text-xl tracking-[0.15em] font-heading uppercase text-foreground">
+                    <span className="text-xl tracking-[0.15em] font-heading uppercase text-foreground transition-all duration-300 group-hover:tracking-[0.25em]">
                       {item.label}
                     </span>
                   </div>
-                </button>;
-        })}
+                </button>
+              );
+            })}
           </nav>
 
-          <div className="pb-10">
+          <div className="pb-10 menu-item-appear" style={{ animationDelay: '0.5s' }}>
             <SocialIcons socialLinks={siteData.socialLinks} />
           </div>
-        </div>}
+        </div>
+      )}
     </>;
 };

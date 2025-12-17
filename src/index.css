@@ -173,23 +173,23 @@
 
 /* Page transition animation */
 .page-enter {
-  animation: pageEnter 0.5s ease-out forwards;
+  animation: pageEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes pageEnter {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 /* Mobile menu slide animation */
 .menu-slide-in {
-  animation: menuSlideIn 0.3s ease-out forwards;
+  animation: menuSlideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes menuSlideIn {
@@ -200,5 +200,79 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* Menu close animation */
+.menu-slide-out {
+  animation: menuSlideOut 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes menuSlideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* Burger menu line animations */
+.burger-line {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
+}
+
+.burger-open .burger-line-1 {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.burger-open .burger-line-2 {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Menu item stagger animation */
+.menu-item-appear {
+  opacity: 0;
+  transform: translateX(30px);
+  animation: menuItemAppear 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes menuItemAppear {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Backdrop blur animation */
+.backdrop-appear {
+  animation: backdropAppear 0.4s ease-out forwards;
+}
+
+@keyframes backdropAppear {
+  from {
+    backdrop-filter: blur(0px);
+    background-color: transparent;
+  }
+  to {
+    backdrop-filter: blur(8px);
+    background-color: hsl(var(--background) / 0.95);
+  }
+}
+
+/* Hero content animation */
+.hero-content-appear {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: heroContentAppear 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+
+@keyframes heroContentAppear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
