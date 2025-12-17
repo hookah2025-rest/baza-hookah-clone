@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
-        heading: ['Montserrat', 'sans-serif'],
-        body: ['Montserrat', 'sans-serif'],
+        sans: ['Bebas Neue', 'sans-serif'],
+        heading: ['Bebas Neue', 'sans-serif'],
+        body: ['Bebas Neue', 'sans-serif'],
         typewriter: ['American Typewriter', 'Courier New', 'Courier', 'monospace'],
         bebas: ['Bebas Neue', 'sans-serif'],
       },
