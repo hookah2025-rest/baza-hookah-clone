@@ -15,9 +15,6 @@ export const PageFooter = ({
       <div className="h-full container mx-auto px-6 flex flex-col items-center justify-center py-4">
         <SocialIcons socialLinks={socialLinks} />
 
-        <p className="text-[13px] tracking-[0.2em] mt-3 font-heading font-bold">
-          {settings.name}
-        </p>
 
         <p className="text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-1">
           {settings.city}
