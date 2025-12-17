@@ -15,7 +15,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Forum', 'serif'],
-        heading: ['Oswald', 'sans-serif'],
+        heading: ['Bebas Neue', 'sans-serif'],
         body: ['Forum', 'serif'],
       },
       colors: {
