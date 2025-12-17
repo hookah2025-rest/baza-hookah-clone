@@ -126,7 +126,7 @@ export const HeroSection = ({
           </button>
         </div>
 
-        <div className="relative z-10 absolute inset-0 flex items-center justify-center px-6">
+        <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
           {/* Logo or Title */}
           <div className="text-center hero-content-appear">
             {logoDesktop || logoTablet || logoMobile ? <>
