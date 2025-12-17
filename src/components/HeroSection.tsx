@@ -126,9 +126,9 @@ export const HeroSection = ({
           </button>
         </div>
 
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
+        <div className="relative z-10 absolute inset-0 flex items-center justify-center px-6">
           {/* Logo or Title */}
-          <div className="text-center mb-8 hero-content-appear">
+          <div className="text-center hero-content-appear">
             {logoDesktop || logoTablet || logoMobile ? <>
                 {/* Desktop logo */}
                 {logoDesktop && <img src={logoDesktop} alt="BAZA" className="max-w-[90vw] w-auto max-h-[30vh] mx-auto hidden lg:block object-contain" />}
@@ -152,7 +152,7 @@ export const HeroSection = ({
         </div>
 
         {/* Bottom section with social and contact */}
-        <div className="relative z-10 pb-10">
+        <div className="absolute bottom-0 left-0 right-0 z-10 pb-10">
           <SocialIcons socialLinks={siteData.socialLinks} />
 
           <p className="text-center text-[13px] tracking-[0.2em] mt-3 font-heading">
