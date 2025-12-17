@@ -53,10 +53,10 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
                 {/* Tablet logo */}
                 <img src={logoTablet || logoDesktop || logoMobile} alt={siteName || "BAZA"} className="h-14 hidden md:block lg:hidden object-contain" />
                 {/* Mobile logo */}
-                <img src={logoMobile || logoTablet || logoDesktop} alt={siteName || "BAZA"} className="h-12 block md:hidden object-contain" />
+                <img src={logoMobile || logoTablet || logoDesktop} alt={siteName || "BAZA"} className="h-14 block md:hidden object-contain" />
               </>
             ) : (
-              <img src={bazaHeaderLogo} alt={siteName || "BAZA"} className="h-10 sm:h-12 md:h-14 object-contain" />
+              <img src={bazaHeaderLogo} alt={siteName || "BAZA"} className="h-12 sm:h-14 md:h-14 object-contain" />
             )}
           </Link>
           {/* Burger - absolute on mobile to keep logo centered */}
