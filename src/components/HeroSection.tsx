@@ -159,21 +159,28 @@ export const HeroSection = ({
         </div>
 
         {/* Bottom section with social and contact */}
-        <div className="relative z-10 pb-10 flex flex-col items-center">
+        <div className="relative z-10 pb-10">
           <SocialIcons socialLinks={siteData.socialLinks} />
 
-          <div className="border border-foreground/50 px-4 py-1 mt-4">
-            <p className="text-[13px] tracking-[0.2em] uppercase" style={{ fontFamily: 'Oswald', fontWeight: 300 }}>
-              HOOKAH PLACE <span className="font-bold">{siteData.name}</span>
-            </p>
-          </div>
+          <p className="text-center text-[13px] tracking-[0.2em] mt-3 font-heading">
+            Hookah place  <span className="font-bold">{siteData.name}</span>
+          </p>
 
-          <p className="text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-2">
+          <p className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-1">
             {siteData.city}
           </p>
-          <p className="text-[11px] text-foreground/90 uppercase tracking-[0.15em]">
+          <p className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em]">
             {siteData.address}
           </p>
+
+          <a href={`tel:${siteData.phone.replace(/\s/g, "")}`} className="block text-center text-foreground text-[15px] tracking-wider hover:opacity-80 transition-opacity mt-1 font-bold">
+            {siteData.phone}
+          </a>
+
+          <div className="flex justify-center gap-4 text-[11px] text-foreground/90 uppercase tracking-[0.1em] mt-1">
+            <span>ПН — ЧТ {siteData.hoursWeekday.split(' ').pop()}</span>
+            <span>ПТ — ВС {siteData.hoursWeekend.split(' ').pop()}</span>
+          </div>
         </div>
       </section>
 
