@@ -44,7 +44,7 @@ const MenuPage = () => {
   const isKitchenCategory = (name: string) => {
     return name.toLowerCase().includes("кухня");
   };
-  return <PageLayout settings={settings}>
+  return <PageLayout settings={settings} flexibleHeight>
       <div className="container mx-auto px-6 py-8 max-w-3xl">
         {/* Title */}
         <h1 className="text-2xl font-heading tracking-wider text-center mb-8 uppercase text-primary">
