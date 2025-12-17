@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useGalleryData } from "@/hooks/useGalleryData";
@@ -8,8 +8,10 @@ const GalleryPage = () => {
   const { images, loading: galleryLoading } = useGalleryData();
   const { settings, loading: settingsLoading } = useSiteSettings();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState<number | null>(null);
   const [slideDirection, setSlideDirection] = useState<"left" | "right">("left");
   const [isAnimating, setIsAnimating] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   if (galleryLoading || settingsLoading) {
     return (
@@ -20,13 +22,19 @@ const GalleryPage = () => {
   }
 
   const changeSlide = (newIndex: number, direction: "left" | "right") => {
-    if (isAnimating) return;
+    if (isAnimating || newIndex === currentIndex) return;
+    
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    
+    setPrevIndex(currentIndex);
     setSlideDirection(direction);
+    setCurrentIndex(newIndex);
     setIsAnimating(true);
-    setTimeout(() => {
-      setCurrentIndex(newIndex);
+    
+    timeoutRef.current = setTimeout(() => {
+      setPrevIndex(null);
       setIsAnimating(false);
-    }, 300);
+    }, 500);
   };
 
   const nextSlide = () => {
@@ -58,25 +66,37 @@ const GalleryPage = () => {
   return (
     <PageLayout settings={settings}>
       <div className="relative w-full h-full overflow-hidden">
-        {/* Current Image with slide transition */}
-        <div className="w-full h-full">
+        {/* Previous image (sliding out) */}
+        {prevIndex !== null && (
           <img
-            src={images[currentIndex]?.url}
-            alt={images[currentIndex]?.alt}
-            className={`w-full h-full object-cover transition-transform duration-300 ease-in-out ${
-              isAnimating 
-                ? slideDirection === "left" 
-                  ? "-translate-x-full" 
-                  : "translate-x-full"
-                : "translate-x-0"
+            src={images[prevIndex]?.url}
+            alt={images[prevIndex]?.alt}
+            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out ${
+              slideDirection === "left" ? "-translate-x-full" : "translate-x-full"
             }`}
           />
-        </div>
+        )}
+        
+        {/* Current image (sliding in) */}
+        <img
+          src={images[currentIndex]?.url}
+          alt={images[currentIndex]?.alt}
+          className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out ${
+            isAnimating ? "translate-x-0" : ""
+          }`}
+          style={{
+            transform: isAnimating 
+              ? "translateX(0)" 
+              : prevIndex !== null 
+                ? slideDirection === "left" ? "translateX(100%)" : "translateX(-100%)"
+                : "translateX(0)"
+          }}
+        />
 
         {/* Left Arrow */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors z-10"
           aria-label="Previous slide"
         >
           <ChevronLeft className="w-8 h-8" />
@@ -85,14 +105,14 @@ const GalleryPage = () => {
         {/* Right Arrow */}
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors z-10"
           aria-label="Next slide"
         >
           <ChevronRight className="w-8 h-8" />
         </button>
 
         {/* Dots */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
           {images.map((_, index) => (
             <button
               key={index}
