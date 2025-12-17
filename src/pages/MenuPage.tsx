@@ -60,7 +60,7 @@ const MenuPage = () => {
           const isKitchen = isKitchenCategory(cat.name);
           return <AccordionItem key={cat.id} value={cat.id} className="border-b border-background/30">
                 <AccordionTrigger hideChevron className="py-4 text-background hover:no-underline justify-center [&[data-state=open]]:text-background">
-                  <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-3">
                     <span className="text-lg tracking-wider font-heading uppercase">
                       {cat.name}
                     </span>
