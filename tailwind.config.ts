@@ -18,6 +18,7 @@ export default {
         heading: ['Montserrat', 'sans-serif'],
         body: ['Montserrat', 'sans-serif'],
         typewriter: ['American Typewriter', 'Courier New', 'Courier', 'monospace'],
+        bebas: ['Bebas Neue', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -58,7 +58,7 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
               </>
             ) : (
               <div className="flex items-center gap-2 md:gap-3">
-                <span className="text-[9vw] lg:text-[115px] font-typewriter tracking-[0.1em] text-foreground/80 leading-none">
+                <span className="text-[9vw] lg:text-[115px] font-bebas tracking-[0.1em] text-foreground/80 leading-none">
                   {heroTitle || "HookahPlace"}
                 </span>
                 <img src={bazaSubtitleLogo} alt={siteName || "BAZA"} className="h-[7vw] lg:h-[80px] object-contain" />
