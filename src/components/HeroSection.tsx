@@ -136,7 +136,7 @@ export const HeroSection = ({
                 <img src={logoTablet || logoDesktop || logoMobile} alt="BAZA" className="max-w-[85vw] w-auto max-h-[25vh] mx-auto hidden md:block lg:hidden object-contain" />
                 {/* Mobile logo */}
                 <img src={logoMobile || logoTablet || logoDesktop} alt="BAZA" className="max-w-[80vw] w-auto max-h-[20vh] mx-auto block md:hidden object-contain" />
-              </> : <div className="flex flex-col items-center px-4">
+              </> : <div className="flex flex-col items-center justify-center text-center">
                 <h1 className="text-[9vw] lg:text-[115px] text-foreground tracking-tight font-typewriter font-bold leading-none">
                   {heroTitle || "HookahPlace"}
                 </h1>
