@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { SocialIcons } from "../SocialIcons";
 import { SocialLinks } from "@/data/siteData";
-import bazaSubtitleLogo from "@/assets/baza-subtitle-logo.png";
+import bazaHeaderLogo from "@/assets/baza-header-logo.png";
 
 interface PageHeaderProps {
   socialLinks: SocialLinks;
@@ -56,12 +56,7 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
                 <img src={logoMobile || logoTablet || logoDesktop} alt={siteName || "BAZA"} className="h-12 block md:hidden object-contain" />
               </>
             ) : (
-              <div className="flex items-center gap-1 md:gap-2">
-                <span className="text-lg sm:text-xl md:text-2xl font-typewriter font-normal tracking-tight text-foreground leading-none">
-                  {heroTitle || "HookahPlace"}
-                </span>
-                <img src={bazaSubtitleLogo} alt={siteName || "BAZA"} className="h-5 sm:h-6 md:h-7 object-contain" />
-              </div>
+              <img src={bazaHeaderLogo} alt={siteName || "BAZA"} className="h-10 sm:h-12 md:h-14 object-contain" />
             )}
           </Link>
           <button
