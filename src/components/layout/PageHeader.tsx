@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { SocialIcons } from "../SocialIcons";
 import { SocialLinks } from "@/data/siteData";
-import { RulesModal } from "../RulesModal";
 import bazaSubtitleLogo from "@/assets/baza-subtitle-logo.png";
 
 interface PageHeaderProps {
@@ -21,11 +20,11 @@ const navItems = [
   { label: "МЕНЮ", subtitle: "Что имеется?", path: "/menu" },
   { label: "ГАЛЕРЕЯ", subtitle: "Визуальное сопровождение", path: "/gallery" },
   { label: "КАК ДОБРАТЬСЯ", subtitle: "Локация", path: "/location" },
+  { label: "ПРАВИЛА", subtitle: "Правила заведения", path: "/rules" },
 ];
 
 export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, logoMobile, siteName, heroTitle }: PageHeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isRulesOpen, setIsRulesOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -122,22 +121,6 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
                 </button>
               );
             })}
-            {/* Rules as modal trigger */}
-            <button
-              onClick={() => {
-                setIsMenuOpen(false);
-                setIsRulesOpen(true);
-              }}
-              className="group menu-item-appear"
-              style={{ animationDelay: `${(navItems.length + 1) * 0.08}s` }}
-            >
-              <div className="flex items-center">
-                <span className="h-[2px] bg-foreground transition-all duration-300 ease-out w-0 mr-0 group-hover:w-10 group-hover:mr-3" />
-                <span className="text-2xl tracking-[0.15em] font-heading uppercase text-foreground transition-all duration-300 group-hover:tracking-[0.25em]">
-                  ПРАВИЛА
-                </span>
-              </div>
-            </button>
           </nav>
 
           <div className="pb-10 menu-item-appear" style={{ animationDelay: '0.5s' }}>
@@ -145,8 +128,6 @@ export const PageHeader = ({ socialLinks, onMenuClick, logoDesktop, logoTablet, 
           </div>
         </div>
       )}
-
-      <RulesModal open={isRulesOpen} onOpenChange={setIsRulesOpen} />
     </>
   );
 };
