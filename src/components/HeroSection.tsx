@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { SiteData } from "@/data/siteData";
 import { SocialIcons } from "./SocialIcons";
 import { AgeVerificationModal } from "./AgeVerificationModal";
@@ -95,40 +94,20 @@ export const HeroSection = ({
       {/* Age verification modal */}
       {showAgeModal && <AgeVerificationModal onConfirm={handleAgeConfirm} onDecline={handleAgeDecline} />}
 
-      <section
-        id="hero"
-        className="relative min-h-[100svh] h-[100svh] flex flex-col overflow-hidden"
-        style={{
-          backgroundImage: `url(${heroBg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+      <section id="hero" className="relative min-h-[100svh] h-[100svh] flex flex-col overflow-hidden" style={{
+      backgroundImage: `url(${heroBg})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center"
+    }}>
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-background/60" />
 
         {/* Menu button - visible on all screen sizes, top right */}
         <div className="absolute top-[calc(1.5rem+env(safe-area-inset-top))] right-6 z-50">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300"
-            aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}
-          >
-            <span
-              className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${
-                isMenuOpen ? "rotate-45 translate-y-2" : ""
-              }`}
-            />
-            <span
-              className={`w-7 h-0.5 bg-foreground transition-all duration-300 ${
-                isMenuOpen ? "opacity-0 scale-0" : ""
-              }`}
-            />
-            <span
-              className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${
-                isMenuOpen ? "-rotate-45 -translate-y-2" : ""
-              }`}
-            />
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 flex flex-col gap-1.5 group hover:scale-110 transition-transform duration-300" aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}>
+            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${isMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
+            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 ${isMenuOpen ? "opacity-0 scale-0" : ""}`} />
+            <span className={`w-7 h-0.5 bg-foreground transition-all duration-300 origin-center ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
           </button>
         </div>
 
@@ -146,38 +125,25 @@ export const HeroSection = ({
                 <h1 className="text-[11vw] lg:text-[82px] text-foreground tracking-tighter font-heading leading-none">
                   {heroTitle || "HookahPlace"}
                 </h1>
-                {heroSubtitle ? (
-                  <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-heading uppercase text-foreground tracking-[0.15em] sm:tracking-[0.3em] mt-1">
+                {heroSubtitle ? <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-heading uppercase text-foreground tracking-[0.15em] sm:tracking-[0.3em] mt-1">
                     {heroSubtitle}
-                  </h2>
-                ) : (
-                  <img src={bazaSubtitleLogo} alt="BAZA" className="h-10 sm:h-14 md:h-20 lg:h-28 xl:h-32 mt-2 max-w-[80vw] object-contain" />
-                )}
+                  </h2> : <img src={bazaSubtitleLogo} alt="BAZA" className="h-10 sm:h-14 md:h-20 lg:h-28 xl:h-32 mt-2 max-w-[80vw] object-contain" />}
               </div>}
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 z-10 pb-[calc(2.5rem+env(safe-area-inset-bottom))]">
+        <div className="absolute bottom-0 left-0 right-0 z-10 pb-[calc(2.5rem+env(safe-area-inset-bottom))] text-center">
           <SocialIcons socialLinks={siteData.socialLinks} />
 
 
           <p className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-1">
             {siteData.city}
           </p>
-          {siteData.addressLink ? (
-            <a 
-              href={siteData.addressLink} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em] hover:text-foreground transition-colors"
-            >
+          {siteData.addressLink ? <a href={siteData.addressLink} target="_blank" rel="noopener noreferrer" className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em] hover:text-foreground transition-colors">
               {siteData.address}
-            </a>
-          ) : (
-            <p className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em]">
+            </a> : <p className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em]">
               {siteData.address}
-            </p>
-          )}
+            </p>}
 
           <a href={`tel:${siteData.phone.replace(/\s/g, "")}`} className="block text-center text-foreground text-[15px] tracking-wider hover:opacity-80 transition-opacity mt-1 font-bold">
             {siteData.phone}
