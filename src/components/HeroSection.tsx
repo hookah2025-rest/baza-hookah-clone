@@ -164,9 +164,20 @@ export const HeroSection = ({
           <p className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-1">
             {siteData.city}
           </p>
-          <p className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em]">
-            {siteData.address}
-          </p>
+          {siteData.addressLink ? (
+            <a 
+              href={siteData.addressLink} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em] hover:text-foreground transition-colors"
+            >
+              {siteData.address}
+            </a>
+          ) : (
+            <p className="text-center text-[11px] text-foreground/90 uppercase tracking-[0.15em]">
+              {siteData.address}
+            </p>
+          )}
 
           <a href={`tel:${siteData.phone.replace(/\s/g, "")}`} className="block text-center text-foreground text-[15px] tracking-wider hover:opacity-80 transition-opacity mt-1 font-bold">
             {siteData.phone}

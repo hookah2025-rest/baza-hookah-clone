@@ -9,6 +9,7 @@ const Index = () => {
     name: settings.name,
     city: settings.city,
     address: settings.address,
+    addressLink: settings.addressLink,
     phone: settings.phone,
     hoursWeekday: settings.hoursWeekday,
     hoursWeekend: settings.hoursWeekend,

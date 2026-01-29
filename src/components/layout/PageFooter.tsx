@@ -16,12 +16,25 @@ export const PageFooter = ({
         <SocialIcons socialLinks={socialLinks} />
 
 
-        <p className="text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-1">
-          {settings.city}
-        </p>
-        <p className="text-[11px] text-foreground/90 uppercase tracking-[0.15em]">
-          {settings.address}
-        </p>
+        {settings.addressLink ? (
+          <a 
+            href={settings.addressLink} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-1 hover:text-foreground transition-colors"
+          >
+            {settings.city}, {settings.address}
+          </a>
+        ) : (
+          <>
+            <p className="text-[11px] text-foreground/90 uppercase tracking-[0.15em] mt-1">
+              {settings.city}
+            </p>
+            <p className="text-[11px] text-foreground/90 uppercase tracking-[0.15em]">
+              {settings.address}
+            </p>
+          </>
+        )}
 
         <a href={`tel:${settings.phone.replace(/\s/g, "")}`} className="text-foreground text-[15px] tracking-wider hover:opacity-80 transition-opacity mt-1 font-bold">
           {settings.phone}
