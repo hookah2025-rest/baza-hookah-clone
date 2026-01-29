@@ -372,6 +372,15 @@ const Admin = () => {
                   />
                 </div>
                 <div>
+                  <label className="text-sm font-medium mb-2 block">Ссылка на адрес (карта)</label>
+                  <Input
+                    placeholder="https://yandex.ru/maps/..."
+                    value={localSettings.addressLink}
+                    onChange={(e) => handleSettingsChange("addressLink", e.target.value)}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">Если заполнено, адрес станет кликабельной ссылкой</p>
+                </div>
+                <div>
                   <label className="text-sm font-medium mb-2 block">Телефон</label>
                   <Input
                     value={localSettings.phone}

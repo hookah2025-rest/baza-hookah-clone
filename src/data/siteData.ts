@@ -30,6 +30,7 @@ export interface SiteData {
   name: string;
   city: string;
   address: string;
+  addressLink: string;
   phone: string;
   hoursWeekday: string;
   hoursWeekend: string;
@@ -45,6 +46,7 @@ export const defaultSiteData: SiteData = {
   name: "BAZA",
   city: "МОСКВА",
   address: "ПРОСПЕКТ ВЕРНАДСКОГО, 86Бс1, 3 ЭТАЖ",
+  addressLink: "",
   phone: "+7 964 526 75 55",
   hoursWeekday: "ПН — ЧТ    12:00—02:00",
   hoursWeekend: "ПТ — ВС    12:00—04:00",
