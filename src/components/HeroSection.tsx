@@ -114,14 +114,17 @@ export const HeroSection = ({
         <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
           {/* Logo or Title */}
           <div className="text-center hero-content-appear">
-            {logoDesktop || logoTablet || logoMobile ? <>
+            {logoDesktop || logoTablet || logoMobile ? <div className="flex flex-col items-center justify-center text-center">
+                <h1 className="text-[11vw] lg:text-[82px] text-foreground tracking-tighter font-heading leading-none mb-4">
+                  {heroTitle || "HookahPlace"}
+                </h1>
                 {/* Desktop logo */}
                 {logoDesktop && <img src={logoDesktop} alt="BAZA" className="max-w-[90vw] w-auto max-h-[30vh] mx-auto hidden lg:block object-contain" />}
                 {/* Tablet logo */}
                 <img src={logoTablet || logoDesktop || logoMobile} alt="BAZA" className="max-w-[85vw] w-auto max-h-[25vh] mx-auto hidden md:block lg:hidden object-contain" />
                 {/* Mobile logo */}
                 <img src={logoMobile || logoTablet || logoDesktop} alt="BAZA" className="max-w-[80vw] w-auto max-h-[20vh] mx-auto block md:hidden object-contain" />
-              </> : <div className="flex flex-col items-center justify-center text-center">
+              </div> : <div className="flex flex-col items-center justify-center text-center">
                 <h1 className="text-[11vw] lg:text-[82px] text-foreground tracking-tighter font-heading leading-none">
                   {heroTitle || "HookahPlace"}
                 </h1>
