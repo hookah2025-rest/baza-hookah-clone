@@ -115,7 +115,7 @@ export const HeroSection = ({
           {/* Logo or Title */}
           <div className="text-center hero-content-appear">
             {logoDesktop || logoTablet || logoMobile ? <div className="flex flex-col items-center justify-center text-center">
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl tracking-[0.3em] font-heading uppercase text-foreground mb-2 sm:mb-3">
+                <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[0.3em] font-heading uppercase text-foreground mb-3 sm:mb-4">
                   {heroTitle || "HookahPlace"}
                 </p>
                 {/* Desktop logo */}
