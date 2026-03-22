@@ -119,11 +119,11 @@ export const HeroSection = ({
                   {heroTitle || "HookahPlace"}
                 </p>
                 {/* Desktop logo */}
-                {logoDesktop && <img src={logoDesktop} alt="BAZA" className="max-w-[90vw] w-auto max-h-[30vh] mx-auto hidden lg:block object-contain" />}
+                {logoDesktop && <img src={logoDesktop} alt="BAZA" className="max-w-[70vw] w-auto max-h-[20vh] mx-auto hidden lg:block object-contain" />}
                 {/* Tablet logo */}
-                <img src={logoTablet || logoDesktop || logoMobile} alt="BAZA" className="max-w-[85vw] w-auto max-h-[25vh] mx-auto hidden md:block lg:hidden object-contain" />
+                <img src={logoTablet || logoDesktop || logoMobile} alt="BAZA" className="max-w-[65vw] w-auto max-h-[16vh] mx-auto hidden md:block lg:hidden object-contain" />
                 {/* Mobile logo */}
-                <img src={logoMobile || logoTablet || logoDesktop} alt="BAZA" className="max-w-[80vw] w-auto max-h-[20vh] mx-auto block md:hidden object-contain" />
+                <img src={logoMobile || logoTablet || logoDesktop} alt="BAZA" className="max-w-[60vw] w-auto max-h-[14vh] mx-auto block md:hidden object-contain" />
               </div> : <div className="flex flex-col items-center justify-center text-center">
                 <h1 className="text-[11vw] lg:text-[82px] text-foreground tracking-tighter font-heading leading-none">
                   {heroTitle || "HookahPlace"}
