@@ -115,8 +115,8 @@ export const HeroSection = ({
           {/* Logo or Title */}
           <div className="text-center hero-content-appear">
               {logoDesktop || logoTablet || logoMobile ? <div className="flex flex-col items-center justify-center text-center">
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-[0.15em] font-heading uppercase text-foreground mb-3 sm:mb-4">
-                  {heroTitle || "HookahPlace"}
+                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-[0.08em] uppercase text-foreground mb-3 sm:mb-4" style={{ fontFamily: "'Anton', sans-serif" }}>
+                  {heroTitle || "HOOKAHPLACE"}
                 </h1>
                 {/* Desktop logo */}
                 {logoDesktop && <img src={logoDesktop} alt="BAZA" className="max-w-[50vw] w-auto max-h-[12vh] mx-auto hidden lg:block object-contain" />}
