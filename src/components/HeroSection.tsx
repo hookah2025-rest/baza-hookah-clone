@@ -115,15 +115,15 @@ export const HeroSection = ({
           {/* Logo or Title */}
           <div className="text-center hero-content-appear">
             {logoDesktop || logoTablet || logoMobile ? <div className="flex flex-col items-center justify-center text-center">
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl tracking-[0.3em] font-heading uppercase text-foreground mb-2 sm:mb-3">
+                <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[0.3em] font-heading uppercase text-foreground mb-3 sm:mb-4">
                   {heroTitle || "HookahPlace"}
                 </p>
                 {/* Desktop logo */}
-                {logoDesktop && <img src={logoDesktop} alt="BAZA" className="max-w-[90vw] w-auto max-h-[30vh] mx-auto hidden lg:block object-contain" />}
+                {logoDesktop && <img src={logoDesktop} alt="BAZA" className="max-w-[70vw] w-auto max-h-[20vh] mx-auto hidden lg:block object-contain" />}
                 {/* Tablet logo */}
-                <img src={logoTablet || logoDesktop || logoMobile} alt="BAZA" className="max-w-[85vw] w-auto max-h-[25vh] mx-auto hidden md:block lg:hidden object-contain" />
+                <img src={logoTablet || logoDesktop || logoMobile} alt="BAZA" className="max-w-[65vw] w-auto max-h-[16vh] mx-auto hidden md:block lg:hidden object-contain" />
                 {/* Mobile logo */}
-                <img src={logoMobile || logoTablet || logoDesktop} alt="BAZA" className="max-w-[80vw] w-auto max-h-[20vh] mx-auto block md:hidden object-contain" />
+                <img src={logoMobile || logoTablet || logoDesktop} alt="BAZA" className="max-w-[60vw] w-auto max-h-[14vh] mx-auto block md:hidden object-contain" />
               </div> : <div className="flex flex-col items-center justify-center text-center">
                 <h1 className="text-[11vw] lg:text-[82px] text-foreground tracking-tighter font-heading leading-none">
                   {heroTitle || "HookahPlace"}
