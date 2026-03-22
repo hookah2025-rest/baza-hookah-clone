@@ -114,16 +114,16 @@ export const HeroSection = ({
         <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
           {/* Logo or Title */}
           <div className="text-center hero-content-appear">
-            {logoDesktop || logoTablet || logoMobile ? <div className="flex flex-col items-center justify-center text-center">
-                <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[0.3em] font-heading uppercase text-foreground mb-3 sm:mb-4">
+              {logoDesktop || logoTablet || logoMobile ? <div className="flex flex-col items-center justify-center text-center">
+                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-[0.15em] font-heading uppercase text-foreground mb-3 sm:mb-4">
                   {heroTitle || "HookahPlace"}
-                </p>
+                </h1>
                 {/* Desktop logo */}
-                {logoDesktop && <img src={logoDesktop} alt="BAZA" className="max-w-[70vw] w-auto max-h-[20vh] mx-auto hidden lg:block object-contain" />}
+                {logoDesktop && <img src={logoDesktop} alt="BAZA" className="max-w-[50vw] w-auto max-h-[12vh] mx-auto hidden lg:block object-contain" />}
                 {/* Tablet logo */}
-                <img src={logoTablet || logoDesktop || logoMobile} alt="BAZA" className="max-w-[65vw] w-auto max-h-[16vh] mx-auto hidden md:block lg:hidden object-contain" />
+                <img src={logoTablet || logoDesktop || logoMobile} alt="BAZA" className="max-w-[45vw] w-auto max-h-[10vh] mx-auto hidden md:block lg:hidden object-contain" />
                 {/* Mobile logo */}
-                <img src={logoMobile || logoTablet || logoDesktop} alt="BAZA" className="max-w-[60vw] w-auto max-h-[14vh] mx-auto block md:hidden object-contain" />
+                <img src={logoMobile || logoTablet || logoDesktop} alt="BAZA" className="max-w-[40vw] w-auto max-h-[8vh] mx-auto block md:hidden object-contain" />
               </div> : <div className="flex flex-col items-center justify-center text-center">
                 <h1 className="text-[11vw] lg:text-[82px] text-foreground tracking-tighter font-heading leading-none">
                   {heroTitle || "HookahPlace"}
